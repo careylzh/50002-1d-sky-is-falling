@@ -1,0 +1,34 @@
+module initgame (
+    input clk,  // clock
+    input rst,  // reset
+    //output chicken[7][32],
+    //output sky[2][32]
+    output chicken[1][8],
+    output sky[1][8]
+  ) {
+  genSky genSky(.rst(rst),.clk(clk));
+  always {
+   // chicken = 7x{{32b0}};
+    //sky = 2x{{32b0}};
+    
+/**    chicken[0] = 16x{0};
+    chicken[2] = 16h00;
+    chicken[2:1] = 2x{{16h00}}  ;
+    chicken[2:1] = {16h00,16h00}  ; 
+    chicken[2:1] = {16h00,
+                    16h00};
+    */    
+   // chicken[1][0] = 0 ; 
+   /** chicken = {32b00000000000000001000000000000000,
+               32b00000000000000010000000000000000,
+               32b00000000000000111000000000000000,
+               32b00000000000001111100000000000000,
+               32b00000000000001111100000000000000,
+               32b00000000000001111100000000000000,
+               32b00000000000000111000000000000000}; */
+    chicken = {8b00010000};
+    sky[0] = genSky.sky[0];
+    
+    
+  }
+}

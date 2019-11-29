@@ -1,0 +1,23 @@
+module stateCounterB (
+    input clk,  // clock
+    input rst,  // reset
+    output out1,  // output 
+    output out2
+ 
+  ) {
+  
+  //connect clk and rst to the clock, which allows synchronisation for the entire circuit
+  dff stateCounter[26](.clk(clk),.rst(rst));
+  
+  always {
+    out1 = stateCounter.q[24]; 
+    out2 = stateCounter.q[23];
+    // connects out to the digid of the 26 index of dff stateCounter
+    // every 2^24 cycle , out will be 1 (around 0.4 seconds)
+    stateCounter.d = stateCounter.q + 1;
+    if (stateCounter.q[24]==1) {
+      stateCounter.d[24] = 0;
+    } 
+    
+  }
+}
