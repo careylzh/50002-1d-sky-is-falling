@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="led_matrix" board="Mojo" language="Lucid" version="2">
+  <files>
+    <component>cclk_detector.luc</component>
+    <component>reg_interface.luc</component>
+    <component>simple_dual_ram.v</component>
+    <src>serial_to_rgb.luc</src>
+    <component>uart_rx.luc</component>
+    <component>spi_slave.luc</component>
+    <src>led_matrix.luc</src>
+    <component>uart_tx.luc</component>
+    <src>matrix.v</src>
+    <component>simple_ram.v</component>
+    <src>vram.luc</src>
+    <component>reset_conditioner.luc</component>
+    <component>edge_detector.luc</component>
+    <src top="true">mojo_top.luc</src>
+    <component>avr_interface.luc</component>
+    <constraint>matrix.ucf</constraint>
+    <constraint lib="true">mojo.ucf</constraint>
+  </files>
+</project>

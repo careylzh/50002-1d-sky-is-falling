@@ -1,0 +1,102 @@
+module mojo_top (
+    input clk,              // 50MHz clock
+    input rst_n,            // reset button (active low)
+    output led [8],         // 8 user controllable LEDs
+    input cclk,             // configuration clock, AVR ready when high
+    output spi_miso,        // AVR SPI MISO
+    input spi_ss,           // AVR SPI Slave Select
+    input spi_mosi,         // AVR SPI MOSI
+    input spi_sck,          // AVR SPI Clock
+    output spi_channel [4], // AVR general purpose pins (used by default to select ADC channel)
+    input avr_tx,           // AVR TX (FPGA RX)
+    output avr_rx,          // AVR RX (FPGA TX)
+    input avr_rx_busy,       // AVR RX buffer full
+    output led_r[2],
+    output led_g[2],
+    output led_b[2],
+    output led_addr[4],
+    output led_clk,
+    output led_lat,
+    output led_blk
+  ) {
+  
+  sig rst;                  // reset signal
+  
+  .clk(clk) {
+    // The reset conditioner is used to synchronize the reset signal to the FPGA
+    // clock. This ensures the entire FPGA comes out of reset at the same time.
+    reset_conditioner reset_cond;
+    .rst(rst){
+      avr_interface avr;
+      reg_interface register;
+    }
+  }
+  
+  led_matrix matrix(
+    .clk(clk),
+    .rst(rst)
+    );
+  
+  
+  always {
+    reset_cond.in = ~rst_n; // input raw inverted reset signal
+    rst = reset_cond.out;   // conditioned reset
+    
+    led = 8h00;             // turn LEDs off
+    
+    // connect inputs of avr
+    avr.cclk = cclk;
+    avr.spi_ss = spi_ss;
+    avr.spi_mosi = spi_mosi;
+    avr.spi_sck = spi_sck;
+    avr.rx = avr_tx;
+    avr.channel = hf;           // ADC is unused so disable
+    avr.tx_block = avr_rx_busy; // block TX when AVR is busy
+    
+    // connect outputs of avr
+    spi_miso = avr.spi_miso;
+    spi_channel = avr.spi_channel;
+    avr_rx = avr.tx;
+    
+    register.rx_data = avr.rx_data;
+    register.new_rx_data = avr.new_rx_data;
+    avr.tx_data = register.tx_data;
+    avr.new_tx_data = register.new_tx_data;
+    register.tx_busy = avr.tx_busy;
+ 
+    register.regIn.drdy = 0;    // default to no data
+    register.regIn.data = 32bx; // don't care
+    
+    
+    led_r=matrix.out_r;
+    led_g=matrix.out_g;
+    led_b=matrix.out_b;
+    led_addr=matrix.out_addr;
+    led_clk=matrix.out_clk;
+    led_lat=matrix.out_lat;
+    led_blk=matrix.out_blk;
+    
+    
+   if (register.regOut.new_cmd) {             // new command
+      if (register.regOut.write) {             // if write
+        matrix.wr_en = 1;
+        matrix.wr_addr = register.regOut.address;
+        matrix.wr_data = register.regOut.data[7:0];  // write the LEDs
+      }else{
+        matrix.wr_en = 0;
+        matrix.wr_addr = 0;
+        matrix.wr_data = 0;
+      }
+    } else {                                 // if read
+      matrix.wr_en = 0;
+      matrix.wr_addr = 0;
+      matrix.wr_data = 0;
+    }
+    
+    
+    
+    
+    
+    
+  }
+}

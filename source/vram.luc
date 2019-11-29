@@ -1,0 +1,47 @@
+module vram (
+    input clk,  // clock
+    input rst,  // reset
+    input read_addr[10],
+    input write_en,
+    input write_data[3],
+    input  write_addr[10],
+    output out_bit[3]            //memeory structured as (MSB):R:G:B:(LSB)
+  ) {
+  
+  
+  simple_dual_ram disp_vram(
+    #SIZE(3), 
+    #DEPTH(1024), 
+    .rclk(clk), 
+    .wclk(clk), 
+    .write_en(write_en),
+    .waddr(write_addr),
+    .write_data(write_data)
+  );
+  
+  .clk(clk){
+    .rst(rst){
+    
+  dff write;
+  dff i[12];
+    }
+  }
+  always {
+  //if(~write.q){
+  //    disp_vram.write_en = 1;
+  //    disp_vram.waddr = i.q;
+  //    disp_vram.write_data = i.q;
+  //    i.d = i.q +1;
+  //       if (i.q == 2399){
+  //        write.d = 1;
+  //      }
+  //  }else{
+  //  disp_vram.write_en = 0;
+  //    disp_vram.waddr = 0;
+  //    disp_vram.write_data = h24;
+  //    }
+     
+    disp_vram.raddr = read_addr;
+    out_bit = disp_vram.read_data;
+  }
+}

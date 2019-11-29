@@ -1,0 +1,60 @@
+module serial_to_vga (
+   input clk,         // clock    
+  input rst,         // reset    
+  input new_rx,      // new RX flag    
+  input rx_data[8],  // RX data 
+  output out_vram_addr[12],
+  output out_vram_data[8],  
+  output out_vram_write_en, 
+  output new_tx,     // new TX flag    
+  output tx_data[8], // TX data    
+  input tx_busy      // TX is busy flag  
+    ) {
+ 
+
+ 
+  .clk(clk) {    
+    .rst(rst) {      
+      dff serial_buffer[5]; // 5 allows for 2^5 = 32 letters    // we need our RAM to have an entry for every value of name_count
+      dff init_counter; //initialize screen
+      dff count[5];
+      }
+  }
+ 
+    const WELCOME = $reverse("Please enter some words below: "); 
+
+    
+    always{
+    if (~init_counter.q){
+      out_vram_data = WELCOME[count.q];        // write the received letter to RAM          
+      out_vram_write_en = 1;                // signal we want to write  
+      out_vram_addr = count.q;        
+      count.d = count.q + 1; // increment the address
+      if (count.q == 31){
+        init_counter.d = 1;
+        }
+      }        
+    else if (new_rx) { // wait for a new byte          
+      out_vram_data = rx_data;        // write the received letter to RAM          
+      out_vram_write_en = 1;                // signal we want to write  
+      out_vram_addr = serial_buffer.q+80;        
+      serial_buffer.d = serial_buffer.q + 1; // increment the address
+ 
+      // We aren't checking tx_busy here that means if someone types super          
+      // fast we could drop bytes. In practice this doesn't happen.                    
+      // only echo non-new line characters          
+      new_tx = rx_data != "\n" && rx_data != "\r";          
+      tx_data = rx_data; // echo text back so you can see what you type
+ 
+      // if we run out of space or they pressed enter          
+      if (&serial_buffer.q || rx_data == "\n" || rx_data == "\r") {            
+        serial_buffer.d = 0;              
+        }        
+      }else{
+       out_vram_data = 0;        // write the received letter to RAM          
+      out_vram_write_en = 0;                // signal we want to write  
+      out_vram_addr = 0;    
+      new_tx = 0;
+      tx_data = 0;    
+      }
+  }
