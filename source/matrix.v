@@ -21,7 +21,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //=============================================================================================
 
-module pixels01
+module pixels
 (
 	input	wire			rst_n,				// actie-low async reset (tied to PB0)
 	input	wire			clk50_in,			// 50MHz clock in

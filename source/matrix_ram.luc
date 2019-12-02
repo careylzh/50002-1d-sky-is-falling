@@ -69,17 +69,129 @@ module matrix_ram #(
     case(state.q){
     
       state.START:
-        reg_data_tophalf.d[0][0] = b110;
-        reg_data_tophalf.d[1][0] = b111;
+      //---------grass----------------//
+        reg_data_tophalf.d[0][0] = b010;
+        reg_data_tophalf.d[1][0] = b010;
+        reg_data_tophalf.d[2][0] = b010;
+        reg_data_tophalf.d[3][0] = b010;
+        reg_data_tophalf.d[4][0] = b010;
+        reg_data_tophalf.d[5][0] = b010;
+        reg_data_tophalf.d[6][0] = b010;
+        reg_data_tophalf.d[7][0] = b010;
+        reg_data_tophalf.d[8][0] = b010;
+        reg_data_tophalf.d[9][0] = b010;
+        reg_data_tophalf.d[10][0] = b010;
+        reg_data_tophalf.d[11][0] = b010;
+        reg_data_tophalf.d[12][0] = b010;
+        reg_data_tophalf.d[13][0] = b010;
+        reg_data_tophalf.d[14][0] = b010;
+        reg_data_tophalf.d[15][0] = b010;
+        reg_data_bottomhalf.d[1][0] = b010;
+        reg_data_bottomhalf.d[2][0] = b010;
+        reg_data_bottomhalf.d[3][0] = b010;
+        reg_data_bottomhalf.d[4][0] = b010;
+        reg_data_bottomhalf.d[5][0] = b010;
+        reg_data_bottomhalf.d[6][0] = b010;
+        reg_data_bottomhalf.d[7][0] = b010;
+        reg_data_bottomhalf.d[8][0] = b010;
+        reg_data_bottomhalf.d[9][0] = b010;
+        reg_data_bottomhalf.d[10][0] = b010;
+        reg_data_bottomhalf.d[11][0] = b010;
+        reg_data_bottomhalf.d[12][0] = b010;
+        reg_data_bottomhalf.d[13][0] = b010;
+        reg_data_bottomhalf.d[14][0] = b010;
+        reg_data_bottomhalf.d[15][0] = b010;
         reg_data_tophalf.d[0][1] = b010;
-        reg_data_bottomhalf.d[0][0] = b001;
-        reg_data_bottomhalf.d[0][1] = b100;
-        reg_data_tophalf.d[5][21] = b001;
-        
-        state.d = state.LOOP;
-        
+        reg_data_tophalf.d[1][1] = b010;
+        reg_data_tophalf.d[2][1] = b010;
+        reg_data_tophalf.d[3][1] = b010;
+        reg_data_tophalf.d[4][1] = b010;
+        reg_data_tophalf.d[5][1] = b010;
+        reg_data_tophalf.d[6][1] = b010;
+        reg_data_tophalf.d[7][1] = b010;
+        reg_data_tophalf.d[8][1] = b010;
+        reg_data_tophalf.d[9][1] = b010;
+        reg_data_tophalf.d[10][1] = b010;
+        reg_data_tophalf.d[11][1] = b010;
+        reg_data_tophalf.d[12][1] = b010;
+        reg_data_tophalf.d[13][1] = b010;
+        reg_data_tophalf.d[14][1] = b010;
+        reg_data_tophalf.d[15][1] = b010;
+        reg_data_bottomhalf.d[0][1] = b010;
+        reg_data_bottomhalf.d[1][1] = b010;
+        reg_data_bottomhalf.d[2][1] = b010;
+        reg_data_bottomhalf.d[3][1] = b010;
+        reg_data_bottomhalf.d[4][1] = b010;
+        reg_data_bottomhalf.d[5][1] = b010;
+        reg_data_bottomhalf.d[6][1] = b010;
+        reg_data_bottomhalf.d[7][1] = b010;
+        reg_data_bottomhalf.d[8][1] = b010;
+        reg_data_bottomhalf.d[9][1] = b010;
+        reg_data_bottomhalf.d[10][1] = b010;
+        reg_data_bottomhalf.d[11][1] = b010;
+        reg_data_bottomhalf.d[12][1] = b010;
+        reg_data_bottomhalf.d[13][1] = b010;
+        reg_data_bottomhalf.d[14][1] = b010;
+        reg_data_bottomhalf.d[15][1] = b010;
+      //---------end grass------------//
+      //---------begin chicken--------//
+        reg_data_tophalf.d[15][2] = b111;
+        reg_data_tophalf.d[15][3] = b111;
+        reg_data_tophalf.d[15][4] = b100;
+        reg_data_tophalf.d[15][5] = b111;
+        reg_data_tophalf.d[14][3] = b111;
+        reg_data_tophalf.d[14][4] = b111;
+        reg_data_bottomhalf.d[0][2] = b111;
+        reg_data_bottomhalf.d[0][3] = b111; 
+        reg_data_bottomhalf.d[0][4] = b111; 
+        reg_data_bottomhalf.d[0][5] = b111; 
+        reg_data_bottomhalf.d[1][2] = b111; 
+        reg_data_bottomhalf.d[1][3] = b111;
+        reg_data_bottomhalf.d[1][4] = b100;
+        reg_data_bottomhalf.d[1][5] = b111; 
+        reg_data_bottomhalf.d[2][3] = b111; 
+        reg_data_bottomhalf.d[2][4] = b111; 
+        reg_data_bottomhalf.d[0][6] = b001; //red hair       
+      //---------end chicken--------//  
+      //---------begin cloud--------//
+        reg_data_tophalf.d[10][54] = b100;
+        reg_data_tophalf.d[11][54] = b100;
+        reg_data_tophalf.d[12][54] = b100;
+        reg_data_tophalf.d[13][54] = b100;
+        reg_data_tophalf.d[10][55] = b100;
+        reg_data_tophalf.d[11][55] = b100;
+        reg_data_tophalf.d[12][55] = b100;
+        reg_data_tophalf.d[13][55] = b100;
+        reg_data_tophalf.d[10][56] = b100;
+        reg_data_tophalf.d[11][56] = b100;
+        reg_data_tophalf.d[12][56] = b100;
+        reg_data_tophalf.d[13][56] = b100;
+        reg_data_tophalf.d[10][57] = b100;
+        reg_data_tophalf.d[11][57] = b100;
+        reg_data_tophalf.d[12][57] = b100;
+        reg_data_tophalf.d[13][57] = b100;
+
+        reg_data_bottomhalf.d[2][39] = b100; 
+        reg_data_bottomhalf.d[3][39] = b100; 
+        reg_data_bottomhalf.d[4][39] = b100; 
+        reg_data_bottomhalf.d[5][39] = b100; 
+        reg_data_bottomhalf.d[2][40] = b100; 
+        reg_data_bottomhalf.d[3][40] = b100; 
+        reg_data_bottomhalf.d[4][40] = b100; 
+        reg_data_bottomhalf.d[5][40] = b100; 
+        reg_data_bottomhalf.d[2][41] = b100; 
+        reg_data_bottomhalf.d[3][41] = b100; 
+        reg_data_bottomhalf.d[4][41] = b100; 
+        reg_data_bottomhalf.d[5][41] = b100;
+        reg_data_bottomhalf.d[2][42] = b100;
+        reg_data_bottomhalf.d[3][42] = b100;
+        reg_data_bottomhalf.d[4][42] = b100;
+        reg_data_bottomhalf.d[5][42] = b100; 
+
+//        reg_data_tophalf.d[5][21] = b001;
       
-        
+        state.d = state.LOOP;
+               
       state.LOOP:
         state.d = state.q;
       
