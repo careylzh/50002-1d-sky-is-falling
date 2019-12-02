@@ -1,0 +1,91 @@
+module matrix_ram #(
+  ADDRESS_SIZE = 4 : ADDRESS_SIZE > 0, //width of the address field (ABCD signals for matrix_led)
+  MATRIX_WIDTH = 64 : MATRIX_WIDTH > 0 //number of LEDs per row in the matrix
+)(
+    input clk,  // clock
+    input rst,  // reset
+  //  input write_row_address[ADDRESS_SIZE],
+  //  input write_column_address[ADDRESS_SIZE],
+ //   input write_enable,
+  //  input write_data[6],
+    input row_address[ADDRESS_SIZE],
+    input column_address[$clog2(MATRIX_WIDTH)],
+    output out[6] //6b b1g1r1b0g1r0
+  ) {
+
+  const DATA = c{c{64x{{6b001001}}}, c{64x{{6b000000}}}, c{64x{{6b011011}}}, c{64x{{6b101101}}}, 
+                 c{64x{{6b111111}}}, c{64x{{6b111001}}}, c{64x{{6b001011}}}, c{64x{{6b101001}}}, 
+                c{64x{{6b010001}}}, c{64x{{6b000001}}}, c{64x{{6b101111}}}, c{64x{{6b001111}}}, 
+                c{64x{{6b001001}}}, c{64x{{6b001001}}}, c{64x{{6b001001}}}, c{64x{{6b001001}}} };
+     
+  /* const DATA = {{6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b010010, 6b010010, 6b010010, 6b010010,
+                    6b010010, 6b010010, 6b010010, 6b010010,
+                    6b100100, 6b100100, 6b100100, 6b100100,
+                    6b100100, 6b100100, 6b100100, 6b100100,
+                    6b111111, 6b111111, 6b111111, 6b111111,
+                    6b111111, 6b111111, 6b111111, 6b111111,        
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b010010, 6b010010, 6b010010, 6b010010,
+                    6b010010, 6b010010, 6b010010, 6b010010,
+                    6b100100, 6b100100, 6b100100, 6b100100,
+                    6b100100, 6b100100, 6b100100, 6b100100,
+                    6b111111, 6b111111, 6b111111, 6b111111,
+                    6b111111, 6b111111, 6b111111, 6b111111},
+      
+                   {6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,       
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001}
+    };*/
+      
+    
+  .clk(clk){
+    .rst(rst){
+      dff reg_data_tophalf[$pow(2,ADDRESS_SIZE)][MATRIX_WIDTH][3];
+      dff reg_data_bottomhalf[$pow(2,ADDRESS_SIZE)][MATRIX_WIDTH][3];
+      
+      fsm state = {START, LOOP};
+    }
+    
+  }
+  
+  always {
+  
+    case(state.q){
+    
+      state.START:
+        reg_data_tophalf.d[0][0] = b110;
+        reg_data_tophalf.d[1][0] = b111;
+        reg_data_tophalf.d[0][1] = b010;
+        reg_data_bottomhalf.d[0][0] = b001;
+        reg_data_bottomhalf.d[0][1] = b100;
+        reg_data_tophalf.d[5][21] = b001;
+        
+        state.d = state.LOOP;
+        
+      
+        
+      state.LOOP:
+        state.d = state.q;
+      
+    }
+  
+    out = c{ reg_data_bottomhalf.q[row_address][column_address], reg_data_tophalf.q[row_address][column_address]};
+   // out = DATA[row_address][column_address];
+  }
+}

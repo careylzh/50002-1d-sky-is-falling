@@ -40,7 +40,7 @@ module avr_interface_2 (
   
   wire [1-1:0] M_cclk_detector_ready;
   reg [1-1:0] M_cclk_detector_cclk;
-  cclk_detector_5 cclk_detector (
+  cclk_detector_6 cclk_detector (
     .clk(clk),
     .rst(rst),
     .cclk(M_cclk_detector_cclk),
@@ -53,7 +53,7 @@ module avr_interface_2 (
   reg [1-1:0] M_spi_slave_mosi;
   reg [1-1:0] M_spi_slave_sck;
   reg [8-1:0] M_spi_slave_data_in;
-  spi_slave_6 spi_slave (
+  spi_slave_7 spi_slave (
     .clk(clk),
     .rst(n_rdy),
     .ss(M_spi_slave_ss),
@@ -67,7 +67,7 @@ module avr_interface_2 (
   wire [8-1:0] M_uart_rx_data;
   wire [1-1:0] M_uart_rx_new_data;
   reg [1-1:0] M_uart_rx_rx;
-  uart_rx_7 uart_rx (
+  uart_rx_8 uart_rx (
     .clk(clk),
     .rst(n_rdy),
     .rx(M_uart_rx_rx),
@@ -79,7 +79,7 @@ module avr_interface_2 (
   reg [1-1:0] M_uart_tx_block;
   reg [8-1:0] M_uart_tx_data;
   reg [1-1:0] M_uart_tx_new_data;
-  uart_tx_8 uart_tx (
+  uart_tx_9 uart_tx (
     .clk(clk),
     .rst(n_rdy),
     .block(M_uart_tx_block),

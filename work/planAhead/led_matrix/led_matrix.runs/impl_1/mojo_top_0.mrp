@@ -8,46 +8,40 @@ Target Device  : xc6slx9
 Target Package : tqg144
 Target Speed   : -2
 Mapper Version : spartan6 -- $Revision: 1.55 $
-Mapped Date    : Fri Nov 29 17:07:53 2019
+Mapped Date    : Mon Dec 02 18:08:56 2019
 
 Design Summary
 --------------
 Number of errors:      0
-Number of warnings:    2
+Number of warnings:    0
 Slice Logic Utilization:
-  Number of Slice Registers:                   158 out of  11,440    1%
-    Number used as Flip Flops:                 148
-    Number used as Latches:                     10
+  Number of Slice Registers:                    45 out of  11,440    1%
+    Number used as Flip Flops:                  45
+    Number used as Latches:                      0
     Number used as Latch-thrus:                  0
     Number used as AND/OR logics:                0
-  Number of Slice LUTs:                        241 out of   5,720    4%
-    Number used as logic:                      235 out of   5,720    4%
-      Number using O6 output only:             137
-      Number using O5 output only:              50
-      Number using O5 and O6:                   48
+  Number of Slice LUTs:                         84 out of   5,720    1%
+    Number used as logic:                       83 out of   5,720    1%
+      Number using O6 output only:              59
+      Number using O5 output only:              12
+      Number using O5 and O6:                   12
       Number used as ROM:                        0
-    Number used as Memory:                       3 out of   1,440    1%
-      Number used as Dual Port RAM:              0
-      Number used as Single Port RAM:            0
-      Number used as Shift Register:             3
-        Number using O6 output only:             3
-        Number using O5 output only:             0
-        Number using O5 and O6:                  0
-    Number used exclusively as route-thrus:      3
+    Number used as Memory:                       0 out of   1,440    0%
+    Number used exclusively as route-thrus:      1
       Number with same-slice register load:      0
-      Number with same-slice carry load:         3
+      Number with same-slice carry load:         1
       Number with other load:                    0
 
 Slice Logic Distribution:
-  Number of occupied Slices:                    83 out of   1,430    5%
-  Number of MUXCYs used:                        84 out of   2,860    2%
-  Number of LUT Flip Flop pairs used:          256
-    Number with an unused Flip Flop:           104 out of     256   40%
-    Number with an unused LUT:                  15 out of     256    5%
-    Number of fully used LUT-FF pairs:         137 out of     256   53%
-    Number of unique control sets:              16
+  Number of occupied Slices:                    31 out of   1,430    2%
+  Number of MUXCYs used:                        16 out of   2,860    1%
+  Number of LUT Flip Flop pairs used:           86
+    Number with an unused Flip Flop:            47 out of      86   54%
+    Number with an unused LUT:                   2 out of      86    2%
+    Number of fully used LUT-FF pairs:          37 out of      86   43%
+    Number of unique control sets:               7
     Number of slice register sites lost
-      to control set restrictions:              55 out of  11,440    1%
+      to control set restrictions:              27 out of  11,440    1%
 
   A LUT Flip Flop pair for this architecture represents one LUT paired with
   one Flip Flop within a slice.  A control set is a unique combination of
@@ -58,29 +52,29 @@ Slice Logic Distribution:
 IO Utilization:
   Number of bonded IOBs:                        35 out of     102   34%
     Number of LOCed IOBs:                       35 out of      35  100%
-    IOB Flip Flops:                              4
+    IOB Flip Flops:                              9
 
 Specific Feature Utilization:
   Number of RAMB16BWERs:                         0 out of      32    0%
-  Number of RAMB8BWERs:                          2 out of      64    3%
+  Number of RAMB8BWERs:                          0 out of      64    0%
   Number of BUFIO2/BUFIO2_2CLKs:                 0 out of      32    0%
   Number of BUFIO2FB/BUFIO2FB_2CLKs:             0 out of      32    0%
   Number of BUFG/BUFGMUXs:                       1 out of      16    6%
     Number used as BUFGs:                        1
     Number used as BUFGMUX:                      0
   Number of DCM/DCM_CLKGENs:                     0 out of       4    0%
-  Number of ILOGIC2/ISERDES2s:                   3 out of     200    1%
-    Number used as ILOGIC2s:                     3
+  Number of ILOGIC2/ISERDES2s:                   2 out of     200    1%
+    Number used as ILOGIC2s:                     2
     Number used as ISERDES2s:                    0
   Number of IODELAY2/IODRP2/IODRP2_MCBs:         0 out of     200    0%
-  Number of OLOGIC2/OSERDES2s:                   1 out of     200    1%
-    Number used as OLOGIC2s:                     1
+  Number of OLOGIC2/OSERDES2s:                   7 out of     200    3%
+    Number used as OLOGIC2s:                     7
     Number used as OSERDES2s:                    0
   Number of BSCANs:                              0 out of       4    0%
   Number of BUFHs:                               0 out of     128    0%
   Number of BUFPLLs:                             0 out of       8    0%
   Number of BUFPLL_MCBs:                         0 out of       4    0%
-  Number of DSP48A1s:                            0 out of      16    0%
+  Number of DSP48A1s:                            2 out of      16   12%
   Number of ICAPs:                               0 out of       1    0%
   Number of MCBs:                                0 out of       2    0%
   Number of PCILOGICSEs:                         0 out of       2    0%
@@ -89,11 +83,11 @@ Specific Feature Utilization:
   Number of STARTUPs:                            0 out of       1    0%
   Number of SUSPEND_SYNCs:                       0 out of       1    0%
 
-Average Fanout of Non-Clock Nets:                3.55
+Average Fanout of Non-Clock Nets:                2.88
 
 Peak Memory Usage:  4534 MB
-Total REAL time to MAP completion:  5 secs 
-Total CPU time to MAP completion (all processors):   6 secs 
+Total REAL time to MAP completion:  11 secs 
+Total CPU time to MAP completion (all processors):   11 secs 
 
 Table of Contents
 -----------------
@@ -119,13 +113,6 @@ Section 2 - Warnings
 WARNING:Security:42 - Your software subscription period has lapsed. Your current
 version of Xilinx tools will continue to function, but you no longer qualify for
 Xilinx software updates or new releases.
-WARNING:PhysDesignRules:372 - Gated clock. Clock net matrix/n0012 is sourced by
-   a combinatorial pin. This is not good design practice. Use the CE pin to
-   control the loading of data into the flip-flop.
-WARNING:PhysDesignRules:2410 - This design is using one or more 9K Block RAMs
-   (RAMB8BWER).  9K Block RAM initialization data, both user defined and
-   default, may be incorrect and should not be used.  For more information,
-   please reference Xilinx Answer Record 39999.
 
 Section 3 - Informational
 -------------------------
@@ -134,9 +121,10 @@ INFO:Map:284 - Map is running with the multi-threading option on. Map currently
    machine load, Map will use 2 processors during this run.
 INFO:Security:54 - 'xc6slx9' is a WebPack part.
 INFO:LIT:243 - Logical network avr_rx_busy_IBUF has no load.
-INFO:LIT:395 - The above info message is repeated 1 more times for the following
+INFO:LIT:395 - The above info message is repeated 2 more times for the following
    (max. 5 shown):
-   spi_mosi_IBUF
+   spi_mosi_IBUF,
+   avr_tx_IBUF
    To see the details of these info messages, please use the -detail switch.
 INFO:MapLib:562 - No environment variables are currently set.
 INFO:LIT:244 - All of the single ended outputs in this design are using slew
@@ -152,7 +140,7 @@ INFO:Pack:1650 - Map created a placed design.
 
 Section 4 - Removed Logic Summary
 ---------------------------------
-  14 block(s) optimized away
+   9 block(s) optimized away
 
 Section 5 - Removed Logic
 -------------------------
@@ -164,14 +152,9 @@ VCC 		XST_VCC
 GND 		avr/cclk_detector/XST_GND
 VCC 		avr/cclk_detector/XST_VCC
 VCC 		avr/uart_tx/XST_VCC
-GND 		matrix/XST_GND
-VCC 		matrix/XST_VCC
-GND 		matrix/matrix_vram_bottom/disp_vram/XST_GND
-VCC 		matrix/matrix_vram_bottom/disp_vram/XST_VCC
-GND 		matrix/matrix_vram_top/disp_vram/XST_GND
-VCC 		matrix/matrix_vram_top/disp_vram/XST_VCC
-GND 		register/XST_GND
-VCC 		register/XST_VCC
+VCC 		new_matrix/XST_VCC
+GND 		new_matrix/matrix_data/XST_GND
+VCC 		new_matrix/matrix_data/XST_VCC
 GND 		reset_cond/XST_GND
 
 To enable printing of redundant blocks removed and signals merged, set the
@@ -186,7 +169,7 @@ Section 6 - IOB Properties
 +---------------------------------------------------------------------------------------------------------------------------------------------------------+
 | avr_rx                             | IOB              | OUTPUT    | LVTTL                |       | 12       | SLOW | OFF          |          |          |
 | avr_rx_busy                        | IOB              | INPUT     | LVTTL                |       |          |      |              |          |          |
-| avr_tx                             | IOB              | INPUT     | LVTTL                |       |          |      | IFF          |          |          |
+| avr_tx                             | IOB              | INPUT     | LVTTL                |       |          |      |              |          |          |
 | cclk                               | IOB              | INPUT     | LVTTL                |       |          |      |              |          |          |
 | clk                                | IOB              | INPUT     | LVTTL                |       |          |      |              |          |          |
 | led[0]                             | IOB              | OUTPUT    | LVTTL                |       | 12       | SLOW |              |          |          |
@@ -201,15 +184,15 @@ Section 6 - IOB Properties
 | led_addr[1]                        | IOB              | OUTPUT    | LVTTL                |       | 12       | SLOW |              |          |          |
 | led_addr[2]                        | IOB              | OUTPUT    | LVTTL                |       | 12       | SLOW |              |          |          |
 | led_addr[3]                        | IOB              | OUTPUT    | LVTTL                |       | 12       | SLOW |              |          |          |
-| led_b[0]                           | IOB              | OUTPUT    | LVTTL                |       | 12       | SLOW |              |          |          |
-| led_b[1]                           | IOB              | OUTPUT    | LVTTL                |       | 12       | SLOW |              |          |          |
+| led_b[0]                           | IOB              | OUTPUT    | LVTTL                |       | 12       | SLOW | OFF          |          |          |
+| led_b[1]                           | IOB              | OUTPUT    | LVTTL                |       | 12       | SLOW | OFF          |          |          |
 | led_blk                            | IOB              | OUTPUT    | LVTTL                |       | 12       | SLOW |              |          |          |
 | led_clk                            | IOB              | OUTPUT    | LVTTL                |       | 12       | SLOW |              |          |          |
-| led_g[0]                           | IOB              | OUTPUT    | LVTTL                |       | 12       | SLOW |              |          |          |
-| led_g[1]                           | IOB              | OUTPUT    | LVTTL                |       | 12       | SLOW |              |          |          |
+| led_g[0]                           | IOB              | OUTPUT    | LVTTL                |       | 12       | SLOW | OFF          |          |          |
+| led_g[1]                           | IOB              | OUTPUT    | LVTTL                |       | 12       | SLOW | OFF          |          |          |
 | led_lat                            | IOB              | OUTPUT    | LVTTL                |       | 12       | SLOW |              |          |          |
-| led_r[0]                           | IOB              | OUTPUT    | LVTTL                |       | 12       | SLOW |              |          |          |
-| led_r[1]                           | IOB              | OUTPUT    | LVTTL                |       | 12       | SLOW |              |          |          |
+| led_r[0]                           | IOB              | OUTPUT    | LVTTL                |       | 12       | SLOW | OFF          |          |          |
+| led_r[1]                           | IOB              | OUTPUT    | LVTTL                |       | 12       | SLOW | OFF          |          |          |
 | rst_n                              | IOB              | INPUT     | LVTTL                |       |          |      |              |          |          |
 | spi_channel[0]                     | IOB              | OUTPUT    | LVTTL                |       | 12       | SLOW |              |          |          |
 | spi_channel[1]                     | IOB              | OUTPUT    | LVTTL                |       | 12       | SLOW |              |          |          |

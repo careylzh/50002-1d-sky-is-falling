@@ -1,0 +1,187 @@
+module matrix_writer #(
+  ADDRESS_SIZE = 4 : ADDRESS_SIZE > 0, //width of the address field (ABCD signals for matrix_led)
+  MATRIX_WIDTH = 64 : MATRIX_WIDTH > 0 //number of LEDs per row in the matrix
+)(
+    input clk,  // clock
+    input rst,  // reset
+    
+    output red0,
+    output green0, 
+    output blue0,
+    output red1,
+    output green1,
+    output blue1,
+    output latch, 
+    output blank,
+    output sclk_out,
+    output debug[16],
+    output address[ADDRESS_SIZE]
+
+    
+  ) {
+  
+  
+  const DIV = 5; //slowdown speed of the CLK
+
+  //sample data
+ /* const ROW_DATA = {6b111100, 6b111000, 6b000111, 6b111111,
+                    6b101010, 6b111000, 6b000111, 6b111111,
+                    6b110000, 6b111000, 6b000111, 6b111111,
+                    6b101010, 6b111000, 6b000111, 6b111111,
+                    6b100000, 6b111000, 6b000111, 6b111111,
+                    6b101010, 6b111000, 6b000111, 6b111111,
+                    6b010000, 6b111000, 6b000111, 6b111111,
+                    6b101010, 6b111000, 6b000111, 6b111111,        
+                    6b001000, 6b111000, 6b000111, 6b111111,
+                    6b101010, 6b111000, 6b000111, 6b111111,
+                    6b000100, 6b111000, 6b000111, 6b111111,
+                    6b101010, 6b111000, 6b000111, 6b111111,
+                    6b000010, 6b111000, 6b000111, 6b111111,
+                    6b101010, 6b111000, 6b000111, 6b111111,
+                    6b000001, 6b111000, 6b000111, 6b111111,
+                    6b101010, 6b111000, 6b000111, 6b111111}; // 64 by 6 : R0 G0 B0 R1 B1 G1 per entry, index[0] is at the bottom right*/ 
+    
+ /* const ROW_DATA = {{6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b010010, 6b010010, 6b010010, 6b010010,
+                    6b010010, 6b010010, 6b010010, 6b010010,
+                    6b100100, 6b100100, 6b100100, 6b100100,
+                    6b100100, 6b100100, 6b100100, 6b100100,
+                    6b111111, 6b111111, 6b111111, 6b111111,
+                    6b111111, 6b111111, 6b111111, 6b111111,        
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b010010, 6b010010, 6b010010, 6b010010,
+                    6b010010, 6b010010, 6b010010, 6b010010,
+                    6b100100, 6b100100, 6b100100, 6b100100,
+                    6b100100, 6b100100, 6b100100, 6b100100,
+                    6b111111, 6b111111, 6b111111, 6b111111,
+                    6b111111, 6b111111, 6b111111, 6b111111},
+      
+                   {6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,       
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001,
+                    6b001001, 6b001001, 6b001001, 6b001001}
+    };*/
+      
+  
+    
+  sig col_index[$clog2(MATRIX_WIDTH)];
+  sig row_index[ADDRESS_SIZE];
+  
+  .clk(clk){
+    .rst(rst){
+          
+          // b01 && sclk == all0s && shifted_bit_counter < MATRIX_WIDTH: loading data to 64 shift registers, off shifter clock
+          // b01 && sclk == half_value: on shifter clock 
+          // b01 && sclk == all1s && shifted_bit_counter == c{1,MATRIX_WIDTHx{b0}}: latching, reset shifted_bit_counter, advance address, off shifter clock, go to b10
+          // b10 && sclk == all1s: blank OFF, go to b01
+          dff state[2]; //to remember whether loading or displaying 
+          
+      
+          dff sclk_counter[DIV]; //clock to load shift register, whenever sclk_counter == DIVx{b1} that's the cycle of shift reg clk
+          dff led_bit_counter[$clog2(MATRIX_WIDTH)+1]; //counter to keep track which of the 64 bits of LED is currently loaded 
+          dff current_address[ADDRESS_SIZE]; //pointer of the current address, used when LATCH is 1 OR BLANK = 0
+      
+        
+          dff debug_dff[16]; //register for debugging
+          
+          
+          //registers to store data out
+          dff rgb_data[6]; //b1g1r1b0g0r0
+          dff sclk; //clk signal to shift register
+          dff latch_blank[2]; //[0] MSB is latch value, [1] LSB is blank value
+      
+          matrix_ram matrix_data;
+    }
+    
+  }
+
+  
+  always {
+    red0 = rgb_data.q[0];
+    green0 = rgb_data.q[1];
+    blue0 = rgb_data.q[2];
+    red1 = rgb_data.q[3];
+    green1 = rgb_data.q[4];
+    blue1 = rgb_data.q[5];
+    blank = latch_blank.q[0]; //LSB
+    latch = latch_blank.q[1]; //MSB
+    sclk_out = sclk.q;
+    address = current_address.q;
+   
+    debug_dff.d = led_bit_counter.q;
+    debug = debug_dff.q;
+    
+    sclk_counter.d = sclk_counter.q + 1; //increase shift register clock 
+    
+    matrix_data.row_address = 0;
+    matrix_data.column_address = 0;
+    
+    if (state.q == b00){ //START state
+      latch_blank.d = b01; //latch off, blank on, begin 
+      current_address.d = ADDRESS_SIZEx{b1}; //start from address 1111 
+      state.d = b01;
+    }
+    
+    
+    //loading data when sclk is 0 
+    if (sclk_counter.q == DIVx{b0} && state.q == b01 && led_bit_counter.q <= MATRIX_WIDTH){
+      
+      //off clock when changing data 
+      sclk.d = 0;
+      
+      //load data 
+      col_index = led_bit_counter.q[$clog2(MATRIX_WIDTH)-1:0]; //column changes per cycle to load row led (until 64)
+      row_index = current_address.q + 1; //plus one because we are loading next row, while prev row is still being displayed
+      //rgb_data.d = ROW_DATA[row_index[0]][col_index];
+      matrix_data.row_address = row_index;
+      matrix_data.column_address = col_index;
+      rgb_data.d = matrix_data.out;
+     
+      //shift the index to go to next LED in the row 
+      led_bit_counter.d = led_bit_counter.q + 1;
+      
+    }
+    
+    //change rising clock for shift registers in matrix to load input data in the second half of sclk_counter cycle
+    else if (sclk_counter.q == (DIV-1)x{b1} && state.q == b01){
+      sclk.d = 1;
+    }
+    
+    //if we have loaded all LEDs in the row, latch for 1 sclk_counter cycle 
+    else if(sclk_counter.q == (DIV)x{b1} && state.q == b01 && led_bit_counter.q == c{b1, $clog2(MATRIX_WIDTH)x{b0}}){
+      //change state 
+      state.d = b10;
+
+      latch_blank.d = b11; //latch on, blank on
+      current_address.d = current_address.q + 1; //advance address 
+      
+      sclk.d = 0; //off latch clock 
+      led_bit_counter.d = 0; //reset shift bit counter to start at 0 again
+      
+    }
+    
+   //in the next sclk_counter cycle, DISPLAY
+    else if(sclk_counter.q == (DIV)x{b1} && state.q == b10){
+      latch_blank.d = b00; //latch off, blank off
+      //change state to load again
+      state.d = b01;
+    }
+
+
+    
+  }
+}

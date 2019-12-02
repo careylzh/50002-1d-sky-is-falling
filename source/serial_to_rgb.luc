@@ -1,3 +1,5 @@
+//==============THIS MODULE ALLOWS TESTING WHETHER THE ADDRESSING IS CORRECT============//
+
 module serial_to_vga (
    input clk,         // clock    
   input rst,         // reset    

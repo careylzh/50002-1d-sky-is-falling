@@ -95,6 +95,32 @@ module mojo_top_0 (
     .new_tx_data(M_register_new_tx_data),
     .regOut(M_register_regOut)
   );
+  wire [1-1:0] M_new_matrix_red0;
+  wire [1-1:0] M_new_matrix_green0;
+  wire [1-1:0] M_new_matrix_blue0;
+  wire [1-1:0] M_new_matrix_red1;
+  wire [1-1:0] M_new_matrix_green1;
+  wire [1-1:0] M_new_matrix_blue1;
+  wire [1-1:0] M_new_matrix_latch;
+  wire [1-1:0] M_new_matrix_blank;
+  wire [1-1:0] M_new_matrix_sclk_out;
+  wire [16-1:0] M_new_matrix_debug;
+  wire [4-1:0] M_new_matrix_address;
+  matrix_writer_4 new_matrix (
+    .clk(clk),
+    .rst(rst),
+    .red0(M_new_matrix_red0),
+    .green0(M_new_matrix_green0),
+    .blue0(M_new_matrix_blue0),
+    .red1(M_new_matrix_red1),
+    .green1(M_new_matrix_green1),
+    .blue1(M_new_matrix_blue1),
+    .latch(M_new_matrix_latch),
+    .blank(M_new_matrix_blank),
+    .sclk_out(M_new_matrix_sclk_out),
+    .debug(M_new_matrix_debug),
+    .address(M_new_matrix_address)
+  );
   
   wire [2-1:0] M_matrix_out_r;
   wire [2-1:0] M_matrix_out_g;
@@ -106,7 +132,7 @@ module mojo_top_0 (
   reg [1-1:0] M_matrix_wr_en;
   reg [11-1:0] M_matrix_wr_addr;
   reg [3-1:0] M_matrix_wr_data;
-  led_matrix_4 matrix (
+  led_matrix_5 matrix (
     .clk(clk),
     .rst(rst),
     .wr_en(M_matrix_wr_en),
@@ -142,18 +168,18 @@ module mojo_top_0 (
     M_register_tx_busy = M_avr_tx_busy;
     M_register_regIn[32+0-:1] = 1'h0;
     M_register_regIn[0+31-:32] = 32'bxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx;
-    led_r = M_matrix_out_r;
-    led_g = M_matrix_out_g;
-    led_b = M_matrix_out_b;
-    led_addr = M_matrix_out_addr;
-    led_clk = M_matrix_out_clk;
-    led_lat = M_matrix_out_lat;
-    led_blk = M_matrix_out_blk;
+    led_r = {M_new_matrix_red0, M_new_matrix_red1};
+    led_g = {M_new_matrix_green0, M_new_matrix_green1};
+    led_b = {M_new_matrix_blue0, M_new_matrix_blue1};
+    led_addr = M_new_matrix_address;
+    led_clk = M_new_matrix_sclk_out;
+    led_lat = M_new_matrix_latch;
+    led_blk = M_new_matrix_blank;
     if (M_register_regOut[0+0-:1]) begin
       if (M_register_regOut[1+0-:1]) begin
         M_matrix_wr_en = 1'h1;
         M_matrix_wr_addr = M_register_regOut[2+31-:32];
-        M_matrix_wr_data = M_register_regOut[34+0+7-:8];
+        M_matrix_wr_data = M_register_regOut[34+0+2-:3];
       end else begin
         M_matrix_wr_en = 1'h0;
         M_matrix_wr_addr = 1'h0;

@@ -29,6 +29,7 @@ module mojo_top (
     .rst(rst){
       avr_interface avr;
       reg_interface register;
+      matrix_writer new_matrix;
     }
   }
   
@@ -67,7 +68,7 @@ module mojo_top (
     register.regIn.drdy = 0;    // default to no data
     register.regIn.data = 32bx; // don't care
     
-    
+   /* 
     led_r=matrix.out_r;
     led_g=matrix.out_g;
     led_b=matrix.out_b;
@@ -75,13 +76,22 @@ module mojo_top (
     led_clk=matrix.out_clk;
     led_lat=matrix.out_lat;
     led_blk=matrix.out_blk;
+    */
+    
+    led_r = c{new_matrix.red0, new_matrix.red1};
+    led_g = c{ new_matrix.green0, new_matrix.green1};
+    led_b = c{ new_matrix.blue0, new_matrix.blue1};
+    led_addr = new_matrix.address;
+    led_clk = new_matrix.sclk_out;
+    led_lat = new_matrix.latch;
+    led_blk = new_matrix.blank;
     
     
    if (register.regOut.new_cmd) {             // new command
       if (register.regOut.write) {             // if write
         matrix.wr_en = 1;
         matrix.wr_addr = register.regOut.address;
-        matrix.wr_data = register.regOut.data[7:0];  // write the LEDs
+        matrix.wr_data = register.regOut.data[2:0];  // write the LEDs
       }else{
         matrix.wr_en = 0;
         matrix.wr_addr = 0;
@@ -96,7 +106,7 @@ module mojo_top (
     
     
     
-    
+   
     
   }
 }

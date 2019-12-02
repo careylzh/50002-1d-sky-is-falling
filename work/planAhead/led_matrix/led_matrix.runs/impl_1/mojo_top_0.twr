@@ -28,16 +28,16 @@ INFO:Timing:3339 - The clock-to-out numbers in this timing report are based on
 Timing constraint: TS_clk = PERIOD TIMEGRP "clk" 50 MHz HIGH 50%;
 For more information, see Period Analysis in the Timing Closure User Guide (UG612).
 
- 3416 paths analyzed, 765 endpoints analyzed, 0 failing endpoints
+ 1773558 paths analyzed, 232 endpoints analyzed, 0 failing endpoints
  0 timing errors detected. (0 setup errors, 0 hold errors, 0 component switching limit errors)
- Minimum period is   5.144ns.
+ Minimum period is  17.675ns.
 --------------------------------------------------------------------------------
-Slack:                  14.856ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/spi_slave/M_sck_reg_q_0 (FF)
-  Destination:          avr/spi_slave/M_data_q_0 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      4.462ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.647ns (0.661 - 1.308)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -48,30 +48,50 @@ Slack:                  14.856ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/spi_slave/M_sck_reg_q_0 to avr/spi_slave/M_data_q_0
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    ILOGIC_X2Y0.Q4       Tickq                 1.778   avr/spi_slave/M_sck_reg_q[0]
-                                                       avr/spi_slave/M_sck_reg_q_0
-    SLICE_X14Y2.D4       net (fanout=5)        1.594   avr/spi_slave/M_sck_reg_q[0]
-    SLICE_X14Y2.D        Tilo                  0.235   avr/spi_slave/M_bit_ct_q[2]
-                                                       avr/spi_slave/_n0081_inv1
-    SLICE_X15Y3.A4       net (fanout=1)        0.482   avr/spi_slave/_n0081_inv
-    SLICE_X15Y3.CLK      Tas                   0.373   avr/spi_slave/M_data_q[0]
-                                                       avr/spi_slave/M_data_q_0_rstpot
-                                                       avr/spi_slave/M_data_q_0
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT21   Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN21    net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_21
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      4.462ns (2.386ns logic, 2.076ns route)
-                                                       (53.5% logic, 46.5% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  14.857ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_newData_q_1 (FF)
-  Destination:          register/M_addr_q_6 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      5.045ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.063ns (0.625 - 0.688)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -82,32 +102,50 @@ Slack:                  14.857ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_newData_q_1 to register/M_addr_q_6
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X20Y11.AQ      Tcko                  0.525   avr/uart_rx/M_bitCtr_q[0]
-                                                       avr/uart_rx/M_newData_q_1
-    SLICE_X13Y21.D5      net (fanout=1)        1.536   M_newData_q_1
-    SLICE_X13Y21.D       Tilo                  0.259   register/M_state_q_FSM_FFd1_3
-                                                       register/_n0284_inv1
-    SLICE_X12Y23.A1      net (fanout=1)        0.933   register/_n0284_inv1
-    SLICE_X12Y23.A       Tilo                  0.254   register/M_addr_q[31]
-                                                       register/_n0284_inv3
-    SLICE_X9Y20.CE       net (fanout=9)        1.130   register/_n0284_inv
-    SLICE_X9Y20.CLK      Tceck                 0.408   M_register_regOut[9]
-                                                       register/M_addr_q_6
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT33   Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN33    net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_33
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      5.045ns (1.446ns logic, 3.599ns route)
-                                                       (28.7% logic, 71.3% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  14.858ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_newData_q_1 (FF)
-  Destination:          register/M_addr_q_29 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      5.041ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.066ns (0.622 - 0.688)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -118,32 +156,50 @@ Slack:                  14.858ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_newData_q_1 to register/M_addr_q_29
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X20Y11.AQ      Tcko                  0.525   avr/uart_rx/M_bitCtr_q[0]
-                                                       avr/uart_rx/M_newData_q_1
-    SLICE_X13Y21.D5      net (fanout=1)        1.536   M_newData_q_1
-    SLICE_X13Y21.D       Tilo                  0.259   register/M_state_q_FSM_FFd1_3
-                                                       register/_n0284_inv1
-    SLICE_X12Y23.A1      net (fanout=1)        0.933   register/_n0284_inv1
-    SLICE_X12Y23.A       Tilo                  0.254   register/M_addr_q[31]
-                                                       register/_n0284_inv3
-    SLICE_X9Y26.CE       net (fanout=9)        1.126   register/_n0284_inv
-    SLICE_X9Y26.CLK      Tceck                 0.408   register/M_addr_q[30]
-                                                       register/M_addr_q_29
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT32   Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN32    net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_32
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      5.041ns (1.446ns logic, 3.595ns route)
-                                                       (28.7% logic, 71.3% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  14.875ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_newData_q_1 (FF)
-  Destination:          register/M_addr_q_5 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      5.027ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.063ns (0.625 - 0.688)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -154,32 +210,50 @@ Slack:                  14.875ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_newData_q_1 to register/M_addr_q_5
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X20Y11.AQ      Tcko                  0.525   avr/uart_rx/M_bitCtr_q[0]
-                                                       avr/uart_rx/M_newData_q_1
-    SLICE_X13Y21.D5      net (fanout=1)        1.536   M_newData_q_1
-    SLICE_X13Y21.D       Tilo                  0.259   register/M_state_q_FSM_FFd1_3
-                                                       register/_n0284_inv1
-    SLICE_X12Y23.A1      net (fanout=1)        0.933   register/_n0284_inv1
-    SLICE_X12Y23.A       Tilo                  0.254   register/M_addr_q[31]
-                                                       register/_n0284_inv3
-    SLICE_X9Y20.CE       net (fanout=9)        1.130   register/_n0284_inv
-    SLICE_X9Y20.CLK      Tceck                 0.390   M_register_regOut[9]
-                                                       register/M_addr_q_5
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT31   Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN31    net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_31
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      5.027ns (1.428ns logic, 3.599ns route)
-                                                       (28.4% logic, 71.6% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  14.876ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_newData_q_1 (FF)
-  Destination:          register/M_addr_q_28 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      5.023ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.066ns (0.622 - 0.688)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -190,32 +264,50 @@ Slack:                  14.876ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_newData_q_1 to register/M_addr_q_28
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X20Y11.AQ      Tcko                  0.525   avr/uart_rx/M_bitCtr_q[0]
-                                                       avr/uart_rx/M_newData_q_1
-    SLICE_X13Y21.D5      net (fanout=1)        1.536   M_newData_q_1
-    SLICE_X13Y21.D       Tilo                  0.259   register/M_state_q_FSM_FFd1_3
-                                                       register/_n0284_inv1
-    SLICE_X12Y23.A1      net (fanout=1)        0.933   register/_n0284_inv1
-    SLICE_X12Y23.A       Tilo                  0.254   register/M_addr_q[31]
-                                                       register/_n0284_inv3
-    SLICE_X9Y26.CE       net (fanout=9)        1.126   register/_n0284_inv
-    SLICE_X9Y26.CLK      Tceck                 0.390   register/M_addr_q[30]
-                                                       register/M_addr_q_28
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT30   Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN30    net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_30
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      5.023ns (1.428ns logic, 3.595ns route)
-                                                       (28.4% logic, 71.6% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  14.883ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_newData_q_1 (FF)
-  Destination:          register/M_addr_q_10 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      5.016ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.066ns (0.622 - 0.688)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -226,32 +318,50 @@ Slack:                  14.883ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_newData_q_1 to register/M_addr_q_10
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X20Y11.AQ      Tcko                  0.525   avr/uart_rx/M_bitCtr_q[0]
-                                                       avr/uart_rx/M_newData_q_1
-    SLICE_X13Y21.D5      net (fanout=1)        1.536   M_newData_q_1
-    SLICE_X13Y21.D       Tilo                  0.259   register/M_state_q_FSM_FFd1_3
-                                                       register/_n0284_inv1
-    SLICE_X12Y23.A1      net (fanout=1)        0.933   register/_n0284_inv1
-    SLICE_X12Y23.A       Tilo                  0.254   register/M_addr_q[31]
-                                                       register/_n0284_inv3
-    SLICE_X9Y21.CE       net (fanout=9)        1.101   register/_n0284_inv
-    SLICE_X9Y21.CLK      Tceck                 0.408   M_register_regOut[12]
-                                                       register/M_addr_q_10
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT3    Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN3     net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_3
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      5.016ns (1.446ns logic, 3.570ns route)
-                                                       (28.8% logic, 71.2% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  14.883ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_newData_q_1 (FF)
-  Destination:          register/M_addr_q_7 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      5.019ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.063ns (0.625 - 0.688)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -262,32 +372,50 @@ Slack:                  14.883ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_newData_q_1 to register/M_addr_q_7
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X20Y11.AQ      Tcko                  0.525   avr/uart_rx/M_bitCtr_q[0]
-                                                       avr/uart_rx/M_newData_q_1
-    SLICE_X13Y21.D5      net (fanout=1)        1.536   M_newData_q_1
-    SLICE_X13Y21.D       Tilo                  0.259   register/M_state_q_FSM_FFd1_3
-                                                       register/_n0284_inv1
-    SLICE_X12Y23.A1      net (fanout=1)        0.933   register/_n0284_inv1
-    SLICE_X12Y23.A       Tilo                  0.254   register/M_addr_q[31]
-                                                       register/_n0284_inv3
-    SLICE_X9Y20.CE       net (fanout=9)        1.130   register/_n0284_inv
-    SLICE_X9Y20.CLK      Tceck                 0.382   M_register_regOut[9]
-                                                       register/M_addr_q_7
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT29   Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN29    net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_29
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      5.019ns (1.420ns logic, 3.599ns route)
-                                                       (28.3% logic, 71.7% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  14.884ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_newData_q_1 (FF)
-  Destination:          register/M_addr_q_30 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      5.015ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.066ns (0.622 - 0.688)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -298,32 +426,50 @@ Slack:                  14.884ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_newData_q_1 to register/M_addr_q_30
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X20Y11.AQ      Tcko                  0.525   avr/uart_rx/M_bitCtr_q[0]
-                                                       avr/uart_rx/M_newData_q_1
-    SLICE_X13Y21.D5      net (fanout=1)        1.536   M_newData_q_1
-    SLICE_X13Y21.D       Tilo                  0.259   register/M_state_q_FSM_FFd1_3
-                                                       register/_n0284_inv1
-    SLICE_X12Y23.A1      net (fanout=1)        0.933   register/_n0284_inv1
-    SLICE_X12Y23.A       Tilo                  0.254   register/M_addr_q[31]
-                                                       register/_n0284_inv3
-    SLICE_X9Y26.CE       net (fanout=9)        1.126   register/_n0284_inv
-    SLICE_X9Y26.CLK      Tceck                 0.382   register/M_addr_q[30]
-                                                       register/M_addr_q_30
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT28   Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN28    net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_28
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      5.015ns (1.420ns logic, 3.595ns route)
-                                                       (28.3% logic, 71.7% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  14.900ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_newData_q_1 (FF)
-  Destination:          register/M_addr_q_4 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      5.002ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.063ns (0.625 - 0.688)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -334,32 +480,50 @@ Slack:                  14.900ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_newData_q_1 to register/M_addr_q_4
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X20Y11.AQ      Tcko                  0.525   avr/uart_rx/M_bitCtr_q[0]
-                                                       avr/uart_rx/M_newData_q_1
-    SLICE_X13Y21.D5      net (fanout=1)        1.536   M_newData_q_1
-    SLICE_X13Y21.D       Tilo                  0.259   register/M_state_q_FSM_FFd1_3
-                                                       register/_n0284_inv1
-    SLICE_X12Y23.A1      net (fanout=1)        0.933   register/_n0284_inv1
-    SLICE_X12Y23.A       Tilo                  0.254   register/M_addr_q[31]
-                                                       register/_n0284_inv3
-    SLICE_X9Y20.CE       net (fanout=9)        1.130   register/_n0284_inv
-    SLICE_X9Y20.CLK      Tceck                 0.365   M_register_regOut[9]
-                                                       register/M_addr_q_4
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT27   Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN27    net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_27
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      5.002ns (1.403ns logic, 3.599ns route)
-                                                       (28.0% logic, 72.0% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  14.901ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_newData_q_1 (FF)
-  Destination:          register/M_addr_q_27 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      4.998ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.066ns (0.622 - 0.688)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -370,32 +534,50 @@ Slack:                  14.901ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_newData_q_1 to register/M_addr_q_27
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X20Y11.AQ      Tcko                  0.525   avr/uart_rx/M_bitCtr_q[0]
-                                                       avr/uart_rx/M_newData_q_1
-    SLICE_X13Y21.D5      net (fanout=1)        1.536   M_newData_q_1
-    SLICE_X13Y21.D       Tilo                  0.259   register/M_state_q_FSM_FFd1_3
-                                                       register/_n0284_inv1
-    SLICE_X12Y23.A1      net (fanout=1)        0.933   register/_n0284_inv1
-    SLICE_X12Y23.A       Tilo                  0.254   register/M_addr_q[31]
-                                                       register/_n0284_inv3
-    SLICE_X9Y26.CE       net (fanout=9)        1.126   register/_n0284_inv
-    SLICE_X9Y26.CLK      Tceck                 0.365   register/M_addr_q[30]
-                                                       register/M_addr_q_27
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT26   Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN26    net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_26
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      4.998ns (1.403ns logic, 3.595ns route)
-                                                       (28.1% logic, 71.9% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  14.901ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_newData_q_1 (FF)
-  Destination:          register/M_addr_q_9 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      4.998ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.066ns (0.622 - 0.688)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -406,32 +588,50 @@ Slack:                  14.901ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_newData_q_1 to register/M_addr_q_9
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X20Y11.AQ      Tcko                  0.525   avr/uart_rx/M_bitCtr_q[0]
-                                                       avr/uart_rx/M_newData_q_1
-    SLICE_X13Y21.D5      net (fanout=1)        1.536   M_newData_q_1
-    SLICE_X13Y21.D       Tilo                  0.259   register/M_state_q_FSM_FFd1_3
-                                                       register/_n0284_inv1
-    SLICE_X12Y23.A1      net (fanout=1)        0.933   register/_n0284_inv1
-    SLICE_X12Y23.A       Tilo                  0.254   register/M_addr_q[31]
-                                                       register/_n0284_inv3
-    SLICE_X9Y21.CE       net (fanout=9)        1.101   register/_n0284_inv
-    SLICE_X9Y21.CLK      Tceck                 0.390   M_register_regOut[12]
-                                                       register/M_addr_q_9
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT25   Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN25    net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_25
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      4.998ns (1.428ns logic, 3.570ns route)
-                                                       (28.6% logic, 71.4% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  14.905ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/spi_slave/M_sck_reg_q_0 (FF)
-  Destination:          avr/spi_slave/M_bit_ct_q_2 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      4.414ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.646ns (0.662 - 1.308)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -442,30 +642,50 @@ Slack:                  14.905ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/spi_slave/M_sck_reg_q_0 to avr/spi_slave/M_bit_ct_q_2
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    ILOGIC_X2Y0.Q4       Tickq                 1.778   avr/spi_slave/M_sck_reg_q[0]
-                                                       avr/spi_slave/M_sck_reg_q_0
-    SLICE_X14Y2.D4       net (fanout=5)        1.594   avr/spi_slave/M_sck_reg_q[0]
-    SLICE_X14Y2.DMUX     Tilo                  0.298   avr/spi_slave/M_bit_ct_q[2]
-                                                       avr/spi_slave/M_bit_ct_q_2_glue_ce
-    SLICE_X14Y2.C4       net (fanout=1)        0.395   avr/spi_slave/M_bit_ct_q_2_glue_ce
-    SLICE_X14Y2.CLK      Tas                   0.349   avr/spi_slave/M_bit_ct_q[2]
-                                                       avr/spi_slave/M_bit_ct_q_2_rstpot
-                                                       avr/spi_slave/M_bit_ct_q_2
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT24   Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN24    net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_24
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      4.414ns (2.425ns logic, 1.989ns route)
-                                                       (54.9% logic, 45.1% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  14.926ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_newData_q_1 (FF)
-  Destination:          register/M_addr_q_8 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      4.973ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.066ns (0.622 - 0.688)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -476,32 +696,50 @@ Slack:                  14.926ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_newData_q_1 to register/M_addr_q_8
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X20Y11.AQ      Tcko                  0.525   avr/uart_rx/M_bitCtr_q[0]
-                                                       avr/uart_rx/M_newData_q_1
-    SLICE_X13Y21.D5      net (fanout=1)        1.536   M_newData_q_1
-    SLICE_X13Y21.D       Tilo                  0.259   register/M_state_q_FSM_FFd1_3
-                                                       register/_n0284_inv1
-    SLICE_X12Y23.A1      net (fanout=1)        0.933   register/_n0284_inv1
-    SLICE_X12Y23.A       Tilo                  0.254   register/M_addr_q[31]
-                                                       register/_n0284_inv3
-    SLICE_X9Y21.CE       net (fanout=9)        1.101   register/_n0284_inv
-    SLICE_X9Y21.CLK      Tceck                 0.365   M_register_regOut[12]
-                                                       register/M_addr_q_8
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT23   Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN23    net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_23
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      4.973ns (1.403ns logic, 3.570ns route)
-                                                       (28.2% logic, 71.8% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  14.981ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_newData_q_1 (FF)
-  Destination:          register/M_addr_q_0 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      4.925ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.059ns (0.629 - 0.688)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -512,32 +750,50 @@ Slack:                  14.981ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_newData_q_1 to register/M_addr_q_0
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X20Y11.AQ      Tcko                  0.525   avr/uart_rx/M_bitCtr_q[0]
-                                                       avr/uart_rx/M_newData_q_1
-    SLICE_X13Y21.D5      net (fanout=1)        1.536   M_newData_q_1
-    SLICE_X13Y21.D       Tilo                  0.259   register/M_state_q_FSM_FFd1_3
-                                                       register/_n0284_inv1
-    SLICE_X12Y23.A1      net (fanout=1)        0.933   register/_n0284_inv1
-    SLICE_X12Y23.A       Tilo                  0.254   register/M_addr_q[31]
-                                                       register/_n0284_inv3
-    SLICE_X8Y18.CE       net (fanout=9)        1.105   register/_n0284_inv
-    SLICE_X8Y18.CLK      Tceck                 0.313   M_register_regOut[5]
-                                                       register/M_addr_q_0
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT22   Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN22    net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_22
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      4.925ns (1.351ns logic, 3.574ns route)
-                                                       (27.4% logic, 72.6% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  15.018ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_ctr_q_3 (FF)
-  Destination:          avr/uart_rx/M_savedData_q_2 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      4.848ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.099ns (0.590 - 0.689)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -548,32 +804,50 @@ Slack:                  15.018ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_ctr_q_3 to avr/uart_rx/M_savedData_q_2
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X22Y12.DQ      Tcko                  0.476   avr/uart_rx/M_ctr_q[3]
-                                                       avr/uart_rx/M_ctr_q_3
-    SLICE_X21Y11.C1      net (fanout=4)        0.748   avr/uart_rx/M_ctr_q[3]
-    SLICE_X21Y11.C       Tilo                  0.259   M_avr_new_rx_data
-                                                       avr/uart_rx/GND_6_o_GND_6_o_equal_4_o<6>11
-    SLICE_X21Y11.D6      net (fanout=7)        0.834   avr/uart_rx/GND_6_o_GND_6_o_equal_4_o<6>1
-    SLICE_X21Y11.D       Tilo                  0.259   M_avr_new_rx_data
-                                                       avr/uart_rx/_n0086_inv11
-    SLICE_X15Y25.CE      net (fanout=2)        1.864   avr/uart_rx/_n0086_inv1
-    SLICE_X15Y25.CLK     Tceck                 0.408   M_avr_rx_data[3]
-                                                       avr/uart_rx/M_savedData_q_2
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT9    Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN9     net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_9
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      4.848ns (1.402ns logic, 3.446ns route)
-                                                       (28.9% logic, 71.1% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  15.025ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_newData_q_1 (FF)
-  Destination:          register/M_addr_q_2 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      4.881ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.059ns (0.629 - 0.688)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -584,32 +858,50 @@ Slack:                  15.025ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_newData_q_1 to register/M_addr_q_2
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X20Y11.AQ      Tcko                  0.525   avr/uart_rx/M_bitCtr_q[0]
-                                                       avr/uart_rx/M_newData_q_1
-    SLICE_X13Y21.D5      net (fanout=1)        1.536   M_newData_q_1
-    SLICE_X13Y21.D       Tilo                  0.259   register/M_state_q_FSM_FFd1_3
-                                                       register/_n0284_inv1
-    SLICE_X12Y23.A1      net (fanout=1)        0.933   register/_n0284_inv1
-    SLICE_X12Y23.A       Tilo                  0.254   register/M_addr_q[31]
-                                                       register/_n0284_inv3
-    SLICE_X8Y18.CE       net (fanout=9)        1.105   register/_n0284_inv
-    SLICE_X8Y18.CLK      Tceck                 0.269   M_register_regOut[5]
-                                                       register/M_addr_q_2
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT20   Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN20    net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_20
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      4.881ns (1.307ns logic, 3.574ns route)
-                                                       (26.8% logic, 73.2% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  15.028ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_newData_q_1 (FF)
-  Destination:          register/M_addr_q_3 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      4.878ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.059ns (0.629 - 0.688)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -620,32 +912,50 @@ Slack:                  15.028ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_newData_q_1 to register/M_addr_q_3
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X20Y11.AQ      Tcko                  0.525   avr/uart_rx/M_bitCtr_q[0]
-                                                       avr/uart_rx/M_newData_q_1
-    SLICE_X13Y21.D5      net (fanout=1)        1.536   M_newData_q_1
-    SLICE_X13Y21.D       Tilo                  0.259   register/M_state_q_FSM_FFd1_3
-                                                       register/_n0284_inv1
-    SLICE_X12Y23.A1      net (fanout=1)        0.933   register/_n0284_inv1
-    SLICE_X12Y23.A       Tilo                  0.254   register/M_addr_q[31]
-                                                       register/_n0284_inv3
-    SLICE_X8Y18.CE       net (fanout=9)        1.105   register/_n0284_inv
-    SLICE_X8Y18.CLK      Tceck                 0.266   M_register_regOut[5]
-                                                       register/M_addr_q_3
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT2    Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN2     net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_2
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      4.878ns (1.304ns logic, 3.574ns route)
-                                                       (26.7% logic, 73.3% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  15.034ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_ctr_q_1 (FF)
-  Destination:          avr/uart_rx/M_savedData_q_2 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      4.832ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.099ns (0.590 - 0.689)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -656,32 +966,50 @@ Slack:                  15.034ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_ctr_q_1 to avr/uart_rx/M_savedData_q_2
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X22Y12.BQ      Tcko                  0.476   avr/uart_rx/M_ctr_q[3]
-                                                       avr/uart_rx/M_ctr_q_1
-    SLICE_X21Y11.C4      net (fanout=6)        0.732   avr/uart_rx/M_ctr_q[1]
-    SLICE_X21Y11.C       Tilo                  0.259   M_avr_new_rx_data
-                                                       avr/uart_rx/GND_6_o_GND_6_o_equal_4_o<6>11
-    SLICE_X21Y11.D6      net (fanout=7)        0.834   avr/uart_rx/GND_6_o_GND_6_o_equal_4_o<6>1
-    SLICE_X21Y11.D       Tilo                  0.259   M_avr_new_rx_data
-                                                       avr/uart_rx/_n0086_inv11
-    SLICE_X15Y25.CE      net (fanout=2)        1.864   avr/uart_rx/_n0086_inv1
-    SLICE_X15Y25.CLK     Tceck                 0.408   M_avr_rx_data[3]
-                                                       avr/uart_rx/M_savedData_q_2
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT19   Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN19    net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_19
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      4.832ns (1.402ns logic, 3.430ns route)
-                                                       (29.0% logic, 71.0% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  15.036ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_ctr_q_3 (FF)
-  Destination:          avr/uart_rx/M_savedData_q_1 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      4.830ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.099ns (0.590 - 0.689)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -692,32 +1020,50 @@ Slack:                  15.036ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_ctr_q_3 to avr/uart_rx/M_savedData_q_1
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X22Y12.DQ      Tcko                  0.476   avr/uart_rx/M_ctr_q[3]
-                                                       avr/uart_rx/M_ctr_q_3
-    SLICE_X21Y11.C1      net (fanout=4)        0.748   avr/uart_rx/M_ctr_q[3]
-    SLICE_X21Y11.C       Tilo                  0.259   M_avr_new_rx_data
-                                                       avr/uart_rx/GND_6_o_GND_6_o_equal_4_o<6>11
-    SLICE_X21Y11.D6      net (fanout=7)        0.834   avr/uart_rx/GND_6_o_GND_6_o_equal_4_o<6>1
-    SLICE_X21Y11.D       Tilo                  0.259   M_avr_new_rx_data
-                                                       avr/uart_rx/_n0086_inv11
-    SLICE_X15Y25.CE      net (fanout=2)        1.864   avr/uart_rx/_n0086_inv1
-    SLICE_X15Y25.CLK     Tceck                 0.390   M_avr_rx_data[3]
-                                                       avr/uart_rx/M_savedData_q_1
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT18   Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN18    net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_18
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      4.830ns (1.384ns logic, 3.446ns route)
-                                                       (28.7% logic, 71.3% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  15.039ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_newData_q_1 (FF)
-  Destination:          register/M_addr_q_25 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      4.857ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.069ns (0.619 - 0.688)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -728,32 +1074,50 @@ Slack:                  15.039ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_newData_q_1 to register/M_addr_q_25
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X20Y11.AQ      Tcko                  0.525   avr/uart_rx/M_bitCtr_q[0]
-                                                       avr/uart_rx/M_newData_q_1
-    SLICE_X13Y21.D5      net (fanout=1)        1.536   M_newData_q_1
-    SLICE_X13Y21.D       Tilo                  0.259   register/M_state_q_FSM_FFd1_3
-                                                       register/_n0284_inv1
-    SLICE_X12Y23.A1      net (fanout=1)        0.933   register/_n0284_inv1
-    SLICE_X12Y23.A       Tilo                  0.254   register/M_addr_q[31]
-                                                       register/_n0284_inv3
-    SLICE_X9Y25.CE       net (fanout=9)        0.942   register/_n0284_inv
-    SLICE_X9Y25.CLK      Tceck                 0.408   register/M_addr_q[26]
-                                                       register/M_addr_q_25
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT17   Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN17    net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_17
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      4.857ns (1.446ns logic, 3.411ns route)
-                                                       (29.8% logic, 70.2% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  15.041ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_newData_q_1 (FF)
-  Destination:          register/M_addr_q_1 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      4.865ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.059ns (0.629 - 0.688)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -764,32 +1128,50 @@ Slack:                  15.041ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_newData_q_1 to register/M_addr_q_1
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X20Y11.AQ      Tcko                  0.525   avr/uart_rx/M_bitCtr_q[0]
-                                                       avr/uart_rx/M_newData_q_1
-    SLICE_X13Y21.D5      net (fanout=1)        1.536   M_newData_q_1
-    SLICE_X13Y21.D       Tilo                  0.259   register/M_state_q_FSM_FFd1_3
-                                                       register/_n0284_inv1
-    SLICE_X12Y23.A1      net (fanout=1)        0.933   register/_n0284_inv1
-    SLICE_X12Y23.A       Tilo                  0.254   register/M_addr_q[31]
-                                                       register/_n0284_inv3
-    SLICE_X8Y18.CE       net (fanout=9)        1.105   register/_n0284_inv
-    SLICE_X8Y18.CLK      Tceck                 0.253   M_register_regOut[5]
-                                                       register/M_addr_q_1
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT16   Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN16    net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_16
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      4.865ns (1.291ns logic, 3.574ns route)
-                                                       (26.5% logic, 73.5% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  15.044ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_ctr_q_3 (FF)
-  Destination:          avr/uart_rx/M_savedData_q_3 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      4.822ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.099ns (0.590 - 0.689)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -800,32 +1182,50 @@ Slack:                  15.044ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_ctr_q_3 to avr/uart_rx/M_savedData_q_3
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X22Y12.DQ      Tcko                  0.476   avr/uart_rx/M_ctr_q[3]
-                                                       avr/uart_rx/M_ctr_q_3
-    SLICE_X21Y11.C1      net (fanout=4)        0.748   avr/uart_rx/M_ctr_q[3]
-    SLICE_X21Y11.C       Tilo                  0.259   M_avr_new_rx_data
-                                                       avr/uart_rx/GND_6_o_GND_6_o_equal_4_o<6>11
-    SLICE_X21Y11.D6      net (fanout=7)        0.834   avr/uart_rx/GND_6_o_GND_6_o_equal_4_o<6>1
-    SLICE_X21Y11.D       Tilo                  0.259   M_avr_new_rx_data
-                                                       avr/uart_rx/_n0086_inv11
-    SLICE_X15Y25.CE      net (fanout=2)        1.864   avr/uart_rx/_n0086_inv1
-    SLICE_X15Y25.CLK     Tceck                 0.382   M_avr_rx_data[3]
-                                                       avr/uart_rx/M_savedData_q_3
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT15   Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN15    net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_15
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      4.822ns (1.376ns logic, 3.446ns route)
-                                                       (28.5% logic, 71.5% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  15.052ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_ctr_q_1 (FF)
-  Destination:          avr/uart_rx/M_savedData_q_1 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      4.814ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.099ns (0.590 - 0.689)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -836,32 +1236,50 @@ Slack:                  15.052ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_ctr_q_1 to avr/uart_rx/M_savedData_q_1
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X22Y12.BQ      Tcko                  0.476   avr/uart_rx/M_ctr_q[3]
-                                                       avr/uart_rx/M_ctr_q_1
-    SLICE_X21Y11.C4      net (fanout=6)        0.732   avr/uart_rx/M_ctr_q[1]
-    SLICE_X21Y11.C       Tilo                  0.259   M_avr_new_rx_data
-                                                       avr/uart_rx/GND_6_o_GND_6_o_equal_4_o<6>11
-    SLICE_X21Y11.D6      net (fanout=7)        0.834   avr/uart_rx/GND_6_o_GND_6_o_equal_4_o<6>1
-    SLICE_X21Y11.D       Tilo                  0.259   M_avr_new_rx_data
-                                                       avr/uart_rx/_n0086_inv11
-    SLICE_X15Y25.CE      net (fanout=2)        1.864   avr/uart_rx/_n0086_inv1
-    SLICE_X15Y25.CLK     Tceck                 0.390   M_avr_rx_data[3]
-                                                       avr/uart_rx/M_savedData_q_1
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT14   Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN14    net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_14
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      4.814ns (1.384ns logic, 3.430ns route)
-                                                       (28.7% logic, 71.3% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  15.057ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_newData_q_1 (FF)
-  Destination:          register/M_addr_q_24 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      4.839ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.069ns (0.619 - 0.688)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -872,32 +1290,50 @@ Slack:                  15.057ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_newData_q_1 to register/M_addr_q_24
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X20Y11.AQ      Tcko                  0.525   avr/uart_rx/M_bitCtr_q[0]
-                                                       avr/uart_rx/M_newData_q_1
-    SLICE_X13Y21.D5      net (fanout=1)        1.536   M_newData_q_1
-    SLICE_X13Y21.D       Tilo                  0.259   register/M_state_q_FSM_FFd1_3
-                                                       register/_n0284_inv1
-    SLICE_X12Y23.A1      net (fanout=1)        0.933   register/_n0284_inv1
-    SLICE_X12Y23.A       Tilo                  0.254   register/M_addr_q[31]
-                                                       register/_n0284_inv3
-    SLICE_X9Y25.CE       net (fanout=9)        0.942   register/_n0284_inv
-    SLICE_X9Y25.CLK      Tceck                 0.390   register/M_addr_q[26]
-                                                       register/M_addr_q_24
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT13   Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN13    net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_13
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      4.839ns (1.428ns logic, 3.411ns route)
-                                                       (29.5% logic, 70.5% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  15.060ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_ctr_q_1 (FF)
-  Destination:          avr/uart_rx/M_savedData_q_3 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      4.806ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.099ns (0.590 - 0.689)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -908,32 +1344,50 @@ Slack:                  15.060ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_ctr_q_1 to avr/uart_rx/M_savedData_q_3
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X22Y12.BQ      Tcko                  0.476   avr/uart_rx/M_ctr_q[3]
-                                                       avr/uart_rx/M_ctr_q_1
-    SLICE_X21Y11.C4      net (fanout=6)        0.732   avr/uart_rx/M_ctr_q[1]
-    SLICE_X21Y11.C       Tilo                  0.259   M_avr_new_rx_data
-                                                       avr/uart_rx/GND_6_o_GND_6_o_equal_4_o<6>11
-    SLICE_X21Y11.D6      net (fanout=7)        0.834   avr/uart_rx/GND_6_o_GND_6_o_equal_4_o<6>1
-    SLICE_X21Y11.D       Tilo                  0.259   M_avr_new_rx_data
-                                                       avr/uart_rx/_n0086_inv11
-    SLICE_X15Y25.CE      net (fanout=2)        1.864   avr/uart_rx/_n0086_inv1
-    SLICE_X15Y25.CLK     Tceck                 0.382   M_avr_rx_data[3]
-                                                       avr/uart_rx/M_savedData_q_3
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT12   Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN12    net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_12
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      4.806ns (1.376ns logic, 3.430ns route)
-                                                       (28.6% logic, 71.4% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  15.060ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_newData_q_1 (FF)
-  Destination:          register/M_addr_q_21 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      4.834ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.071ns (0.617 - 0.688)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -944,32 +1398,50 @@ Slack:                  15.060ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_newData_q_1 to register/M_addr_q_21
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X20Y11.AQ      Tcko                  0.525   avr/uart_rx/M_bitCtr_q[0]
-                                                       avr/uart_rx/M_newData_q_1
-    SLICE_X13Y21.D5      net (fanout=1)        1.536   M_newData_q_1
-    SLICE_X13Y21.D       Tilo                  0.259   register/M_state_q_FSM_FFd1_3
-                                                       register/_n0284_inv1
-    SLICE_X12Y23.A1      net (fanout=1)        0.933   register/_n0284_inv1
-    SLICE_X12Y23.A       Tilo                  0.254   register/M_addr_q[31]
-                                                       register/_n0284_inv3
-    SLICE_X9Y24.CE       net (fanout=9)        0.919   register/_n0284_inv
-    SLICE_X9Y24.CLK      Tceck                 0.408   register/M_addr_q[22]
-                                                       register/M_addr_q_21
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT11   Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN11    net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_11
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      4.834ns (1.446ns logic, 3.388ns route)
-                                                       (29.9% logic, 70.1% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  15.061ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_ctr_q_3 (FF)
-  Destination:          avr/uart_rx/M_savedData_q_0 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      4.805ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.099ns (0.590 - 0.689)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -980,32 +1452,50 @@ Slack:                  15.061ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_ctr_q_3 to avr/uart_rx/M_savedData_q_0
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X22Y12.DQ      Tcko                  0.476   avr/uart_rx/M_ctr_q[3]
-                                                       avr/uart_rx/M_ctr_q_3
-    SLICE_X21Y11.C1      net (fanout=4)        0.748   avr/uart_rx/M_ctr_q[3]
-    SLICE_X21Y11.C       Tilo                  0.259   M_avr_new_rx_data
-                                                       avr/uart_rx/GND_6_o_GND_6_o_equal_4_o<6>11
-    SLICE_X21Y11.D6      net (fanout=7)        0.834   avr/uart_rx/GND_6_o_GND_6_o_equal_4_o<6>1
-    SLICE_X21Y11.D       Tilo                  0.259   M_avr_new_rx_data
-                                                       avr/uart_rx/_n0086_inv11
-    SLICE_X15Y25.CE      net (fanout=2)        1.864   avr/uart_rx/_n0086_inv1
-    SLICE_X15Y25.CLK     Tceck                 0.365   M_avr_rx_data[3]
-                                                       avr/uart_rx/M_savedData_q_0
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT10   Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN10    net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_10
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      4.805ns (1.359ns logic, 3.446ns route)
-                                                       (28.3% logic, 71.7% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  15.064ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_newData_q_1 (FF)
-  Destination:          register/M_addr_q_13 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      4.832ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.069ns (0.619 - 0.688)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -1016,32 +1506,50 @@ Slack:                  15.064ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_newData_q_1 to register/M_addr_q_13
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X20Y11.AQ      Tcko                  0.525   avr/uart_rx/M_bitCtr_q[0]
-                                                       avr/uart_rx/M_newData_q_1
-    SLICE_X13Y21.D5      net (fanout=1)        1.536   M_newData_q_1
-    SLICE_X13Y21.D       Tilo                  0.259   register/M_state_q_FSM_FFd1_3
-                                                       register/_n0284_inv1
-    SLICE_X12Y23.A1      net (fanout=1)        0.933   register/_n0284_inv1
-    SLICE_X12Y23.A       Tilo                  0.254   register/M_addr_q[31]
-                                                       register/_n0284_inv3
-    SLICE_X9Y22.CE       net (fanout=9)        0.917   register/_n0284_inv
-    SLICE_X9Y22.CLK      Tceck                 0.408   register/M_addr_q[14]
-                                                       register/M_addr_q_13
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT1    Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN1     net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_1
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      4.832ns (1.446ns logic, 3.386ns route)
-                                                       (29.9% logic, 70.1% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  15.065ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_newData_q_1 (FF)
-  Destination:          register/M_addr_q_26 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      4.831ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.069ns (0.619 - 0.688)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -1052,32 +1560,50 @@ Slack:                  15.065ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_newData_q_1 to register/M_addr_q_26
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X20Y11.AQ      Tcko                  0.525   avr/uart_rx/M_bitCtr_q[0]
-                                                       avr/uart_rx/M_newData_q_1
-    SLICE_X13Y21.D5      net (fanout=1)        1.536   M_newData_q_1
-    SLICE_X13Y21.D       Tilo                  0.259   register/M_state_q_FSM_FFd1_3
-                                                       register/_n0284_inv1
-    SLICE_X12Y23.A1      net (fanout=1)        0.933   register/_n0284_inv1
-    SLICE_X12Y23.A       Tilo                  0.254   register/M_addr_q[31]
-                                                       register/_n0284_inv3
-    SLICE_X9Y25.CE       net (fanout=9)        0.942   register/_n0284_inv
-    SLICE_X9Y25.CLK      Tceck                 0.382   register/M_addr_q[26]
-                                                       register/M_addr_q_26
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT0    Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN0     net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_0
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      4.831ns (1.420ns logic, 3.411ns route)
-                                                       (29.4% logic, 70.6% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
-Slack:                  15.077ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               avr/uart_rx/M_ctr_q_1 (FF)
-  Destination:          avr/uart_rx/M_savedData_q_0 (FF)
+Slack:                  2.325ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               new_matrix/M_led_bit_counter_q_2 (FF)
+  Destination:          new_matrix/M_rgb_data_q_0 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      4.789ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.099ns (0.590 - 0.689)
+  Data Path Delay:      18.117ns (Levels of Logic = 8)
+  Clock Path Skew:      0.477ns (0.814 - 0.337)
   Source Clock:         clk_BUFGP rising at 0.000ns
   Destination Clock:    clk_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -1088,60 +1614,46 @@ Slack:                  15.077ns (requirement - (data path - clock path skew + u
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: avr/uart_rx/M_ctr_q_1 to avr/uart_rx/M_savedData_q_0
+  Maximum Data Path at Slow Process Corner: new_matrix/M_led_bit_counter_q_2 to new_matrix/M_rgb_data_q_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X22Y12.BQ      Tcko                  0.476   avr/uart_rx/M_ctr_q[3]
-                                                       avr/uart_rx/M_ctr_q_1
-    SLICE_X21Y11.C4      net (fanout=6)        0.732   avr/uart_rx/M_ctr_q[1]
-    SLICE_X21Y11.C       Tilo                  0.259   M_avr_new_rx_data
-                                                       avr/uart_rx/GND_6_o_GND_6_o_equal_4_o<6>11
-    SLICE_X21Y11.D6      net (fanout=7)        0.834   avr/uart_rx/GND_6_o_GND_6_o_equal_4_o<6>1
-    SLICE_X21Y11.D       Tilo                  0.259   M_avr_new_rx_data
-                                                       avr/uart_rx/_n0086_inv11
-    SLICE_X15Y25.CE      net (fanout=2)        1.864   avr/uart_rx/_n0086_inv1
-    SLICE_X15Y25.CLK     Tceck                 0.365   M_avr_rx_data[3]
-                                                       avr/uart_rx/M_savedData_q_0
+    SLICE_X7Y8.BMUX      Tshcko                0.518   new_matrix/M_led_bit_counter_q[5]
+                                                       new_matrix/M_led_bit_counter_q_2
+    SLICE_X6Y10.A1       net (fanout=12)       1.037   new_matrix/M_led_bit_counter_q[2]
+    SLICE_X6Y10.A        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o11
+    SLICE_X6Y10.D2       net (fanout=6)        0.951   new_matrix/M_sclk_counter_q[4]_M_led_bit_counter_q[6]_AND_157_o1
+    SLICE_X6Y10.D        Tilo                  0.235   new_matrix/M_matrix_data_row_address[3]
+                                                       new_matrix/Mmux_M_matrix_data_row_address41
+    DSP48_X0Y2.A3        net (fanout=1)        0.595   new_matrix/M_matrix_data_row_address[3]
+    DSP48_X0Y2.PCOUT34   Tdspdo_A_PCOUT        5.228   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+                                                       new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT
+    DSP48_X0Y3.PCIN34    net (fanout=1)        0.002   new_matrix/matrix_data/Maddsub_row_address[3]_PWR_13_o_MuLt_0_OUT_PCOUT_to_Madd_n6167_Madd1_PCIN_34
+    DSP48_X0Y3.P2        Tdspdo_PCIN_P         2.645   new_matrix/matrix_data/Madd_n6167_Madd1
+                                                       new_matrix/matrix_data/Madd_n6167_Madd1
+    SLICE_X5Y11.B1       net (fanout=6)        1.412   new_matrix/matrix_data/n6167<2>1
+    SLICE_X5Y11.B        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847_SW0
+    SLICE_X5Y11.A3       net (fanout=3)        0.570   new_matrix/matrix_data/N12
+    SLICE_X5Y11.A        Tilo                  0.259   new_matrix/M_matrix_data_out[4]
+                                                       new_matrix/matrix_data/Sh337847
+    SLICE_X4Y10.D5       net (fanout=6)        1.018   new_matrix/matrix_data/Sh33784_bdd3
+    SLICE_X4Y10.D        Tilo                  0.254   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064211
+    SLICE_X4Y10.C6       net (fanout=1)        0.143   new_matrix/matrix_data/Sh706421
+    SLICE_X4Y10.C        Tilo                  0.255   new_matrix/matrix_data/Sh706421
+                                                       new_matrix/matrix_data/Sh7064212
+    OLOGIC_X6Y1.D1       net (fanout=1)        1.323   new_matrix/M_matrix_data_out[0]
+    OLOGIC_X6Y1.CLK0     Todck                 1.178   M_new_matrix_red0
+                                                       new_matrix/M_rgb_data_q_0
     -------------------------------------------------  ---------------------------
-    Total                                      4.789ns (1.359ns logic, 3.430ns route)
-                                                       (28.4% logic, 71.6% route)
+    Total                                     18.117ns (11.066ns logic, 7.051ns route)
+                                                       (61.1% logic, 38.9% route)
 
 --------------------------------------------------------------------------------
 
 Component Switching Limit Checks: TS_clk = PERIOD TIMEGRP "clk" 50 MHz HIGH 50%;
---------------------------------------------------------------------------------
-Slack: 16.430ns (period - min period limit)
-  Period: 20.000ns
-  Min period limit: 3.570ns (280.112MHz) (Trper_CLKA(Fmax))
-  Physical resource: matrix/matrix_vram_bottom/disp_vram/Mram_mem/CLKAWRCLK
-  Logical resource: matrix/matrix_vram_bottom/disp_vram/Mram_mem/CLKAWRCLK
-  Location pin: RAMB8_X0Y7.CLKAWRCLK
-  Clock network: clk_BUFGP
---------------------------------------------------------------------------------
-Slack: 16.430ns (period - min period limit)
-  Period: 20.000ns
-  Min period limit: 3.570ns (280.112MHz) (Trper_CLKB(Fmax))
-  Physical resource: matrix/matrix_vram_bottom/disp_vram/Mram_mem/CLKBRDCLK
-  Logical resource: matrix/matrix_vram_bottom/disp_vram/Mram_mem/CLKBRDCLK
-  Location pin: RAMB8_X0Y7.CLKBRDCLK
-  Clock network: clk_BUFGP
---------------------------------------------------------------------------------
-Slack: 16.430ns (period - min period limit)
-  Period: 20.000ns
-  Min period limit: 3.570ns (280.112MHz) (Trper_CLKA(Fmax))
-  Physical resource: matrix/matrix_vram_top/disp_vram/Mram_mem/CLKAWRCLK
-  Logical resource: matrix/matrix_vram_top/disp_vram/Mram_mem/CLKAWRCLK
-  Location pin: RAMB8_X0Y6.CLKAWRCLK
-  Clock network: clk_BUFGP
---------------------------------------------------------------------------------
-Slack: 16.430ns (period - min period limit)
-  Period: 20.000ns
-  Min period limit: 3.570ns (280.112MHz) (Trper_CLKB(Fmax))
-  Physical resource: matrix/matrix_vram_top/disp_vram/Mram_mem/CLKBRDCLK
-  Logical resource: matrix/matrix_vram_top/disp_vram/Mram_mem/CLKBRDCLK
-  Location pin: RAMB8_X0Y6.CLKBRDCLK
-  Clock network: clk_BUFGP
 --------------------------------------------------------------------------------
 Slack: 17.334ns (period - min period limit)
   Period: 20.000ns
@@ -1159,6 +1671,54 @@ Slack: 17.751ns (period - min period limit)
   Location pin: OLOGIC_X9Y0.CLK0
   Clock network: clk_BUFGP
 --------------------------------------------------------------------------------
+Slack: 17.751ns (period - min period limit)
+  Period: 20.000ns
+  Min period limit: 2.249ns (444.642MHz) (Tockper)
+  Physical resource: M_new_matrix_red1/CLK0
+  Logical resource: new_matrix/M_rgb_data_q_3/CK0
+  Location pin: OLOGIC_X6Y0.CLK0
+  Clock network: clk_BUFGP
+--------------------------------------------------------------------------------
+Slack: 17.751ns (period - min period limit)
+  Period: 20.000ns
+  Min period limit: 2.249ns (444.642MHz) (Tockper)
+  Physical resource: M_new_matrix_red0/CLK0
+  Logical resource: new_matrix/M_rgb_data_q_0/CK0
+  Location pin: OLOGIC_X6Y1.CLK0
+  Clock network: clk_BUFGP
+--------------------------------------------------------------------------------
+Slack: 17.751ns (period - min period limit)
+  Period: 20.000ns
+  Min period limit: 2.249ns (444.642MHz) (Tockper)
+  Physical resource: M_new_matrix_green1/CLK0
+  Logical resource: new_matrix/M_rgb_data_q_4/CK0
+  Location pin: OLOGIC_X1Y0.CLK0
+  Clock network: clk_BUFGP
+--------------------------------------------------------------------------------
+Slack: 17.751ns (period - min period limit)
+  Period: 20.000ns
+  Min period limit: 2.249ns (444.642MHz) (Tockper)
+  Physical resource: M_new_matrix_green0/CLK0
+  Logical resource: new_matrix/M_rgb_data_q_1/CK0
+  Location pin: OLOGIC_X1Y1.CLK0
+  Clock network: clk_BUFGP
+--------------------------------------------------------------------------------
+Slack: 17.751ns (period - min period limit)
+  Period: 20.000ns
+  Min period limit: 2.249ns (444.642MHz) (Tockper)
+  Physical resource: M_new_matrix_blue1/CLK0
+  Logical resource: new_matrix/M_rgb_data_q_5/CK0
+  Location pin: OLOGIC_X0Y4.CLK0
+  Clock network: clk_BUFGP
+--------------------------------------------------------------------------------
+Slack: 17.751ns (period - min period limit)
+  Period: 20.000ns
+  Min period limit: 2.249ns (444.642MHz) (Tockper)
+  Physical resource: M_new_matrix_blue0/CLK0
+  Logical resource: new_matrix/M_rgb_data_q_2/CK0
+  Location pin: OLOGIC_X0Y5.CLK0
+  Clock network: clk_BUFGP
+--------------------------------------------------------------------------------
 Slack: 18.134ns (period - min period limit)
   Period: 20.000ns
   Min period limit: 1.866ns (535.906MHz) (Tickper)
@@ -1170,185 +1730,171 @@ Slack: 18.134ns (period - min period limit)
 Slack: 18.134ns (period - min period limit)
   Period: 20.000ns
   Min period limit: 1.866ns (535.906MHz) (Tickper)
-  Physical resource: avr/uart_rx/M_rxd_q/CLK0
-  Logical resource: avr/uart_rx/M_rxd_q/CLK0
-  Location pin: ILOGIC_X7Y2.CLK0
-  Clock network: clk_BUFGP
---------------------------------------------------------------------------------
-Slack: 18.134ns (period - min period limit)
-  Period: 20.000ns
-  Min period limit: 1.866ns (535.906MHz) (Tickper)
   Physical resource: spi_ss_IBUF/CLK0
   Logical resource: avr/spi_slave/M_ss_reg_q/CLK0
   Location pin: ILOGIC_X3Y1.CLK0
   Clock network: clk_BUFGP
 --------------------------------------------------------------------------------
-Slack: 18.601ns (period - min period limit)
+Slack: 19.520ns (period - min period limit)
   Period: 20.000ns
-  Min period limit: 1.399ns (714.796MHz) (Tcp)
-  Physical resource: M_register_regOut[36]/CLK
-  Logical resource: register/Mshreg_M_data_q_0/CLK
-  Location pin: SLICE_X8Y17.CLK
-  Clock network: clk_BUFGP
---------------------------------------------------------------------------------
-Slack: 18.601ns (period - min period limit)
-  Period: 20.000ns
-  Min period limit: 1.399ns (714.796MHz) (Tcp)
-  Physical resource: M_register_regOut[36]/CLK
-  Logical resource: register/Mshreg_M_data_q_1/CLK
-  Location pin: SLICE_X8Y17.CLK
-  Clock network: clk_BUFGP
---------------------------------------------------------------------------------
-Slack: 18.601ns (period - min period limit)
-  Period: 20.000ns
-  Min period limit: 1.399ns (714.796MHz) (Tcp)
-  Physical resource: M_register_regOut[36]/CLK
-  Logical resource: register/Mshreg_M_data_q_2/CLK
-  Location pin: SLICE_X8Y17.CLK
+  Min period limit: 0.480ns (2083.333MHz) (Tcp)
+  Physical resource: avr/spi_slave/M_sck_reg_q[1]_GND_5_o_equal_1_o/CLK
+  Logical resource: avr/spi_slave/M_miso_reg_q/CK
+  Location pin: SLICE_X4Y2.CLK
   Clock network: clk_BUFGP
 --------------------------------------------------------------------------------
 Slack: 19.520ns (period - min period limit)
   Period: 20.000ns
   Min period limit: 0.480ns (2083.333MHz) (Tcp)
-  Physical resource: register/M_timeout_q[3]/CLK
-  Logical resource: register/M_timeout_q_1/CK
-  Location pin: SLICE_X16Y19.CLK
+  Physical resource: avr/spi_slave/M_bit_ct_q[2]/CLK
+  Logical resource: avr/spi_slave/M_bit_ct_q_0/CK
+  Location pin: SLICE_X4Y3.CLK
+  Clock network: clk_BUFGP
+--------------------------------------------------------------------------------
+Slack: 19.520ns (period - (min high pulse limit / (high pulse / period)))
+  Period: 20.000ns
+  High pulse: 10.000ns
+  High pulse limit: 0.240ns (Trpw)
+  Physical resource: avr/spi_slave/M_bit_ct_q[2]/SR
+  Logical resource: avr/spi_slave/M_bit_ct_q_0/SR
+  Location pin: SLICE_X4Y3.SR
+  Clock network: M_cclk_detector_ready_inv
+--------------------------------------------------------------------------------
+Slack: 19.520ns (period - min period limit)
+  Period: 20.000ns
+  Min period limit: 0.480ns (2083.333MHz) (Tcp)
+  Physical resource: avr/spi_slave/M_bit_ct_q[2]/CLK
+  Logical resource: avr/spi_slave/M_bit_ct_q_1/CK
+  Location pin: SLICE_X4Y3.CLK
   Clock network: clk_BUFGP
 --------------------------------------------------------------------------------
 Slack: 19.520ns (period - min period limit)
   Period: 20.000ns
   Min period limit: 0.480ns (2083.333MHz) (Tcp)
-  Physical resource: register/M_timeout_q[3]/CLK
-  Logical resource: register/M_timeout_q_2/CK
-  Location pin: SLICE_X16Y19.CLK
+  Physical resource: avr/spi_slave/M_bit_ct_q[2]/CLK
+  Logical resource: avr/spi_slave/M_bit_ct_q_2/CK
+  Location pin: SLICE_X4Y3.CLK
   Clock network: clk_BUFGP
 --------------------------------------------------------------------------------
-Slack: 19.520ns (period - min period limit)
+Slack: 19.524ns (period - (min high pulse limit / (high pulse / period)))
   Period: 20.000ns
-  Min period limit: 0.480ns (2083.333MHz) (Tcp)
-  Physical resource: register/M_timeout_q[3]/CLK
-  Logical resource: register/M_timeout_q_3/CK
-  Location pin: SLICE_X16Y19.CLK
+  High pulse: 10.000ns
+  High pulse limit: 0.238ns (Trpw)
+  Physical resource: new_matrix/N2/SR
+  Logical resource: new_matrix/M_sclk_counter_q_4/SR
+  Location pin: SLICE_X6Y13.SR
+  Clock network: M_reset_cond_out
+--------------------------------------------------------------------------------
+Slack: 19.525ns (period - min period limit)
+  Period: 20.000ns
+  Min period limit: 0.475ns (2105.263MHz) (Tcp)
+  Physical resource: avr/cclk_detector/M_ctr_q[3]/CLK
+  Logical resource: avr/cclk_detector/M_ctr_q_0/CK
+  Location pin: SLICE_X10Y3.CLK
   Clock network: clk_BUFGP
 --------------------------------------------------------------------------------
-Slack: 19.520ns (period - min period limit)
+Slack: 19.525ns (period - min period limit)
   Period: 20.000ns
-  Min period limit: 0.480ns (2083.333MHz) (Tcp)
-  Physical resource: register/M_timeout_q[7]/CLK
-  Logical resource: register/M_timeout_q_4/CK
-  Location pin: SLICE_X16Y20.CLK
+  Min period limit: 0.475ns (2105.263MHz) (Tcp)
+  Physical resource: avr/cclk_detector/M_ctr_q[3]/CLK
+  Logical resource: avr/cclk_detector/M_ctr_q_1/CK
+  Location pin: SLICE_X10Y3.CLK
   Clock network: clk_BUFGP
 --------------------------------------------------------------------------------
-Slack: 19.520ns (period - min period limit)
+Slack: 19.525ns (period - min period limit)
   Period: 20.000ns
-  Min period limit: 0.480ns (2083.333MHz) (Tcp)
-  Physical resource: register/M_timeout_q[7]/CLK
-  Logical resource: register/M_timeout_q_5/CK
-  Location pin: SLICE_X16Y20.CLK
+  Min period limit: 0.475ns (2105.263MHz) (Tcp)
+  Physical resource: avr/cclk_detector/M_ctr_q[3]/CLK
+  Logical resource: avr/cclk_detector/M_ctr_q_2/CK
+  Location pin: SLICE_X10Y3.CLK
   Clock network: clk_BUFGP
 --------------------------------------------------------------------------------
-Slack: 19.520ns (period - min period limit)
+Slack: 19.525ns (period - min period limit)
   Period: 20.000ns
-  Min period limit: 0.480ns (2083.333MHz) (Tcp)
-  Physical resource: register/M_timeout_q[7]/CLK
-  Logical resource: register/M_timeout_q_6/CK
-  Location pin: SLICE_X16Y20.CLK
+  Min period limit: 0.475ns (2105.263MHz) (Tcp)
+  Physical resource: avr/cclk_detector/M_ctr_q[3]/CLK
+  Logical resource: avr/cclk_detector/M_ctr_q_3/CK
+  Location pin: SLICE_X10Y3.CLK
   Clock network: clk_BUFGP
 --------------------------------------------------------------------------------
-Slack: 19.520ns (period - min period limit)
+Slack: 19.525ns (period - min period limit)
   Period: 20.000ns
-  Min period limit: 0.480ns (2083.333MHz) (Tcp)
-  Physical resource: register/M_timeout_q[7]/CLK
-  Logical resource: register/M_timeout_q_7/CK
-  Location pin: SLICE_X16Y20.CLK
+  Min period limit: 0.475ns (2105.263MHz) (Tcp)
+  Physical resource: avr/cclk_detector/M_ctr_q[7]/CLK
+  Logical resource: avr/cclk_detector/M_ctr_q_4/CK
+  Location pin: SLICE_X10Y4.CLK
   Clock network: clk_BUFGP
 --------------------------------------------------------------------------------
-Slack: 19.520ns (period - min period limit)
+Slack: 19.525ns (period - min period limit)
   Period: 20.000ns
-  Min period limit: 0.480ns (2083.333MHz) (Tcp)
-  Physical resource: register/M_timeout_q[11]/CLK
-  Logical resource: register/M_timeout_q_8/CK
-  Location pin: SLICE_X16Y21.CLK
+  Min period limit: 0.475ns (2105.263MHz) (Tcp)
+  Physical resource: avr/cclk_detector/M_ctr_q[7]/CLK
+  Logical resource: avr/cclk_detector/M_ctr_q_5/CK
+  Location pin: SLICE_X10Y4.CLK
   Clock network: clk_BUFGP
 --------------------------------------------------------------------------------
-Slack: 19.520ns (period - min period limit)
+Slack: 19.525ns (period - min period limit)
   Period: 20.000ns
-  Min period limit: 0.480ns (2083.333MHz) (Tcp)
-  Physical resource: register/M_timeout_q[11]/CLK
-  Logical resource: register/M_timeout_q_9/CK
-  Location pin: SLICE_X16Y21.CLK
+  Min period limit: 0.475ns (2105.263MHz) (Tcp)
+  Physical resource: avr/cclk_detector/M_ctr_q[7]/CLK
+  Logical resource: avr/cclk_detector/M_ctr_q_6/CK
+  Location pin: SLICE_X10Y4.CLK
   Clock network: clk_BUFGP
 --------------------------------------------------------------------------------
-Slack: 19.520ns (period - min period limit)
+Slack: 19.525ns (period - min period limit)
   Period: 20.000ns
-  Min period limit: 0.480ns (2083.333MHz) (Tcp)
-  Physical resource: register/M_timeout_q[11]/CLK
-  Logical resource: register/M_timeout_q_10/CK
-  Location pin: SLICE_X16Y21.CLK
+  Min period limit: 0.475ns (2105.263MHz) (Tcp)
+  Physical resource: avr/cclk_detector/M_ctr_q[7]/CLK
+  Logical resource: avr/cclk_detector/M_ctr_q_7/CK
+  Location pin: SLICE_X10Y4.CLK
   Clock network: clk_BUFGP
 --------------------------------------------------------------------------------
-Slack: 19.520ns (period - min period limit)
+Slack: 19.525ns (period - min period limit)
   Period: 20.000ns
-  Min period limit: 0.480ns (2083.333MHz) (Tcp)
-  Physical resource: register/M_timeout_q[11]/CLK
-  Logical resource: register/M_timeout_q_11/CK
-  Location pin: SLICE_X16Y21.CLK
+  Min period limit: 0.475ns (2105.263MHz) (Tcp)
+  Physical resource: avr/cclk_detector/M_ctr_q[11]/CLK
+  Logical resource: avr/cclk_detector/M_ctr_q_8/CK
+  Location pin: SLICE_X10Y5.CLK
   Clock network: clk_BUFGP
 --------------------------------------------------------------------------------
-Slack: 19.520ns (period - min period limit)
+Slack: 19.525ns (period - min period limit)
   Period: 20.000ns
-  Min period limit: 0.480ns (2083.333MHz) (Tcp)
-  Physical resource: register/M_timeout_q[15]/CLK
-  Logical resource: register/M_timeout_q_12/CK
-  Location pin: SLICE_X16Y22.CLK
+  Min period limit: 0.475ns (2105.263MHz) (Tcp)
+  Physical resource: avr/cclk_detector/M_ctr_q[11]/CLK
+  Logical resource: avr/cclk_detector/M_ctr_q_9/CK
+  Location pin: SLICE_X10Y5.CLK
   Clock network: clk_BUFGP
 --------------------------------------------------------------------------------
-Slack: 19.520ns (period - min period limit)
+Slack: 19.525ns (period - min period limit)
   Period: 20.000ns
-  Min period limit: 0.480ns (2083.333MHz) (Tcp)
-  Physical resource: register/M_timeout_q[15]/CLK
-  Logical resource: register/M_timeout_q_13/CK
-  Location pin: SLICE_X16Y22.CLK
+  Min period limit: 0.475ns (2105.263MHz) (Tcp)
+  Physical resource: avr/cclk_detector/M_ctr_q[11]/CLK
+  Logical resource: avr/cclk_detector/M_ctr_q_10/CK
+  Location pin: SLICE_X10Y5.CLK
   Clock network: clk_BUFGP
 --------------------------------------------------------------------------------
-Slack: 19.520ns (period - min period limit)
+Slack: 19.525ns (period - min period limit)
   Period: 20.000ns
-  Min period limit: 0.480ns (2083.333MHz) (Tcp)
-  Physical resource: register/M_timeout_q[15]/CLK
-  Logical resource: register/M_timeout_q_14/CK
-  Location pin: SLICE_X16Y22.CLK
+  Min period limit: 0.475ns (2105.263MHz) (Tcp)
+  Physical resource: avr/cclk_detector/M_ctr_q[11]/CLK
+  Logical resource: avr/cclk_detector/M_ctr_q_11/CK
+  Location pin: SLICE_X10Y5.CLK
   Clock network: clk_BUFGP
 --------------------------------------------------------------------------------
-Slack: 19.520ns (period - min period limit)
+Slack: 19.525ns (period - min period limit)
   Period: 20.000ns
-  Min period limit: 0.480ns (2083.333MHz) (Tcp)
-  Physical resource: register/M_timeout_q[15]/CLK
-  Logical resource: register/M_timeout_q_15/CK
-  Location pin: SLICE_X16Y22.CLK
+  Min period limit: 0.475ns (2105.263MHz) (Tcp)
+  Physical resource: avr/cclk_detector/M_ctr_q[13]/CLK
+  Logical resource: avr/cclk_detector/M_ctr_q_12/CK
+  Location pin: SLICE_X10Y6.CLK
   Clock network: clk_BUFGP
 --------------------------------------------------------------------------------
-Slack: 19.520ns (period - min period limit)
+Slack: 19.525ns (period - min period limit)
   Period: 20.000ns
-  Min period limit: 0.480ns (2083.333MHz) (Tcp)
-  Physical resource: register/M_timeout_q[19]/CLK
-  Logical resource: register/M_timeout_q_16/CK
-  Location pin: SLICE_X16Y23.CLK
-  Clock network: clk_BUFGP
---------------------------------------------------------------------------------
-Slack: 19.520ns (period - min period limit)
-  Period: 20.000ns
-  Min period limit: 0.480ns (2083.333MHz) (Tcp)
-  Physical resource: register/M_timeout_q[19]/CLK
-  Logical resource: register/M_timeout_q_17/CK
-  Location pin: SLICE_X16Y23.CLK
-  Clock network: clk_BUFGP
---------------------------------------------------------------------------------
-Slack: 19.520ns (period - min period limit)
-  Period: 20.000ns
-  Min period limit: 0.480ns (2083.333MHz) (Tcp)
-  Physical resource: register/M_timeout_q[19]/CLK
-  Logical resource: register/M_timeout_q_18/CK
-  Location pin: SLICE_X16Y23.CLK
+  Min period limit: 0.475ns (2105.263MHz) (Tcp)
+  Physical resource: avr/cclk_detector/M_ctr_q[13]/CLK
+  Logical resource: avr/cclk_detector/M_ctr_q_13/CK
+  Location pin: SLICE_X10Y6.CLK
   Clock network: clk_BUFGP
 --------------------------------------------------------------------------------
 
@@ -1365,7 +1911,7 @@ Clock to Setup on destination clock clk
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 ---------------+---------+---------+---------+---------+
-clk            |    5.144|         |         |         |
+clk            |   17.675|         |         |         |
 ---------------+---------+---------+---------+---------+
 
 
@@ -1374,23 +1920,23 @@ Timing summary:
 
 Timing errors: 0  Score: 0  (Setup/Max: 0, Hold: 0)
 
-Constraints cover 3416 paths, 0 nets, and 905 connections
+Constraints cover 1773558 paths, 0 nets, and 477 connections
 
 Design statistics:
-   Minimum period:   5.144ns{1}   (Maximum frequency: 194.401MHz)
+   Minimum period:  17.675ns{1}   (Maximum frequency:  56.577MHz)
 
 
 ------------------------------------Footnotes-----------------------------------
 1)  The minimum period statistic assumes all single cycle delays.
 
-Analysis completed Fri Nov 29 17:08:08 2019 
+Analysis completed Mon Dec 02 18:09:23 2019 
 --------------------------------------------------------------------------------
 
 Trace Settings:
 -------------------------
 Trace Settings 
 
-Peak Memory Usage: 4555 MB
+Peak Memory Usage: 4553 MB
 
 
 

@@ -36,6 +36,8 @@ module led_matrix (
   dff register_input_counter[10];    //record the number of register writing routine it goes, up to 68
   dff refresh_row_counter[4];       //record down the row that has been through
       
+  dff zero[1];
+      
   vram matrix_vram_top(
     .read_addr(rd_addr_top),
     .write_en(wr_en_top),
@@ -52,14 +54,31 @@ module led_matrix (
     }
   }
   
-  
-  
   const ARRAY = 16b0101010101010101;
   const ARRAY2 = 64b1;
   const ARRAY3 = 64b1000000000000000000000000000000000000000000000000000000000000000;
   
+  const ROW_DATA = {6b001001, 6b001001, 6b001001, 6b001001, 
+                    6b001001, 6b001001, 6b001001, 6b001001, 
+    6b010010, 6b010010, 6b010010, 6b010010, 
+    6b010010, 6b010010, 6b010010, 6b010010, 
+    6b110110, 6b110110, 6b110110, 6b110110, 
+    6b110110, 6b110110, 6b110110, 6b110110, 
+    6b111111, 6b111111, 6b111111, 6b111111,
+    6b111111, 6b111111, 6b111111, 6b111111,
+    6b001001, 6b001001, 6b001001, 6b001001, 
+    6b001001, 6b001001, 6b001001, 6b001001, 
+    6b010010, 6b010010, 6b010010, 6b010010, 
+    6b010010, 6b010010, 6b010010, 6b010010, 
+    6b110110, 6b110110, 6b110110, 6b110110, 
+    6b110110, 6b110110, 6b110110, 6b110110, 
+    6b111111, 6b111111, 6b111111, 6b111111,
+    6b111111, 6b111111, 6b111111, 6b111111};
+    
+  sig led_data[6];
+  
   always {
-  out_clk = shift_reg_clk.q[5]; //&& register_input_counter.q < 132;
+  out_clk = shift_reg_clk.q[5] && register_input_counter.q < 129; //disables clock upon latch 
   shift_reg_clk.d = shift_reg_clk.q +1;
   data_tx_clk.d = data_tx_clk.q +1;
     
@@ -67,7 +86,7 @@ module led_matrix (
   if(wr_addr < 1024){
     wr_en_top = wr_en;
     wr_en_bottom =0;
-    wr_addr_top = wr_addr;
+    wr_addr_top = wr_addr[9:0];
     wr_addr_bottom = 0;
     wr_data_top = wr_data;
     wr_data_bottom =0;  
@@ -75,7 +94,7 @@ module led_matrix (
     wr_en_top = 0;
     wr_en_bottom =wr_en;
     wr_addr_top = 0;
-    wr_addr_bottom = wr_addr;
+    wr_addr_bottom = wr_addr-1024;
     wr_data_top = 0;
     wr_data_bottom =wr_data;  
       }
@@ -84,7 +103,7 @@ module led_matrix (
         register_input_counter.d = register_input_counter.q +1;
     }
     
-    if (1 <= register_input_counter.q && register_input_counter.q < 127){ //used to be 132
+    if (1 <= register_input_counter.q && register_input_counter.q < 129){ //used to be 132
        
           out_addr = refresh_row_counter.q;
           out_blk = 1;
@@ -112,17 +131,42 @@ module led_matrix (
           //out_g[1] = 1 &&  ((register_input_counter.q-1)/2 == 33);
           //out_b[1] = 1 &&  ((register_input_counter.q-1)/2 == 20);
       
+ //==============PERFECT RGB LOOP ACROSS WHOLE SCREEN BUT LAST ===================//  
+    /*      out_r[0] = 1 &&  ((register_input_counter.q-1)/2 - ((register_input_counter.q-1)/2 /3 *3) == 0);
+          out_g[0] = 1 &&  ((register_input_counter.q-1)/2 - ((register_input_counter.q-1)/2 /3 *3)== 1);
+          out_b[0] = 1 &&  ((register_input_counter.q-1)/2 - ((register_input_counter.q-1)/2 /3 *3)== 2);
       
-          //out_r[0] = 1 &&  ((register_input_counter.q-1)/2 - ((register_input_counter.q-1)/2 /3 *3) == 0);
-          //out_g[0] = 1 &&  ((register_input_counter.q-1)/2 - ((register_input_counter.q-1)/2 /3 *3)== 1);
-          //out_b[0] = 1 &&  ((register_input_counter.q-1)/2 - ((register_input_counter.q-1)/2 /3 *3)== 2);
+          out_r[1] = 1 &&  ((register_input_counter.q-1)/2 - ((register_input_counter.q-1)/2 /3 *3) == 0);
+          out_g[1] = 1 &&  ((register_input_counter.q-1)/2 - ((register_input_counter.q-1)/2 /3 *3)== 1);
+          out_b[1] = 1 &&  ((register_input_counter.q-1)/2 - ((register_input_counter.q-1)/2 /3 *3)== 2);
+      */
       
-          //out_r[1] = 1 &&  ((register_input_counter.q-1)/2 - ((register_input_counter.q-1)/2 /3 *3) == 0);
-          //out_g[1] = 1 &&  ((register_input_counter.q-1)/2 - ((register_input_counter.q-1)/2 /3 *3)== 1);
-          //out_b[1] = 1 &&  ((register_input_counter.q-1)/2 - ((register_input_counter.q-1)/2 /3 *3)== 2);
-           
-        rd_addr_top = refresh_row_counter.q*64 + (register_input_counter.q-1)/2;
-        rd_addr_bottom = refresh_row_counter.q*64 + (register_input_counter.q-1)/2;
+      if (zero.q == 0){
+        rd_addr_top = (refresh_row_counter.q*64) + (register_input_counter.q-1)/2 ;
+        rd_addr_bottom = (refresh_row_counter.q*64) + (register_input_counter.q-1)/2 ;
+        zero.d = 1;
+      }
+      
+      else{
+        rd_addr_top = (refresh_row_counter.q*64) + (register_input_counter.q-2)/2 ;
+        rd_addr_bottom = (refresh_row_counter.q*64) + (register_input_counter.q-2)/2 ;
+        zero.d = 0;
+        
+      }
+      
+      
+      /*
+        led_data = ROW_DATA[(register_input_counter.q-1)/2];
+      
+        out_r[0] = led_data[0];
+        out_g[0] = led_data[1];
+        out_b[0] = led_data[2];
+      
+        out_r[1] = led_data[3];
+        out_g[1] = led_data[4];
+        out_b[1] = led_data[5];
+      */
+      
         out_r[0] = matrix_vram_top.out_bit[2];
         out_g[0] = matrix_vram_top.out_bit[1];
         out_b[0] = matrix_vram_top.out_bit[0];
@@ -132,7 +176,7 @@ module led_matrix (
         out_b[1] = matrix_vram_bottom.out_bit[0];
       
       
-      if(register_input_counter.q == 126){  
+      if(register_input_counter.q == 128){
         out_lat = 1;
         if(data_tx_clk.q ==15){
           refresh_row_counter.d = refresh_row_counter.q +1;
@@ -178,3 +222,4 @@ module led_matrix (
     }
   }
 }
+

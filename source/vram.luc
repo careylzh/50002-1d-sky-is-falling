@@ -1,3 +1,5 @@
+//==========NOT USED=================//
+
 module vram (
     input clk,  // clock
     input rst,  // reset

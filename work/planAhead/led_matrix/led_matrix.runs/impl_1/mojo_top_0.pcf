@@ -1,141 +1,76 @@
 //! **************************************************************************
-// Written by: Map P.20131013 on Fri Nov 29 17:07:59 2019
+// Written by: Map P.20131013 on Mon Dec 02 18:09:06 2019
 //! **************************************************************************
 
 SCHEMATIC START;
 CONFIG VCCAUX = "3.3";
+COMP "spi_sck" LOCATE = SITE "P43" LEVEL 1;
+COMP "led_r[0]" LOCATE = SITE "P50" LEVEL 1;
 COMP "clk" LOCATE = SITE "P56" LEVEL 1;
-COMP "cclk" LOCATE = SITE "P70" LEVEL 1;
+COMP "led_r[1]" LOCATE = SITE "P51" LEVEL 1;
+COMP "avr_rx_busy" LOCATE = SITE "P39" LEVEL 1;
+COMP "led_lat" LOCATE = SITE "P26" LEVEL 1;
+COMP "spi_miso" LOCATE = SITE "P45" LEVEL 1;
+COMP "led_g[0]" LOCATE = SITE "P40" LEVEL 1;
+COMP "led_g[1]" LOCATE = SITE "P41" LEVEL 1;
 COMP "led_addr[0]" LOCATE = SITE "P29" LEVEL 1;
 COMP "led_addr[1]" LOCATE = SITE "P30" LEVEL 1;
 COMP "led_addr[2]" LOCATE = SITE "P32" LEVEL 1;
+COMP "spi_mosi" LOCATE = SITE "P44" LEVEL 1;
 COMP "led_addr[3]" LOCATE = SITE "P33" LEVEL 1;
-COMP "led_blk" LOCATE = SITE "P24" LEVEL 1;
-COMP "led_clk" LOCATE = SITE "P27" LEVEL 1;
-COMP "led_lat" LOCATE = SITE "P26" LEVEL 1;
-COMP "rst_n" LOCATE = SITE "P38" LEVEL 1;
-COMP "spi_sck" LOCATE = SITE "P43" LEVEL 1;
-COMP "avr_rx_busy" LOCATE = SITE "P39" LEVEL 1;
-COMP "spi_channel[0]" LOCATE = SITE "P46" LEVEL 1;
-COMP "spi_channel[1]" LOCATE = SITE "P61" LEVEL 1;
-COMP "spi_channel[2]" LOCATE = SITE "P62" LEVEL 1;
-COMP "spi_channel[3]" LOCATE = SITE "P65" LEVEL 1;
-COMP "led_b[0]" LOCATE = SITE "P34" LEVEL 1;
-COMP "led_b[1]" LOCATE = SITE "P35" LEVEL 1;
-COMP "led_g[0]" LOCATE = SITE "P40" LEVEL 1;
-COMP "led_g[1]" LOCATE = SITE "P41" LEVEL 1;
 COMP "led[0]" LOCATE = SITE "P134" LEVEL 1;
 COMP "led[1]" LOCATE = SITE "P133" LEVEL 1;
 COMP "led[2]" LOCATE = SITE "P132" LEVEL 1;
+COMP "avr_rx" LOCATE = SITE "P59" LEVEL 1;
 COMP "led[3]" LOCATE = SITE "P131" LEVEL 1;
+COMP "spi_ss" LOCATE = SITE "P48" LEVEL 1;
 COMP "led[4]" LOCATE = SITE "P127" LEVEL 1;
+COMP "avr_tx" LOCATE = SITE "P55" LEVEL 1;
 COMP "led[5]" LOCATE = SITE "P126" LEVEL 1;
 COMP "led[6]" LOCATE = SITE "P124" LEVEL 1;
+COMP "rst_n" LOCATE = SITE "P38" LEVEL 1;
 COMP "led[7]" LOCATE = SITE "P123" LEVEL 1;
-COMP "led_r[0]" LOCATE = SITE "P50" LEVEL 1;
-COMP "led_r[1]" LOCATE = SITE "P51" LEVEL 1;
-COMP "avr_rx" LOCATE = SITE "P59" LEVEL 1;
-COMP "avr_tx" LOCATE = SITE "P55" LEVEL 1;
-COMP "spi_ss" LOCATE = SITE "P48" LEVEL 1;
-COMP "spi_miso" LOCATE = SITE "P45" LEVEL 1;
-COMP "spi_mosi" LOCATE = SITE "P44" LEVEL 1;
-PIN matrix/matrix_vram_top/disp_vram/Mram_mem_pins<22> = BEL
-        "matrix/matrix_vram_top/disp_vram/Mram_mem" PINNAME CLKAWRCLK;
-PIN matrix/matrix_vram_top/disp_vram/Mram_mem_pins<23> = BEL
-        "matrix/matrix_vram_top/disp_vram/Mram_mem" PINNAME CLKBRDCLK;
-PIN matrix/matrix_vram_bottom/disp_vram/Mram_mem_pins<22> = BEL
-        "matrix/matrix_vram_bottom/disp_vram/Mram_mem" PINNAME CLKAWRCLK;
-PIN matrix/matrix_vram_bottom/disp_vram/Mram_mem_pins<23> = BEL
-        "matrix/matrix_vram_bottom/disp_vram/Mram_mem" PINNAME CLKBRDCLK;
-TIMEGRP clk = BEL "matrix/M_register_input_counter_q_9" BEL
-        "matrix/M_register_input_counter_q_8" BEL
-        "matrix/M_register_input_counter_q_7" BEL
-        "matrix/M_register_input_counter_q_6" BEL
-        "matrix/M_register_input_counter_q_5" BEL
-        "matrix/M_register_input_counter_q_4" BEL
-        "matrix/M_register_input_counter_q_3" BEL
-        "matrix/M_register_input_counter_q_2" BEL
-        "matrix/M_register_input_counter_q_1" BEL
-        "matrix/M_register_input_counter_q_0" BEL
-        "matrix/M_refresh_row_counter_q_3" BEL
-        "matrix/M_refresh_row_counter_q_2" BEL
-        "matrix/M_refresh_row_counter_q_1" BEL
-        "matrix/M_refresh_row_counter_q_0" BEL "matrix/M_data_tx_clk_q_4" BEL
-        "matrix/M_data_tx_clk_q_3" BEL "matrix/M_data_tx_clk_q_2" BEL
-        "matrix/M_data_tx_clk_q_1" BEL "matrix/M_data_tx_clk_q_0" PIN
-        "matrix/matrix_vram_top/disp_vram/Mram_mem_pins<22>" PIN
-        "matrix/matrix_vram_top/disp_vram/Mram_mem_pins<23>" PIN
-        "matrix/matrix_vram_bottom/disp_vram/Mram_mem_pins<22>" PIN
-        "matrix/matrix_vram_bottom/disp_vram/Mram_mem_pins<23>" BEL
-        "clk_BUFGP/BUFG" BEL "register/M_state_q_FSM_FFd2_1" BEL
-        "register/M_state_q_FSM_FFd2_2" BEL "register/M_state_q_FSM_FFd2_3"
-        BEL "register/M_state_q_FSM_FFd2_4" BEL
-        "register/M_state_q_FSM_FFd3_1" BEL "register/M_inc_q" BEL
-        "register/M_timeout_q_0" BEL "register/M_timeout_q_1" BEL
-        "register/M_timeout_q_2" BEL "register/M_data_q_0" BEL
-        "register/M_timeout_q_3" BEL "register/M_data_q_1" BEL
-        "register/M_timeout_q_4" BEL "register/M_data_q_2" BEL
-        "register/M_timeout_q_5" BEL "register/M_timeout_q_6" BEL
-        "register/M_timeout_q_7" BEL "register/M_timeout_q_8" BEL
-        "register/M_timeout_q_9" BEL "register/M_state_q_FSM_FFd1" BEL
-        "register/M_state_q_FSM_FFd2" BEL "register/M_state_q_FSM_FFd3" BEL
-        "register/M_addr_q_10" BEL "register/M_addr_q_11" BEL
-        "register/M_addr_q_12" BEL "register/M_timeout_q_10" BEL
-        "register/M_timeout_q_11" BEL "register/M_addr_q_13" BEL
-        "register/M_timeout_q_12" BEL "register/M_addr_q_14" BEL
-        "register/M_timeout_q_13" BEL "register/M_addr_q_15" BEL
-        "register/M_addr_q_20" BEL "register/M_timeout_q_14" BEL
-        "register/M_addr_q_16" BEL "register/M_addr_q_21" BEL
-        "register/M_addr_q_17" BEL "register/M_addr_q_22" BEL
-        "register/M_timeout_q_15" BEL "register/M_timeout_q_20" BEL
-        "register/M_timeout_q_21" BEL "register/M_addr_q_18" BEL
-        "register/M_addr_q_23" BEL "register/M_timeout_q_16" BEL
-        "register/M_timeout_q_22" BEL "register/M_addr_q_19" BEL
-        "register/M_addr_q_24" BEL "register/M_timeout_q_17" BEL
-        "register/M_timeout_q_23" BEL "register/M_addr_q_25" BEL
-        "register/M_addr_q_30" BEL "register/M_timeout_q_18" BEL
-        "register/M_timeout_q_19" BEL "register/M_addr_q_26" BEL
-        "register/M_addr_q_31" BEL "register/M_addr_q_27" BEL
-        "register/M_addr_q_28" BEL "register/M_addr_q_29" BEL
-        "register/M_addr_ct_q_0" BEL "register/M_addr_ct_q_1" BEL
-        "register/M_addr_ct_q_2" BEL "register/M_addr_ct_q_3" BEL
-        "register/M_addr_ct_q_4" BEL "register/M_addr_ct_q_5" BEL
-        "register/M_byte_ct_q_0" BEL "register/M_byte_ct_q_1" BEL
-        "register/M_data_q_24" BEL "register/M_data_q_25" BEL
-        "register/M_data_q_26" BEL "register/M_wr_q" BEL "register/M_addr_q_0"
-        BEL "register/M_addr_q_1" BEL "register/M_addr_q_2" BEL
-        "register/M_addr_q_3" BEL "register/M_addr_q_4" BEL
-        "register/M_addr_q_5" BEL "register/M_addr_q_6" BEL
-        "register/M_addr_q_7" BEL "register/M_addr_q_8" BEL
-        "register/M_addr_q_9" BEL "register/M_state_q_FSM_FFd1_1" BEL
-        "register/M_state_q_FSM_FFd1_2" BEL "register/M_state_q_FSM_FFd1_3"
-        BEL "register/Mshreg_M_data_q_0" BEL "register/Mshreg_M_data_q_1" BEL
-        "register/Mshreg_M_data_q_2" BEL "reset_cond/M_stage_q_3" BEL
-        "reset_cond/M_stage_q_2" BEL "reset_cond/M_stage_q_1" BEL
-        "reset_cond/M_stage_q_0" BEL "avr/spi_slave/M_ss_reg_q" BEL
-        "avr/spi_slave/M_sck_reg_q_1" BEL "avr/spi_slave/M_sck_reg_q_0" BEL
-        "avr/spi_slave/M_miso_reg_q" BEL "avr/spi_slave/M_bit_ct_q_2" BEL
+COMP "led_b[0]" LOCATE = SITE "P34" LEVEL 1;
+COMP "led_b[1]" LOCATE = SITE "P35" LEVEL 1;
+COMP "led_blk" LOCATE = SITE "P24" LEVEL 1;
+COMP "spi_channel[0]" LOCATE = SITE "P46" LEVEL 1;
+COMP "spi_channel[1]" LOCATE = SITE "P61" LEVEL 1;
+COMP "led_clk" LOCATE = SITE "P27" LEVEL 1;
+COMP "spi_channel[2]" LOCATE = SITE "P62" LEVEL 1;
+COMP "spi_channel[3]" LOCATE = SITE "P65" LEVEL 1;
+COMP "cclk" LOCATE = SITE "P70" LEVEL 1;
+TIMEGRP clk = BEL "avr/spi_slave/M_ss_reg_q" BEL "avr/spi_slave/M_sck_reg_q_1"
+        BEL "avr/spi_slave/M_sck_reg_q_0" BEL "avr/spi_slave/M_bit_ct_q_2" BEL
         "avr/spi_slave/M_bit_ct_q_1" BEL "avr/spi_slave/M_bit_ct_q_0" BEL
-        "avr/spi_slave/M_data_q_0" BEL "avr/cclk_detector/M_ctr_q_13" BEL
-        "avr/cclk_detector/M_ctr_q_12" BEL "avr/cclk_detector/M_ctr_q_11" BEL
-        "avr/cclk_detector/M_ctr_q_10" BEL "avr/cclk_detector/M_ctr_q_9" BEL
-        "avr/cclk_detector/M_ctr_q_8" BEL "avr/cclk_detector/M_ctr_q_7" BEL
-        "avr/cclk_detector/M_ctr_q_6" BEL "avr/cclk_detector/M_ctr_q_5" BEL
-        "avr/cclk_detector/M_ctr_q_4" BEL "avr/cclk_detector/M_ctr_q_3" BEL
-        "avr/cclk_detector/M_ctr_q_2" BEL "avr/cclk_detector/M_ctr_q_1" BEL
-        "avr/cclk_detector/M_ctr_q_0" BEL "avr/uart_rx/M_bitCtr_q_2" BEL
-        "avr/uart_rx/M_bitCtr_q_1" BEL "avr/uart_rx/M_ctr_q_6" BEL
-        "avr/uart_rx/M_ctr_q_5" BEL "avr/uart_rx/M_ctr_q_4" BEL
-        "avr/uart_rx/M_ctr_q_3" BEL "avr/uart_rx/M_ctr_q_2" BEL
-        "avr/uart_rx/M_ctr_q_1" BEL "avr/uart_rx/M_ctr_q_0" BEL
-        "avr/uart_rx/M_savedData_q_7" BEL "avr/uart_rx/M_savedData_q_6" BEL
-        "avr/uart_rx/M_savedData_q_5" BEL "avr/uart_rx/M_savedData_q_4" BEL
-        "avr/uart_rx/M_savedData_q_3" BEL "avr/uart_rx/M_savedData_q_2" BEL
-        "avr/uart_rx/M_savedData_q_1" BEL "avr/uart_rx/M_savedData_q_0" BEL
-        "avr/uart_rx/M_rxd_q" BEL "avr/uart_rx/M_newData_q" BEL
-        "avr/uart_rx/M_bitCtr_q_0" BEL "avr/uart_rx/M_newData_q_1" BEL
-        "avr/uart_rx/M_state_q_FSM_FFd1" BEL "avr/uart_rx/M_state_q_FSM_FFd2"
-        BEL "avr/uart_tx/M_txReg_q";
+        "avr/spi_slave/M_miso_reg_q" BEL "avr/spi_slave/M_data_q_0" BEL
+        "avr/cclk_detector/M_ctr_q_13" BEL "avr/cclk_detector/M_ctr_q_12" BEL
+        "avr/cclk_detector/M_ctr_q_11" BEL "avr/cclk_detector/M_ctr_q_10" BEL
+        "avr/cclk_detector/M_ctr_q_9" BEL "avr/cclk_detector/M_ctr_q_8" BEL
+        "avr/cclk_detector/M_ctr_q_7" BEL "avr/cclk_detector/M_ctr_q_6" BEL
+        "avr/cclk_detector/M_ctr_q_5" BEL "avr/cclk_detector/M_ctr_q_4" BEL
+        "avr/cclk_detector/M_ctr_q_3" BEL "avr/cclk_detector/M_ctr_q_2" BEL
+        "avr/cclk_detector/M_ctr_q_1" BEL "avr/cclk_detector/M_ctr_q_0" BEL
+        "avr/uart_tx/M_txReg_q" BEL "clk_BUFGP/BUFG" BEL
+        "reset_cond/M_stage_q_3" BEL "reset_cond/M_stage_q_2" BEL
+        "reset_cond/M_stage_q_1" BEL "reset_cond/M_stage_q_0" BEL
+        "new_matrix/M_state_q_FSM_FFd1" BEL "new_matrix/M_state_q_FSM_FFd2"
+        BEL "new_matrix/M_led_bit_counter_q_6" BEL
+        "new_matrix/M_sclk_counter_q_4" BEL "new_matrix/M_sclk_counter_q_3"
+        BEL "new_matrix/M_sclk_counter_q_2" BEL
+        "new_matrix/M_sclk_counter_q_1" BEL "new_matrix/M_sclk_counter_q_0"
+        BEL "new_matrix/M_led_bit_counter_q_5" BEL
+        "new_matrix/M_led_bit_counter_q_4" BEL
+        "new_matrix/M_led_bit_counter_q_2" BEL
+        "new_matrix/M_led_bit_counter_q_1" BEL
+        "new_matrix/M_led_bit_counter_q_3" BEL
+        "new_matrix/M_led_bit_counter_q_0" BEL "new_matrix/M_rgb_data_q_5" BEL
+        "new_matrix/M_rgb_data_q_4" BEL "new_matrix/M_rgb_data_q_3" BEL
+        "new_matrix/M_rgb_data_q_2" BEL "new_matrix/M_rgb_data_q_1" BEL
+        "new_matrix/M_rgb_data_q_0" BEL "new_matrix/M_current_address_q_3" BEL
+        "new_matrix/M_current_address_q_2" BEL
+        "new_matrix/M_current_address_q_1" BEL
+        "new_matrix/M_current_address_q_0" BEL "new_matrix/M_latch_blank_q_1"
+        BEL "new_matrix/M_latch_blank_q_0" BEL "new_matrix/M_sclk_q";
 TS_clk = PERIOD TIMEGRP "clk" 50 MHz HIGH 50%;
 SCHEMATIC END;
 
