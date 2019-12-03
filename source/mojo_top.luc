@@ -11,6 +11,10 @@ module mojo_top (
     input avr_tx,           // AVR TX (FPGA RX)
     output avr_rx,          // AVR RX (FPGA TX)
     input avr_rx_busy,       // AVR RX buffer full
+    input redbutton,
+    input whitebutton,
+    input bluebutton,
+    
     output led_r[2],
     output led_g[2],
     output led_b[2],
@@ -94,9 +98,16 @@ module mojo_top (
   //  io_led[2] = game_fsm.debug2;
     
     game_fsm.io_button = b1;
+    game_fsm.buttonleft = redbutton;
+    game_fsm.buttonright = whitebutton;
+    game_fsm.buttonstart = bluebutton;
     
-    matrix_data.shiftSky = game_fsm.shiftGen;
+    matrix_data.shiftSky = game_fsm.shift_sky_enable;
     matrix_data.generateSky = game_fsm.generate_sky;
+    matrix_data.shiftchickenleft = game_fsm.shiftchickenleft_en;
+    matrix_data.shiftchickenright = game_fsm.shiftchickenright_en;
+    matrix_data.init_en = game_fsm.init_en;
+    matrix_data.sky_col_check = game_fsm.skyCollisionCheck_en;
       
     matrix_data.row_address = matrix_writer.row_index;
     matrix_data.column_address = matrix_writer.col_index;
