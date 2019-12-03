@@ -1,0 +1,141 @@
+module matrix_ram_rgb #(
+  ADDRESS_SIZE = 4 : ADDRESS_SIZE > 0, //width of the address field (ABCD signals for matrix_led)
+  MATRIX_WIDTH = 64 : MATRIX_WIDTH > 0,
+  COLUMN_CHICKEN_LOW = 2 : COLUMN_CHICKEN_LOW > 0,
+  COLUMN_CHICKEN_HIGH = 8 : COLUMN_CHICKEN_HIGH > 0
+)(
+    input clk,  // clock
+    input rst,  // reset
+
+    input row_address[ADDRESS_SIZE],
+    input column_address[$clog2(MATRIX_WIDTH)],
+
+    output pixel_data[6],
+
+    //add read ports
+    output chicken_data_top_row0[3][6],
+
+    //add write ports
+    input chicken_data_top_row0_writeenable,
+    input chicken_data_top_row0_in[3][6]
+
+)   
+{
+
+sig chicken_pixel_top[3]; //bgr
+sig chicken_pixel_bottom[3]; 
+sig background_pixel_top[3];
+sig background_pixel_bottom[3];
+sig effective_pixel_top[3];
+sig effective_pixel_bottom[3];
+
+.clk(clk){
+    .rst(rst){
+        dff chicken_data_top_red[$pow(2,ADDRESS_SIZE)][6]; //the chicken is only 6 pixels high
+        dff chicken_data_top_green[$pow(2,ADDRESS_SIZE)][6];
+        dff chicken_data_top_blue[$pow(2,ADDRESS_SIZE)][6];
+
+        dff chicken_data_bottom_red[$pow(2,ADDRESS_SIZE)][6]; //the chicken is only 6 pixels high
+        dff chicken_data_bottom_green[$pow(2,ADDRESS_SIZE)][6];
+        dff chicken_data_bottom_blue[$pow(2,ADDRESS_SIZE)][6];
+
+        dff background_data_top_red[$pow(2,ADDRESS_SIZE)][MATRIX_WIDTH];
+        dff background_data_top_green[$pow(2,ADDRESS_SIZE)][MATRIX_WIDTH];
+        dff background_data_top_blue[$pow(2,ADDRESS_SIZE)][MATRIX_WIDTH];
+
+        dff background_data_bottom_red[$pow(2,ADDRESS_SIZE)][MATRIX_WIDTH];
+        dff background_data_bottom_green[$pow(2,ADDRESS_SIZE)][MATRIX_WIDTH];
+        dff background_data_bottom_blue[$pow(2,ADDRESS_SIZE)][MATRIX_WIDTH];
+
+        fsm state = {START, LOOP};
+    }
+}
+
+
+always{
+
+    //set intermediary data
+    pixel_data = 0;
+    chicken_pixel_top = 0;
+    chicken_pixel_bottom = 0;
+    background_pixel_top = 0;
+    background_pixel_bottom = 0;
+    effective_pixel_top = 0;
+    effective_pixel_bottom = 0;
+
+    case(state.q){
+        state.START : //init the dffs
+            chicken_data_top_red.d[0][0] = b1; // red 
+            chicken_data_top_green.d[0][0] = b0;
+            chicken_data_top_blue.d[0][0] = b0;
+
+            background_data_bottom_green.d[0][0] = b1; //green
+            background_data_top_blue.d[0][0] = b1; //blue
+            // set more once in the beginning 
+            state.d = state.LOOP;
+
+        state.LOOP: //keep looping
+            state.d = state.LOOP;
+    }
+
+    background_pixel_top = c{background_data_top_blue.q[row_address][column_address], 
+                            background_data_top_green.q[row_address][column_address], 
+                            background_data_top_red.q[row_address][column_address]};
+      
+    
+    background_pixel_bottom = c{background_data_bottom_blue.q[row_address][column_address], 
+                            background_data_bottom_green.q[row_address][column_address], 
+                            background_data_bottom_red.q[row_address][column_address]};
+
+    //check if input column is within chicken column
+    if (COLUMN_CHICKEN_LOW <= column_address <= COLUMN_CHICKEN_HIGH){
+        chicken_pixel_top = c{chicken_data_top_blue.q[row_address][column_address-COLUMN_CHICKEN_LOW],
+                            chicken_data_top_green.q[row_address][column_address-COLUMN_CHICKEN_LOW],
+                            chicken_data_top_red.q[row_address][column_address-COLUMN_CHICKEN_LOW]};
+        chicken_pixel_bottom = c{chicken_data_bottom_blue.q[row_address][column_address-COLUMN_CHICKEN_LOW],
+                            chicken_data_bottom_green.q[row_address][column_address-COLUMN_CHICKEN_LOW],
+                            chicken_data_bottom_red.q[row_address][column_address-COLUMN_CHICKEN_LOW]};
+
+        //check if theres chicken, overwrite
+        if (chicken_pixel_top > 0){
+            effective_pixel_top = chicken_pixel_top;
+        }
+        else{
+            effective_pixel_top = background_pixel_top;
+        }
+        if (chicken_pixel_bottom > 0){
+            effective_pixel_bottom = chicken_pixel_bottom;
+        }
+        else{
+            effective_pixel_top = background_pixel_bottom;
+        }
+
+        //return background data overlay chicken
+        pixel_data = c{effective_pixel_top, effective_pixel_bottom}; //check if need to swap this 
+    }
+    else{
+        //return background data
+       pixel_data = c{background_pixel_top, background_pixel_bottom};
+    }
+
+    // read port, give all 6 bits of chicken data, BGR 
+    chicken_data_top_row0 = {c{chicken_data_top_blue.q[0]}, c{chicken_data_top_green.q[0]}, c{chicken_data_top_red.q[0]}}; //2D array, 3 by 6, check
+
+
+    //write port
+    if(chicken_data_top_row0_writeenable){
+        //write to chicken data, 6 bits each
+        chicken_data_top_red.d[0] = chicken_data_top_row0_in[2]; //red
+        chicken_data_top_green.d[0] = chicken_data_top_row0_in[1]; //green
+        chicken_data_top_blue.d[0] = chicken_data_top_row0_in[0]; //blue
+    }
+
+
+    
+
+
+}
+  
+
+}
+

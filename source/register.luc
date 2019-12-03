@@ -1,0 +1,22 @@
+module register #(
+    ROW=8,COLOMN=8
+  )(
+    input clk,
+    input en,  // enable
+    input rst,  // reset
+    input data[ROW][COLOMN],
+    output out[ROW][COLOMN]
+  ) {
+  
+  dff regs[ROW][COLOMN](.clk(clk),.rst(rst));
+ 
+  always {
+  
+    if(en==1)
+      regs.d=data;
+    else  
+      regs.d=regs.q;
+    //regs.d=data;
+    out=regs.q;
+  }
+}

@@ -1,0 +1,176 @@
+module gamefsm (
+    input clk,              // 50MHz clock
+    input rst,            // reset button (active low)    
+    input io_button [5],    // 5 buttons on IO Shield
+    output led_matrix[8][8],
+    output debug[8],
+    output debug1[8],
+    output debug2[8],
+    
+    output shiftGen,
+    output generate_sky[5]
+  ) {
+  
+  //sig score[4];
+  sig sky[8][8];
+  //sig grass[2][32];
+  sig chicken[8][8];
+  sig score;
+ // bin_to_dec bin_to_dec;
+  
+  .clk(clk) {
+    // The reset conditioner is used to synchronize the reset signal to the FPGA
+    // clock. This ensures the entire FPGA comes out of reset at the same time.
+    //reset_conditioner reset_cond;
+
+     edge_detector skyFalling_edge;
+     edge_detector skyCollision_edge;
+    
+    .rst(rst){
+      fsm state = {START, INIT, IDLE, GENRAN, MOVERIGHT, MOVELEFT, SKYFALL, CHECKSKYDIS, CHECKCOL, GAMEOVER};
+      initgame initgame;
+      genSky genSky;
+      stateCounterA scA;
+      stateCounterB scB;
+      
+      dff debug_reg[8];
+      dff debug_reg1[8];
+      dff debug_reg2[8];
+      
+      counter skyFalling(#SIZE(1),#DIV(27));
+      counter skyCollision(#SIZE(1),#DIV(24));
+      
+      pn_gen skygenerator;
+      
+      dff seed[64];
+      
+      
+      dff current_sky[5];
+      
+      
+    }
+  }
+  
+ sig skyFall_check;
+ sig skyCollision_check;
+  
+  always {
+    
+    seed.d = seed.q + 1;
+    skygenerator.seed = seed.q;
+    skygenerator.next = 0;
+    
+    skyFalling_edge.in = skyFalling.value;
+    skyFall_check = skyFalling_edge.out;
+    
+    skyCollision_edge.in = skyCollision.value;
+    skyCollision_check = skyCollision_edge.out;
+    
+    debug = debug_reg.q;
+    debug1 = debug_reg1.q;
+    debug2 = debug_reg2.q;
+    
+    shiftGen = skyFall_check;
+    generate_sky = current_sky.q;
+    
+    led_matrix = 8x{{8b0}};
+   // bin_to_dec.value = scA.score;
+    //score= bin_to_dec.digits[0];
+    score = 0;
+    sky = 8x{{8b0}};
+    chicken = 8x{{8h0}};
+   // grass = 2x{{32b11111111111111111111111111111111}};
+    
+    case (state.q){                 //initial start state of finite state machine   
+      state.START:
+
+     //   if(io_button[1]){      //if center button is pressed, init the game
+           state.d = state.INIT;      
+       // }
+        
+      state.INIT:
+        
+        sky[7] = initgame.sky[0];
+        chicken[0] = initgame.chicken[0];
+        
+        debug_reg.d = initgame.sky[0];
+        debug_reg1.d = initgame.chicken[0];
+        
+        led_matrix[0] = chicken[0]; //chicken is spawn at the bottom row 
+        led_matrix[7] = sky[7]; // sky spawned at the topmost row
+        
+        state.d = state.IDLE;
+        
+        
+      state.IDLE:
+        led_matrix = sky&chicken; //display the entire led matrix
+        
+        debug_reg.d = b1111;
+        
+        
+        if(skyFall_check){ //every 1.6s, generate sky once
+          state.d = state.GENRAN;
+          }
+        
+       // if (scB.out1 ==1 & scB.out2==1){ //around every 0.4s, sky falls, here use two bit of out, to avoid collision with timerA
+     //     state.d = state.SKYFALL;
+        //  }
+        //if (button){ //when button is pressed, chicken moves left or right
+        
+    /*      
+      state.MOVELEFT:
+        if(chicken[0][0] == 1){
+          chicken[0] = 8b00000001;
+        }else{
+        //using alu to shift the chicken to left
+          }  
+        state.d = state.IDLE;
+        
+      state.MOVERIGHT:
+        if(chicken[0][7] == 1){
+          chicken[0] = 8b10000000;
+          }else{//using alu to shift chicken to right
+        }
+        state.d = state.IDLE;*/
+        
+      state.GENRAN:
+        sky[7] = genSky.sky[0];
+        led_matrix[7] = sky[7];
+        
+        skygenerator.next = 1;
+        current_sky.d = skygenerator.num[4:0];
+       // debug_reg.d = current_sky.q;
+        debug_reg2.d = current_sky.q;
+       // debug_reg1.d = initgame.chicken[0];
+        state.d = state.IDLE;
+        
+    /*  state.SKYFALL: 
+       //sky fall shift first
+       //shift sky[7:1] down to sky[6:0]
+        state.d = state.CHECKCOL;
+        
+      state.CHECKCOL:
+        if (sky[0]&chicken[0]){  //CHECK if sky and chicken has collision using alu, if collision happens, game over
+          state.d = state.GAMEOVER;
+        }
+        state.d = state.CHECKSKYDIS;
+        
+      state.CHECKSKYDIS:
+        if(^sky[0] ==1){  //check if sky is falling to the bottom by 8nor gate using alu
+          sky[0] = 8b0;
+          led_matrix[0] = chicken[0];
+          score = score + 2; //replace with alu add function later, or move this to skydisappear state
+          }
+        state.d = state.IDLE;
+        
+      state.GAMEOVER:
+        //display score at seven segment
+        if(io_button[1]){      //if center button is pressed, go back to start state of the game
+           state.d = state.START;      
+        }
+      */
+
+    
+  }
+}
+}

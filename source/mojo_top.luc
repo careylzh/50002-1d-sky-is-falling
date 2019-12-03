@@ -18,6 +18,12 @@ module mojo_top (
     output led_clk,
     output led_lat,
     output led_blk
+   // output io_led [3][8],   // LEDs on IO Shield
+  //  output io_seg [8],      // 7-segment LEDs on IO Shield
+  //  output io_sel [4],      // Digit select on IO Shield
+//////    input io_button [5],    // 5 buttons on IO Shield
+ //   input io_dip [3][8]     // DIP switches on IO Shield
+    
   ) {
   
   sig rst;                  // reset signal
@@ -29,22 +35,24 @@ module mojo_top (
     .rst(rst){
       avr_interface avr;
       reg_interface register;
-      matrix_writer new_matrix;
+      
+      //matrices
+      matrix_writer matrix_writer;
+      matrix_ram matrix_data;
+      gamefsm game_fsm;
+      
     }
   }
-  
-  led_matrix matrix(
-    .clk(clk),
-    .rst(rst)
-    );
   
   
   always {
     reset_cond.in = ~rst_n; // input raw inverted reset signal
     rst = reset_cond.out;   // conditioned reset
+   led = c{3b0, 5b11111};  // connect buttons to LEDs
+    //led = 8h00;             // turn LEDs off
     
-    led = 8h00;             // turn LEDs off
-    
+ //   io_seg = 3x{c{8b0}};
+  //  io_sel = 4x{b0};
     // connect inputs of avr
     avr.cclk = cclk;
     avr.spi_ss = spi_ss;
@@ -68,7 +76,9 @@ module mojo_top (
     register.regIn.drdy = 0;    // default to no data
     register.regIn.data = 32bx; // don't care
     
-   /* 
+   // io_led = io_dip;   // connect the DIP switches to the LEDs
+    
+   /*
     led_r=matrix.out_r;
     led_g=matrix.out_g;
     led_b=matrix.out_b;
@@ -76,17 +86,32 @@ module mojo_top (
     led_clk=matrix.out_clk;
     led_lat=matrix.out_lat;
     led_blk=matrix.out_blk;
-    */
+      */
+    // set inputs to fsm fsmchick
+//    game_fsm.io_button = b1;
+  //  io_led[0] = game_fsm.debug;
+  //  io_led[1] = game_fsm.debug1;
+  //  io_led[2] = game_fsm.debug2;
     
-    led_r = c{new_matrix.red0, new_matrix.red1};
-    led_g = c{ new_matrix.green0, new_matrix.green1};
-    led_b = c{ new_matrix.blue0, new_matrix.blue1};
-    led_addr = new_matrix.address;
-    led_clk = new_matrix.sclk_out;
-    led_lat = new_matrix.latch;
-    led_blk = new_matrix.blank;
+    game_fsm.io_button = b1;
+    
+    matrix_data.shiftSky = game_fsm.shiftGen;
+    matrix_data.generateSky = game_fsm.generate_sky;
+      
+    matrix_data.row_address = matrix_writer.row_index;
+    matrix_data.column_address = matrix_writer.col_index;
+    matrix_writer.data = matrix_data.out;
+    
+    led_r = c{matrix_writer.red0, matrix_writer.red1};
+    led_g = c{ matrix_writer.green0, matrix_writer.green1};
+    led_b = c{ matrix_writer.blue0, matrix_writer.blue1};
+    led_addr = matrix_writer.address;
+    led_clk = matrix_writer.sclk_out;
+    led_lat = matrix_writer.latch;
+    led_blk = matrix_writer.blank;
     
     
+  /*  
    if (register.regOut.new_cmd) {             // new command
       if (register.regOut.write) {             // if write
         matrix.wr_en = 1;
@@ -101,12 +126,7 @@ module mojo_top (
       matrix.wr_en = 0;
       matrix.wr_addr = 0;
       matrix.wr_data = 0;
-    }
-    
-    
-    
-    
-   
+    }*/
     
   }
 }

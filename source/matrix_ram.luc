@@ -4,6 +4,9 @@ module matrix_ram #(
 )(
     input clk,  // clock
     input rst,  // reset
+    input generateSky[5],
+    input shiftSky,
+    
   //  input write_row_address[ADDRESS_SIZE],
   //  input write_column_address[ADDRESS_SIZE],
  //   input write_enable,
@@ -13,10 +16,10 @@ module matrix_ram #(
     output out[6] //6b b1g1r1b0g1r0
   ) {
 
-  const DATA = c{c{64x{{6b001001}}}, c{64x{{6b000000}}}, c{64x{{6b011011}}}, c{64x{{6b101101}}}, 
+ /* const DATA = c{c{64x{{6b001001}}}, c{64x{{6b000000}}}, c{64x{{6b011011}}}, c{64x{{6b101101}}}, 
                  c{64x{{6b111111}}}, c{64x{{6b111001}}}, c{64x{{6b001011}}}, c{64x{{6b101001}}}, 
                 c{64x{{6b010001}}}, c{64x{{6b000001}}}, c{64x{{6b101111}}}, c{64x{{6b001111}}}, 
-                c{64x{{6b001001}}}, c{64x{{6b001001}}}, c{64x{{6b001001}}}, c{64x{{6b001001}}} };
+                c{64x{{6b001001}}}, c{64x{{6b001001}}}, c{64x{{6b001001}}}, c{64x{{6b001001}}} };*/
      
   /* const DATA = {{6b001001, 6b001001, 6b001001, 6b001001,
                     6b001001, 6b001001, 6b001001, 6b001001,
@@ -59,11 +62,16 @@ module matrix_ram #(
       dff reg_data_tophalf[$pow(2,ADDRESS_SIZE)][MATRIX_WIDTH][3];
       dff reg_data_bottomhalf[$pow(2,ADDRESS_SIZE)][MATRIX_WIDTH][3];
       
-      fsm state = {START, LOOP};
+      dff chicken_data_tophalf[$pow(2,ADDRESS_SIZE)][MATRIX_WIDTH][3];
+      dff chicken_data_bottomhalf[$pow(2,ADDRESS_SIZE)][MATRIX_WIDTH][3];
+      
+      fsm state = {START, LOOP, GENERATE, SHIFT};
     }
     
   }
   
+  sig top_half_proc[3];
+  sig bottom_half_proc[3];
   always {
   
     case(state.q){
@@ -187,17 +195,63 @@ module matrix_ram #(
         reg_data_bottomhalf.d[3][42] = b100;
         reg_data_bottomhalf.d[4][42] = b100;
         reg_data_bottomhalf.d[5][42] = b100; 
-
 //        reg_data_tophalf.d[5][21] = b001;
       
         state.d = state.LOOP;
                
       state.LOOP:
-        state.d = state.q;
+        if (shiftSky){
+          state.d = state.GENERATE;
+        }
+        
+      state.GENERATE:
+        if (generateSky < 14){
+          //at top half 
+          reg_data_tophalf.d[generateSky][63] = b100;
+          reg_data_tophalf.d[generateSky][62] = b100;
+          reg_data_tophalf.d[generateSky][61] = b100;
+          
+          reg_data_tophalf.d[generateSky+1][63] = b100;
+          reg_data_tophalf.d[generateSky+1][62] = b100;
+          reg_data_tophalf.d[generateSky+1][61] = b100;
+          
+          reg_data_tophalf.d[generateSky+2][63] = b100;
+          reg_data_tophalf.d[generateSky+2][62] = b100;
+          reg_data_tophalf.d[generateSky+2][61] = b100;
+        }
+        else if (15 < generateSky < 29){
+          reg_data_bottomhalf.d[generateSky][63] = b100;
+          reg_data_bottomhalf.d[generateSky][62] = b100;
+          reg_data_bottomhalf.d[generateSky][61] = b100;
+          
+          reg_data_bottomhalf.d[generateSky+1][63] = b100;
+          reg_data_bottomhalf.d[generateSky+1][62] = b100;
+          reg_data_bottomhalf.d[generateSky+1][61] = b100;
+          
+          reg_data_bottomhalf.d[generateSky+2][63] = b100;
+          reg_data_bottomhalf.d[generateSky+2][62] = b100;
+          reg_data_bottomhalf.d[generateSky+2][61] = b100;
+        }
+        
+        state.d = state.LOOP;
       
     }
   
-    out = c{ reg_data_bottomhalf.q[row_address][column_address], reg_data_tophalf.q[row_address][column_address]};
+    if (chicken_data_bottomhalf.q[row_address][column_address]){
+      bottom_half_proc = chicken_data_bottomhalf.q[row_address][column_address];
+    }
+    else{
+      bottom_half_proc = reg_data_bottomhalf.q[row_address][column_address];
+    }
+    
+    if (chicken_data_tophalf.q[row_address][column_address]){
+      top_half_proc = chicken_data_tophalf.q[row_address][column_address];
+    }
+    else{
+      top_half_proc =  reg_data_tophalf.q[row_address][column_address];
+    }
+    
+    out = c{ top_half_proc, bottom_half_proc};
    // out = DATA[row_address][column_address];
   }
 }

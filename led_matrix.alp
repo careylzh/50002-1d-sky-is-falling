@@ -2,23 +2,35 @@
 <project name="led_matrix" board="Mojo" language="Lucid" version="2">
   <files>
     <component>cclk_detector.luc</component>
-    <component>simple_dual_ram.v</component>
+    <src>vram.luc</src>
     <component>reg_interface.luc</component>
-    <component>uart_rx.luc</component>
-    <src>matrix_writer.luc</src>
-    <src>serial_to_rgb.luc</src>
-    <component>spi_slave.luc</component>
     <src>matrix.v</src>
+    <component>pipeline.luc</component>
+    <component>uart_rx.luc</component>
+    <component>counter.luc</component>
+    <component>spi_slave.luc</component>
+    <src>stateCounterB.luc</src>
+    <src>initgame.luc</src>
+    <src>button.luc</src>
+    <src>matrix_ram_rgb.luc</src>
+    <component>reset_conditioner.luc</component>
+    <src>stateCounterA.luc</src>
+    <src>matrix_writer.luc</src>
+    <component>avr_interface.luc</component>
+    <component>simple_dual_ram.v</component>
+    <src>gamefsm.luc</src>
+    <src>button_conditioner.luc</src>
+    <src top="true">mojo_top.luc</src>
     <src>led_matrix.luc</src>
     <component>uart_tx.luc</component>
-    <src>matrix_ram.luc</src>
+    <component>pn_gen.luc</component>
     <component>simple_ram.v</component>
-    <src>vram.luc</src>
-    <component>reset_conditioner.luc</component>
-    <src top="true">mojo_top.luc</src>
+    <src>matrix_ram.luc</src>
+    <src>serial_to_rgb.luc</src>
     <component>edge_detector.luc</component>
-    <component>avr_interface.luc</component>
+    <src>genSky.luc</src>
     <constraint>matrix.ucf</constraint>
+    <constraint>leftRightButtons.ucf</constraint>
     <constraint lib="true">mojo.ucf</constraint>
   </files>
 </project>

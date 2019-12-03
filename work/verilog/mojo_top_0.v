@@ -95,62 +95,75 @@ module mojo_top_0 (
     .new_tx_data(M_register_new_tx_data),
     .regOut(M_register_regOut)
   );
-  wire [1-1:0] M_new_matrix_red0;
-  wire [1-1:0] M_new_matrix_green0;
-  wire [1-1:0] M_new_matrix_blue0;
-  wire [1-1:0] M_new_matrix_red1;
-  wire [1-1:0] M_new_matrix_green1;
-  wire [1-1:0] M_new_matrix_blue1;
-  wire [1-1:0] M_new_matrix_latch;
-  wire [1-1:0] M_new_matrix_blank;
-  wire [1-1:0] M_new_matrix_sclk_out;
-  wire [16-1:0] M_new_matrix_debug;
-  wire [4-1:0] M_new_matrix_address;
-  matrix_writer_4 new_matrix (
+  wire [6-1:0] M_matrix_writer_col_index;
+  wire [4-1:0] M_matrix_writer_row_index;
+  wire [1-1:0] M_matrix_writer_red0;
+  wire [1-1:0] M_matrix_writer_green0;
+  wire [1-1:0] M_matrix_writer_blue0;
+  wire [1-1:0] M_matrix_writer_red1;
+  wire [1-1:0] M_matrix_writer_green1;
+  wire [1-1:0] M_matrix_writer_blue1;
+  wire [1-1:0] M_matrix_writer_latch;
+  wire [1-1:0] M_matrix_writer_blank;
+  wire [1-1:0] M_matrix_writer_sclk_out;
+  wire [16-1:0] M_matrix_writer_debug;
+  wire [4-1:0] M_matrix_writer_address;
+  reg [6-1:0] M_matrix_writer_data;
+  matrix_writer_4 matrix_writer (
     .clk(clk),
     .rst(rst),
-    .red0(M_new_matrix_red0),
-    .green0(M_new_matrix_green0),
-    .blue0(M_new_matrix_blue0),
-    .red1(M_new_matrix_red1),
-    .green1(M_new_matrix_green1),
-    .blue1(M_new_matrix_blue1),
-    .latch(M_new_matrix_latch),
-    .blank(M_new_matrix_blank),
-    .sclk_out(M_new_matrix_sclk_out),
-    .debug(M_new_matrix_debug),
-    .address(M_new_matrix_address)
+    .data(M_matrix_writer_data),
+    .col_index(M_matrix_writer_col_index),
+    .row_index(M_matrix_writer_row_index),
+    .red0(M_matrix_writer_red0),
+    .green0(M_matrix_writer_green0),
+    .blue0(M_matrix_writer_blue0),
+    .red1(M_matrix_writer_red1),
+    .green1(M_matrix_writer_green1),
+    .blue1(M_matrix_writer_blue1),
+    .latch(M_matrix_writer_latch),
+    .blank(M_matrix_writer_blank),
+    .sclk_out(M_matrix_writer_sclk_out),
+    .debug(M_matrix_writer_debug),
+    .address(M_matrix_writer_address)
   );
-  
-  wire [2-1:0] M_matrix_out_r;
-  wire [2-1:0] M_matrix_out_g;
-  wire [2-1:0] M_matrix_out_b;
-  wire [4-1:0] M_matrix_out_addr;
-  wire [1-1:0] M_matrix_out_clk;
-  wire [1-1:0] M_matrix_out_blk;
-  wire [1-1:0] M_matrix_out_lat;
-  reg [1-1:0] M_matrix_wr_en;
-  reg [11-1:0] M_matrix_wr_addr;
-  reg [3-1:0] M_matrix_wr_data;
-  led_matrix_5 matrix (
+  wire [6-1:0] M_matrix_data_out;
+  reg [5-1:0] M_matrix_data_generateSky;
+  reg [1-1:0] M_matrix_data_shiftSky;
+  reg [4-1:0] M_matrix_data_row_address;
+  reg [6-1:0] M_matrix_data_column_address;
+  matrix_ram_5 matrix_data (
     .clk(clk),
     .rst(rst),
-    .wr_en(M_matrix_wr_en),
-    .wr_addr(M_matrix_wr_addr),
-    .wr_data(M_matrix_wr_data),
-    .out_r(M_matrix_out_r),
-    .out_g(M_matrix_out_g),
-    .out_b(M_matrix_out_b),
-    .out_addr(M_matrix_out_addr),
-    .out_clk(M_matrix_out_clk),
-    .out_blk(M_matrix_out_blk),
-    .out_lat(M_matrix_out_lat)
+    .generateSky(M_matrix_data_generateSky),
+    .shiftSky(M_matrix_data_shiftSky),
+    .row_address(M_matrix_data_row_address),
+    .column_address(M_matrix_data_column_address),
+    .out(M_matrix_data_out)
+  );
+  wire [64-1:0] M_game_fsm_led_matrix;
+  wire [8-1:0] M_game_fsm_debug;
+  wire [8-1:0] M_game_fsm_debug1;
+  wire [8-1:0] M_game_fsm_debug2;
+  wire [1-1:0] M_game_fsm_shiftGen;
+  wire [5-1:0] M_game_fsm_generate_sky;
+  reg [5-1:0] M_game_fsm_io_button;
+  gamefsm_6 game_fsm (
+    .clk(clk),
+    .rst(rst),
+    .io_button(M_game_fsm_io_button),
+    .led_matrix(M_game_fsm_led_matrix),
+    .debug(M_game_fsm_debug),
+    .debug1(M_game_fsm_debug1),
+    .debug2(M_game_fsm_debug2),
+    .shiftGen(M_game_fsm_shiftGen),
+    .generate_sky(M_game_fsm_generate_sky)
   );
   
   always @* begin
     M_reset_cond_in = ~rst_n;
     rst = M_reset_cond_out;
-    led = 8'h00;
+    led = 8'h1f;
     M_avr_cclk = cclk;
     M_avr_spi_ss = spi_ss;
     M_avr_spi_mosi = spi_mosi;
@@ -168,27 +181,18 @@ module mojo_top_0 (
     M_register_tx_busy = M_avr_tx_busy;
     M_register_regIn[32+0-:1] = 1'h0;
     M_register_regIn[0+31-:32] = 32'bxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx;
-    led_r = {M_new_matrix_red0, M_new_matrix_red1};
-    led_g = {M_new_matrix_green0, M_new_matrix_green1};
-    led_b = {M_new_matrix_blue0, M_new_matrix_blue1};
-    led_addr = M_new_matrix_address;
-    led_clk = M_new_matrix_sclk_out;
-    led_lat = M_new_matrix_latch;
-    led_blk = M_new_matrix_blank;
-    if (M_register_regOut[0+0-:1]) begin
-      if (M_register_regOut[1+0-:1]) begin
-        M_matrix_wr_en = 1'h1;
-        M_matrix_wr_addr = M_register_regOut[2+31-:32];
-        M_matrix_wr_data = M_register_regOut[34+0+2-:3];
-      end else begin
-        M_matrix_wr_en = 1'h0;
-        M_matrix_wr_addr = 1'h0;
-        M_matrix_wr_data = 1'h0;
-      end
-    end else begin
-      M_matrix_wr_en = 1'h0;
-      M_matrix_wr_addr = 1'h0;
-      M_matrix_wr_data = 1'h0;
-    end
+    M_game_fsm_io_button = 1'h1;
+    M_matrix_data_shiftSky = M_game_fsm_shiftGen;
+    M_matrix_data_generateSky = M_game_fsm_generate_sky;
+    M_matrix_data_row_address = M_matrix_writer_row_index;
+    M_matrix_data_column_address = M_matrix_writer_col_index;
+    M_matrix_writer_data = M_matrix_data_out;
+    led_r = {M_matrix_writer_red0, M_matrix_writer_red1};
+    led_g = {M_matrix_writer_green0, M_matrix_writer_green1};
+    led_b = {M_matrix_writer_blue0, M_matrix_writer_blue1};
+    led_addr = M_matrix_writer_address;
+    led_clk = M_matrix_writer_sclk_out;
+    led_lat = M_matrix_writer_latch;
+    led_blk = M_matrix_writer_blank;
   end
 endmodule

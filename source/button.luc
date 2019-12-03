@@ -1,0 +1,26 @@
+  module button (
+    input clk,  // clock
+    input rst,  // reset
+    input button,
+    output press
+  ) {
+
+  .clk(clk) {
+    edge_detector edge_detector(#RISE(1), #FALL(0)); // detect rising edges
+    button_conditioner button_cond;
+ 
+    .rst(rst) {
+    }
+  }
+  always {
+    button_cond.in = button;
+    edge_detector.in = button_cond.out; // input to the edge_detector
+ 
+    if (edge_detector.out){     // if edge detected
+      press = 1;       // add one to the counter
+    }
+    else {
+      press = 0;
+    }
+  }
+}

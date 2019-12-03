@@ -10,6 +10,14 @@
         <Attr Name="UsedInImplementation" Val="1"/>
       </FileInfo>
     </File>
+    <File Path="$PSRCDIR/constrs_1/imports/leftRightButtons.ucf">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../constraint/leftRightButtons.ucf"/>
+        <Attr Name="ImportTime" Val="1575292836"/>
+        <Attr Name="UsedInSynthesis" Val="1"/>
+        <Attr Name="UsedInImplementation" Val="1"/>
+      </FileInfo>
+    </File>
     <File Path="$PSRCDIR/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf">
       <FileInfo>
         <Attr Name="ImportPath" Val="$PPRDIR/../../../../../../../Program Files/Alchitry/Alchitry Labs/library/components/mojo.ucf"/>

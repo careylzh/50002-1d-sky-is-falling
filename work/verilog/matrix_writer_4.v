@@ -12,6 +12,9 @@
 module matrix_writer_4 (
     input clk,
     input rst,
+    input [5:0] data,
+    output reg [5:0] col_index,
+    output reg [3:0] row_index,
     output reg red0,
     output reg green0,
     output reg blue0,
@@ -31,10 +34,6 @@ module matrix_writer_4 (
   
   localparam DIV = 3'h5;
   
-  reg [5:0] col_index;
-  
-  reg [3:0] row_index;
-  
   reg [1:0] M_state_d, M_state_q = 1'h0;
   reg [4:0] M_sclk_counter_d, M_sclk_counter_q = 1'h0;
   reg [6:0] M_led_bit_counter_d, M_led_bit_counter_q = 1'h0;
@@ -43,16 +42,6 @@ module matrix_writer_4 (
   reg [5:0] M_rgb_data_d, M_rgb_data_q = 1'h0;
   reg M_sclk_d, M_sclk_q = 1'h0;
   reg [1:0] M_latch_blank_d, M_latch_blank_q = 1'h0;
-  wire [6-1:0] M_matrix_data_out;
-  reg [4-1:0] M_matrix_data_row_address;
-  reg [6-1:0] M_matrix_data_column_address;
-  matrix_ram_10 matrix_data (
-    .clk(clk),
-    .rst(rst),
-    .row_address(M_matrix_data_row_address),
-    .column_address(M_matrix_data_column_address),
-    .out(M_matrix_data_out)
-  );
   
   always @* begin
     M_current_address_d = M_current_address_q;
@@ -64,6 +53,8 @@ module matrix_writer_4 (
     M_debug_dff_d = M_debug_dff_q;
     M_state_d = M_state_q;
     
+    row_index = 1'h0;
+    col_index = 1'h0;
     red0 = M_rgb_data_q[0+0-:1];
     green0 = M_rgb_data_q[1+0-:1];
     blue0 = M_rgb_data_q[2+0-:1];
@@ -77,8 +68,6 @@ module matrix_writer_4 (
     M_debug_dff_d = M_led_bit_counter_q;
     debug = M_debug_dff_q;
     M_sclk_counter_d = M_sclk_counter_q + 1'h1;
-    M_matrix_data_row_address = 1'h0;
-    M_matrix_data_column_address = 1'h0;
     if (M_state_q == 2'h0) begin
       M_latch_blank_d = 2'h1;
       M_current_address_d = 4'hf;
@@ -88,9 +77,7 @@ module matrix_writer_4 (
       M_sclk_d = 1'h0;
       col_index = M_led_bit_counter_q[0+5-:6];
       row_index = M_current_address_q + 1'h1;
-      M_matrix_data_row_address = row_index;
-      M_matrix_data_column_address = col_index;
-      M_rgb_data_d = M_matrix_data_out;
+      M_rgb_data_d = data;
       M_led_bit_counter_d = M_led_bit_counter_q + 1'h1;
     end else begin
       if (M_sclk_counter_q == 4'hf && M_state_q == 2'h1) begin
