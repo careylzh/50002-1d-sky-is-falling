@@ -5,11 +5,29 @@ module matrix_ram #(
     input clk,  // clock
     input rst,  // reset
     input generateSky[5],
+    input genSky,
     input shiftSky,
     input shiftchickenright,
     input shiftchickenleft,
-    input init_en,
+    input init_chicken_en,
     input sky_col_check,
+    input chicken_location[5],
+    input chickenwin,
+    input skywin,
+    input top_row_en,
+    input top_row_address[ADDRESS_SIZE],
+    input top_row_data_in[3],
+    output top_row_data[3],
+    
+    input bottom_row_en,
+    input bottom_row_address[ADDRESS_SIZE],
+    input bottom_row_data_in[3],
+    output bottom_row_data[3],
+    output gameover,
+    output chickenbuild,
+    input start_en,
+    input startbutton,
+    
     
     //  input write_row_address[ADDRESS_SIZE],
     //  input write_column_address[ADDRESS_SIZE],
@@ -17,604 +35,763 @@ module matrix_ram #(
     //  input write_data[6],
     input row_address[ADDRESS_SIZE],
     input column_address[$clog2(MATRIX_WIDTH)],
-    output out[6] //6b b1g1r1b0g1r0
+    output out[6], //6b b1g1r1b0g1r0
+    
+    output debug[2]
   ) {
   
-  /* const DATA = c{c{64x{{6b001001}}}, c{64x{{6b000000}}}, c{64x{{6b011011}}}, c{64x{{6b101101}}},
-     c{64x{{6b111111}}}, c{64x{{6b111001}}}, c{64x{{6b001011}}}, c{64x{{6b101001}}},
-     c{64x{{6b010001}}}, c{64x{{6b000001}}}, c{64x{{6b101111}}}, c{64x{{6b001111}}},
-     c{64x{{6b001001}}}, c{64x{{6b001001}}}, c{64x{{6b001001}}}, c{64x{{6b001001}}} };*/
-  
-  /* const DATA = {{6b001001, 6b001001, 6b001001, 6b001001,
-     6b001001, 6b001001, 6b001001, 6b001001,
-     6b010010, 6b010010, 6b010010, 6b010010,
-     6b010010, 6b010010, 6b010010, 6b010010,
-     6b100100, 6b100100, 6b100100, 6b100100,
-     6b100100, 6b100100, 6b100100, 6b100100,
-     6b111111, 6b111111, 6b111111, 6b111111,
-     6b111111, 6b111111, 6b111111, 6b111111,
-     6b001001, 6b001001, 6b001001, 6b001001,
-     6b001001, 6b001001, 6b001001, 6b001001,
-     6b010010, 6b010010, 6b010010, 6b010010,
-     6b010010, 6b010010, 6b010010, 6b010010,
-     6b100100, 6b100100, 6b100100, 6b100100,
-     6b100100, 6b100100, 6b100100, 6b100100,
-     6b111111, 6b111111, 6b111111, 6b111111,
-     6b111111, 6b111111, 6b111111, 6b111111},
-     
-     {6b001001, 6b001001, 6b001001, 6b001001,
-     6b001001, 6b001001, 6b001001, 6b001001,
-     6b001001, 6b001001, 6b001001, 6b001001,
-     6b001001, 6b001001, 6b001001, 6b001001,
-     6b001001, 6b001001, 6b001001, 6b001001,
-     6b001001, 6b001001, 6b001001, 6b001001,
-     6b001001, 6b001001, 6b001001, 6b001001,
-     6b001001, 6b001001, 6b001001, 6b001001,
-     6b001001, 6b001001, 6b001001, 6b001001,
-     6b001001, 6b001001, 6b001001, 6b001001,
-     6b001001, 6b001001, 6b001001, 6b001001,
-     6b001001, 6b001001, 6b001001, 6b001001,
-     6b001001, 6b001001, 6b001001, 6b001001,
-     6b001001, 6b001001, 6b001001, 6b001001,
-     6b001001, 6b001001, 6b001001, 6b001001,
-     6b001001, 6b001001, 6b001001, 6b001001}
-     };*/
-  
+  const RAMSIZE = $pow(2,ADDRESS_SIZE) * MATRIX_WIDTH;
   
   .clk(clk){
+    
+    simple_ram background_ram_top(#SIZE(3), #DEPTH(RAMSIZE));
+    simple_ram background_ram_bottom(#SIZE(3), #DEPTH(RAMSIZE));
+    
+    simple_ram chicken_ram_top(#SIZE(3), #DEPTH(RAMSIZE));
+    simple_ram chicken_ram_bottom(#SIZE(3), #DEPTH(RAMSIZE));
+    
     .rst(rst){
-      dff reg_data_tophalf[$pow(2,ADDRESS_SIZE)][MATRIX_WIDTH][3];
-      dff reg_data_bottomhalf[$pow(2,ADDRESS_SIZE)][MATRIX_WIDTH][3];
       
-      dff chicken_data_tophalf[$pow(2,ADDRESS_SIZE)][MATRIX_WIDTH][3];
-      dff chicken_data_bottomhalf[$pow(2,ADDRESS_SIZE)][MATRIX_WIDTH][3];
+      fsm state = {START, GENGRASSFIRSTROW,GENGRASSSECONDROW,
+        GENCHICKENSTARTTOP,
+        GEN1CHICKEN,GEN2CHICKEN,GEN5CHICKEN,GEN6CHICKEN,
+        LOOP,
+        GENERATETOPBEGIN,
+        GENERATESKY1TOP,GENERATESKY2TOP,
+        GENERATEBOTTOMBEGIN,
+        GENERATESKY1BOTTOM,  GENERATESKY2BOTTOM,
+        SHIFT,
+        SHIFTDOWNADDRESS, SHIFTDOWNREADWRITE, CHICKENRIGHTREADWRITE, SHIFTRIGHTCHICKENBEGIN, SHIFTLEFTCHICKENBEGIN,
+        ERASECHICKEN1TOP, ERASECHICKEN2TOP, SHIFTRIGHTMID, ERASECHICKEN1TOPLEFT, ERASECHICKEN2TOPLEFT, SHIFTLEFTMID,
+        ERASECHICKEN1TOPRESET, ERASECHICKEN2TOPRESET, GENCHICKENMID,
+        CHECKCOLSTART,CHECKCOLREAD,
+        CHECKCOL1TOP,
+        CHICKENWIN,SKYWIN};
       
-      fsm state = {START, LOOP, GENERATE, SHIFT, CHICKENLEFT, CHICKENRIGHT,CHECKCOL};
+      
+      dff debug_reg[2];
+      dff counter1[2];
+      dff counter2[1];
+      dff counter3[1];
+      dff counter4[1];
+      dff counter5[1];
+      dff grass_address[$clog2(RAMSIZE)];
+      dff grass_counter[4];
+      
+      dff sky_counter[4];
+      dff sky_address[$clog2(RAMSIZE)];
+      dff current_sky_column[5];
+      
+      dff chicken_address[$clog2(RAMSIZE)];
+      dff check_address[$clog2(RAMSIZE)];
+      dff current_chicken_column[6]; //where the chicken is
+      
+      dff chicken_counter[4];
+      
+      
+      dff shift_address[$clog2(RAMSIZE)];
+      dff row_counter[$clog2(MATRIX_WIDTH)+1];
+      
+      
+      dff sky_gen_counter;
+      
+      
     }
     
   }
   
   sig top_half_proc[3];
   sig bottom_half_proc[3];
-  always {
+  sig currentsky[5];
+  sig topskyexist;
+  sig topchickenexist;
+  sig bottomskyexist;
+  sig bottomchickenexist;
+  
+  sig write_address_top;
+  sig write_en_top;
+  sig write_data_top;
+  
+  sig write_address_bottom;
+  sig      write_en_bottom;
+  sig     write_data_bottom;
+  
+  always{
+    /*
+       
+       background_ram_top.address = top_row_address;
+       background_ram_top.write_data = top_row_data_in;
+       background_ram_top.write_en = top_row_en;
+       top_row_data = background_ram_top.read_data;
+       
+       background_ram_bottom.address = bottom_row_address;
+       background_ram_bottom.write_data = bottom_row_data_in;
+       background_ram_bottom.write_en = bottom_row_en;
+       bottom_row_data = background_ram_bottom.read_data;   */
+    
+    background_ram_top.address = 0;
+    background_ram_top.write_data = 0;
+    background_ram_top.write_en = 0;
+    
+    chicken_ram_top.address = 0;
+    chicken_ram_top.write_data = 0;
+    chicken_ram_top.write_en = 0;
+    top_row_data = 0;
+    
+    background_ram_bottom.address = 0;
+    background_ram_bottom.write_data = 0;
+    background_ram_bottom.write_en = 0;
+    chicken_ram_bottom.address = 0;
+    chicken_ram_bottom.write_data = 0;
+    chicken_ram_bottom.write_en = 0;
+    bottom_row_data = 0;
+    
+    write_address_top = b0;
+    write_en_top = b0;
+    write_data_top = b0; // blue
+    
+    write_address_bottom = b0;
+    write_en_bottom = b0;
+    write_data_bottom = b0; // white
+    
+    //skygenerator.next = 0;
+    //skygenerator.seed = 0;
+    debug = debug_reg.q;
+    gameover = 0;
+    chickenbuild =0;
+    
+    
+    out = 0;
     
     case(state.q){
       
       state.START:
-        if(init_en){
-        //---------grass----------------//
-        reg_data_tophalf.d[0][0] = b010;
-        reg_data_tophalf.d[1][0] = b010;
-        reg_data_tophalf.d[2][0] = b010;
-        reg_data_tophalf.d[3][0] = b010;
-        reg_data_tophalf.d[4][0] = b010;
-        reg_data_tophalf.d[5][0] = b010;
-        reg_data_tophalf.d[6][0] = b010;
-        reg_data_tophalf.d[7][0] = b010;
-        reg_data_tophalf.d[8][0] = b010;
-        reg_data_tophalf.d[9][0] = b010;
-        reg_data_tophalf.d[10][0] = b010;
-        reg_data_tophalf.d[11][0] = b010;
-        reg_data_tophalf.d[12][0] = b010;
-        reg_data_tophalf.d[13][0] = b010;
-        reg_data_tophalf.d[14][0] = b010;
-        reg_data_tophalf.d[15][0] = b010;
-        reg_data_bottomhalf.d[1][0] = b010;
-        reg_data_bottomhalf.d[2][0] = b010;
-        reg_data_bottomhalf.d[3][0] = b010;
-        reg_data_bottomhalf.d[4][0] = b010;
-        reg_data_bottomhalf.d[5][0] = b010;
-        reg_data_bottomhalf.d[6][0] = b010;
-        reg_data_bottomhalf.d[7][0] = b010;
-        reg_data_bottomhalf.d[8][0] = b010;
-        reg_data_bottomhalf.d[9][0] = b010;
-        reg_data_bottomhalf.d[10][0] = b010;
-        reg_data_bottomhalf.d[11][0] = b010;
-        reg_data_bottomhalf.d[12][0] = b010;
-        reg_data_bottomhalf.d[13][0] = b010;
-        reg_data_bottomhalf.d[14][0] = b010;
-        reg_data_bottomhalf.d[15][0] = b010;
-        reg_data_tophalf.d[0][1] = b010;
-        reg_data_tophalf.d[1][1] = b010;
-        reg_data_tophalf.d[2][1] = b010;
-        reg_data_tophalf.d[3][1] = b010;
-        reg_data_tophalf.d[4][1] = b010;
-        reg_data_tophalf.d[5][1] = b010;
-        reg_data_tophalf.d[6][1] = b010;
-        reg_data_tophalf.d[7][1] = b010;
-        reg_data_tophalf.d[8][1] = b010;
-        reg_data_tophalf.d[9][1] = b010;
-        reg_data_tophalf.d[10][1] = b010;
-        reg_data_tophalf.d[11][1] = b010;
-        reg_data_tophalf.d[12][1] = b010;
-        reg_data_tophalf.d[13][1] = b010;
-        reg_data_tophalf.d[14][1] = b010;
-        reg_data_tophalf.d[15][1] = b010;
-        reg_data_bottomhalf.d[0][1] = b010;
-        reg_data_bottomhalf.d[1][1] = b010;
-        reg_data_bottomhalf.d[2][1] = b010;
-        reg_data_bottomhalf.d[3][1] = b010;
-        reg_data_bottomhalf.d[4][1] = b010;
-        reg_data_bottomhalf.d[5][1] = b010;
-        reg_data_bottomhalf.d[6][1] = b010;
-        reg_data_bottomhalf.d[7][1] = b010;
-        reg_data_bottomhalf.d[8][1] = b010;
-        reg_data_bottomhalf.d[9][1] = b010;
-        reg_data_bottomhalf.d[10][1] = b010;
-        reg_data_bottomhalf.d[11][1] = b010;
-        reg_data_bottomhalf.d[12][1] = b010;
-        reg_data_bottomhalf.d[13][1] = b010;
-        reg_data_bottomhalf.d[14][1] = b010;
-        reg_data_bottomhalf.d[15][1] = b010;
-        //---------end grass------------//
-        //---------begin chicken--------//
-        chicken_data_tophalf.d[15][2] = b111;
-        chicken_data_tophalf.d[15][3] = b111;
-        chicken_data_tophalf.d[15][4] = b100;
-        chicken_data_tophalf.d[15][5] = b111;
-        chicken_data_tophalf.d[14][3] = b111;
-        chicken_data_tophalf.d[14][4] = b111;
-        chicken_data_bottomhalf.d[0][2] = b111;
-        chicken_data_bottomhalf.d[0][3] = b111;
-        chicken_data_bottomhalf.d[0][4] = b111;
-        chicken_data_bottomhalf.d[0][5] = b111;
-        chicken_data_bottomhalf.d[1][2] = b111;
-        chicken_data_bottomhalf.d[1][3] = b111;
-        chicken_data_bottomhalf.d[1][4] = b100;
-        chicken_data_bottomhalf.d[1][5] = b111;
-        chicken_data_bottomhalf.d[2][3] = b111;
-        chicken_data_bottomhalf.d[2][4] = b111;
-        chicken_data_bottomhalf.d[0][6] = b001;
-        //---------end chicken--------//
-        //---------begin cloud--------//
-        reg_data_tophalf.d[10][54] = b100;
-        reg_data_tophalf.d[11][54] = b100;
-        reg_data_tophalf.d[12][54] = b100;
-        reg_data_tophalf.d[13][54] = b100;
-        reg_data_tophalf.d[10][55] = b100;
-        reg_data_tophalf.d[11][55] = b100;
-        reg_data_tophalf.d[12][55] = b100;
-        reg_data_tophalf.d[13][55] = b100;
-        reg_data_tophalf.d[10][56] = b100;
-        reg_data_tophalf.d[11][56] = b100;
-        reg_data_tophalf.d[12][56] = b100;
-        reg_data_tophalf.d[13][56] = b100;
-        reg_data_tophalf.d[10][57] = b100;
-        reg_data_tophalf.d[11][57] = b100;
-        reg_data_tophalf.d[12][57] = b100;
-        reg_data_tophalf.d[13][57] = b100;
+        background_ram_top.address = 63;
+        background_ram_top.write_en = b1;
+        background_ram_top.write_data = b111;
+        if(init_chicken_en){
+          state.d = state.GENGRASSFIRSTROW;
+        }
+      
+      state.GENGRASSFIRSTROW:
+        // draw grass at the bottom two rows, loop in this state until all grass are drawn
+        background_ram_top.address = grass_address.q;
+        background_ram_top.write_en = b1;
+        background_ram_top.write_data = b010;
         
-        reg_data_bottomhalf.d[2][39] = b100;
-        reg_data_bottomhalf.d[3][39] = b100;
-        reg_data_bottomhalf.d[4][39] = b100;
-        reg_data_bottomhalf.d[5][39] = b100;
-        reg_data_bottomhalf.d[2][40] = b100;
-        reg_data_bottomhalf.d[3][40] = b100;
-        reg_data_bottomhalf.d[4][40] = b100;
-        reg_data_bottomhalf.d[5][40] = b100;
-        reg_data_bottomhalf.d[2][41] = b100;
-        reg_data_bottomhalf.d[3][41] = b100;
-        reg_data_bottomhalf.d[4][41] = b100;
-        reg_data_bottomhalf.d[5][41] = b100;
-        reg_data_bottomhalf.d[2][42] = b100;
-        reg_data_bottomhalf.d[3][42] = b100;
-        reg_data_bottomhalf.d[4][42] = b100;
-        reg_data_bottomhalf.d[5][42] = b100;
-        //        reg_data_tophalf.d[5][21] = b001;
+        background_ram_bottom.address = grass_address.q;
+        background_ram_bottom.write_en = b1;
+        background_ram_bottom.write_data = b010;
         
-        state.d = state.LOOP;
-          }
+        grass_address.d = grass_address.q + MATRIX_WIDTH;
+        grass_counter.d = grass_counter.q + 1;
+        if (grass_counter.q > 14){
+          grass_counter.d = 0;
+          state.d = state.GENGRASSSECONDROW;
+        }
+      
+      state.GENGRASSSECONDROW:
+        // draw grass at the bottom two rows, loop in this state until all grass are drawn
+        background_ram_top.address = grass_address.q + 1;
+        background_ram_top.write_en = b1;
+        background_ram_top.write_data = b010;
+        
+        background_ram_bottom.address = grass_address.q + 1;
+        background_ram_bottom.write_en = b1;
+        background_ram_bottom.write_data = b010;
+        
+        grass_address.d = grass_address.q + MATRIX_WIDTH;
+        grass_counter.d = grass_counter.q + 1;
+        if (grass_counter.q > 14){
+          grass_counter.d = 0;
+          if (init_chicken_en){
+            chickenbuild = 1;
+            chicken_address.d = MATRIX_WIDTH * (current_chicken_column.q ) + 2;
+            state.d = state.GEN1CHICKEN;
             
+          } else {
+            state.d = state.LOOP;
+          }
+          
+        }
+        /*
+         else if (shift_address.q > 1023){
+         background_ram_top.address = shift_address.q-1;
+         background_ram_top.write_en = b1;
+         background_ram_top.write_data = b000;
+         
+         background_ram_bottom.address = shift_address.q-1;
+         background_ram_bottom.write_en = b1;
+         background_ram_bottom.write_data = b000;
+         state.d = state.LOOP;
+         }
+         else if (row_counter.q == 63){
+         //shift_address + 1 is 63 now (pointing to topmost row)
+         background_ram_top.address = shift_address.q+1;
+         background_ram_top.write_en = b1;
+         background_ram_top.write_data = b000;
+         
+         background_ram_bottom.address = shift_address.q+1;
+         background_ram_bottom.write_en = b1;
+         background_ram_bottom.write_data = b000;
+         row_counter.d = 0;
+         shift_address.d = shift_address.q + 2;
+         }*/
+      
+      state.SHIFTDOWNADDRESS:
+        
+        //give address
+        if(row_counter.q < 63){
+          background_ram_top.address = shift_address.q+1;
+          
+          background_ram_bottom.address = shift_address.q+1;
+          row_counter.d = row_counter.q + 1;
+          state.d = state.SHIFTDOWNREADWRITE;
+        }
+        else{
+          if (shift_address.q < 1023){
+            shift_address.d = shift_address.q+1;
+            row_counter.d = 0;
+            background_ram_top.address = shift_address.q;
+            background_ram_top.write_en = b1;
+            background_ram_top.write_data = b000;
+            
+            background_ram_bottom.address = shift_address.q;
+            background_ram_bottom.write_en = b1;
+            background_ram_bottom.write_data = b000;
+            state.d = state.SHIFTDOWNADDRESS;
+          }
           else{
+            shift_address.d = 0;
+            row_counter.d = 0;
+            background_ram_top.address = shift_address.q;
+            background_ram_top.write_en = b1;
+            background_ram_top.write_data = b000;
+            
+            background_ram_bottom.address = shift_address.q;
+            background_ram_bottom.write_en = b1;
+            background_ram_bottom.write_data = b000;
+            state.d = state.GENGRASSFIRSTROW;
+            
+          }
+          
+        }
+      
+      state.SHIFTDOWNREADWRITE:
+        background_ram_top.address = shift_address.q;
+        background_ram_top.write_en = b1;
+        background_ram_top.write_data = background_ram_top.read_data;
+        
+        background_ram_bottom.address = shift_address.q;
+        background_ram_bottom.write_en = b1;
+        background_ram_bottom.write_data = background_ram_bottom.read_data;
+        
+        shift_address.d = shift_address.q + 1;
+        
+        state.d = state.SHIFTDOWNADDRESS;
+      
+      
+      
+      
+      
+      
+      state.GENCHICKENSTARTTOP:
+        chicken_address.d = MATRIX_WIDTH * (current_chicken_column.q) + 2;
+        state.d = state.ERASECHICKEN1TOPRESET;
+      
+      state.ERASECHICKEN1TOPRESET:
+        chicken_ram_top.address = chicken_address.q;
+        chicken_ram_top.write_en = b1;
+        chicken_ram_top.write_data = b000;
+        
+        chicken_ram_bottom.address = chicken_address.q;
+        chicken_ram_bottom.write_en = b1;
+        chicken_ram_bottom.write_data = b000;
+        
+        chicken_counter.d = chicken_counter.q + 1;
+        chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
+        
+        if (chicken_counter.q > 3){ //after 4 pixel skies generated
+          chicken_counter.d = 0;
+          chicken_address.d =  MATRIX_WIDTH * current_chicken_column.q + 3;
+          state.d = state.ERASECHICKEN2TOPRESET;
+        }
+      
+      state.ERASECHICKEN2TOPRESET:
+        chicken_ram_top.address = chicken_address.q;
+        chicken_ram_top.write_en = b1;
+        chicken_ram_top.write_data = b000;
+        
+        chicken_ram_bottom.address = chicken_address.q;
+        chicken_ram_bottom.write_en = b1;
+        chicken_ram_bottom.write_data = b000;
+        
+        chicken_counter.d = chicken_counter.q + 1;
+        chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
+        
+        if (chicken_counter.q > 3){ //after 4 pixel skies generated
+          chicken_counter.d = 0;
+          chicken_address.d =  MATRIX_WIDTH * current_chicken_column.q + 3;
+          state.d = state.GENCHICKENMID;
+        }
+      
+      state.GENCHICKENMID:
+        current_chicken_column.d = chicken_location;
+        chicken_address.d = MATRIX_WIDTH * current_chicken_column.q + 2; //starts at the third row
+        state.d = state.GEN1CHICKEN;
+      
+      state.SHIFTLEFTCHICKENBEGIN:
+        chicken_address.d = MATRIX_WIDTH * (current_chicken_column.q) + 2;
+        state.d = state.ERASECHICKEN1TOPLEFT;
+      
+      state.ERASECHICKEN1TOPLEFT:
+        chicken_ram_top.address = chicken_address.q;
+        chicken_ram_top.write_en = b1;
+        chicken_ram_top.write_data = b000;
+        
+        chicken_ram_bottom.address = chicken_address.q;
+        chicken_ram_bottom.write_en = b1;
+        chicken_ram_bottom.write_data = b000;
+        
+        chicken_counter.d = chicken_counter.q + 1;
+        chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
+        
+        if (chicken_counter.q > 3){ //after 4 pixel skies generated
+          chicken_counter.d = 0;
+          chicken_address.d =  MATRIX_WIDTH * current_chicken_column.q + 3;
+          state.d = state.ERASECHICKEN2TOPLEFT;
+        }
+      
+      state.ERASECHICKEN2TOPLEFT:
+        chicken_ram_top.address = chicken_address.q;
+        chicken_ram_top.write_en = b1;
+        chicken_ram_top.write_data = b000;
+        
+        chicken_ram_bottom.address = chicken_address.q;
+        chicken_ram_bottom.write_en = b1;
+        chicken_ram_bottom.write_data = b000;
+        
+        chicken_counter.d = chicken_counter.q + 1;
+        chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
+        
+        if (chicken_counter.q > 3){ //after 4 pixel skies generated
+          chicken_counter.d = 0;
+          chicken_address.d =  MATRIX_WIDTH * current_chicken_column.q + 3;
+          state.d = state.SHIFTLEFTMID;
+        }
+      
+      state.SHIFTLEFTMID:
+        current_chicken_column.d = current_chicken_column.q - 1;
+        chicken_address.d = MATRIX_WIDTH * (current_chicken_column.q - 1) + 2;
+        state.d = state.GEN1CHICKEN;
+      
+      state.SHIFTRIGHTCHICKENBEGIN:
+        chicken_address.d = MATRIX_WIDTH * (current_chicken_column.q) + 2;
+        state.d = state.ERASECHICKEN1TOP;
+      
+      
+      state.ERASECHICKEN1TOP:
+        chicken_ram_top.address = chicken_address.q;
+        chicken_ram_top.write_en = b1;
+        chicken_ram_top.write_data = b000;
+        
+        chicken_ram_bottom.address = chicken_address.q;
+        chicken_ram_bottom.write_en = b1;
+        chicken_ram_bottom.write_data = b000;
+        
+        chicken_counter.d = chicken_counter.q + 1;
+        chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
+        
+        if (chicken_counter.q > 3){ //after 4 pixel skies generated
+          chicken_counter.d = 0;
+          chicken_address.d =  MATRIX_WIDTH * current_chicken_column.q + 3;
+          state.d = state.ERASECHICKEN2TOP;
+        }
+      
+      state.ERASECHICKEN2TOP:
+        chicken_ram_top.address = chicken_address.q;
+        chicken_ram_top.write_en = b1;
+        chicken_ram_top.write_data = b000;
+        
+        chicken_ram_bottom.address = chicken_address.q;
+        chicken_ram_bottom.write_en = b1;
+        chicken_ram_bottom.write_data = b000;
+        
+        chicken_counter.d = chicken_counter.q + 1;
+        chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
+        
+        if (chicken_counter.q > 3){ //after 4 pixel skies generated
+          chicken_counter.d = 0;
+          chicken_address.d =  MATRIX_WIDTH * current_chicken_column.q + 3;
+          state.d = state.SHIFTRIGHTMID;
+        }
+      
+      
+      state.SHIFTRIGHTMID:
+        current_chicken_column.d = current_chicken_column.q + 1;
+        chicken_address.d = MATRIX_WIDTH * (current_chicken_column.q + 1) + 2;
+        state.d = state.GEN1CHICKEN;
+      
+      state.GEN1CHICKEN:
+        chicken_ram_top.address = chicken_address.q;
+        chicken_ram_top.write_en = b1;
+        chicken_ram_top.write_data = b111;
+        
+        chicken_ram_bottom.address = chicken_address.q;
+        chicken_ram_bottom.write_en = b1;
+        chicken_ram_bottom.write_data = b011;
+        
+        chicken_counter.d = chicken_counter.q + 1;
+        chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
+        
+        if (chicken_counter.q > 0){ //after 4 pixel skies generated
+          chicken_counter.d = 0;
+          chicken_address.d =  MATRIX_WIDTH * current_chicken_column.q + 3;
+          state.d = state.GEN2CHICKEN;
+        }
+      
+      state.GEN2CHICKEN:
+        chicken_ram_top.address = chicken_address.q;
+        chicken_ram_top.write_en = b1;
+        chicken_ram_top.write_data = b111;
+        
+        chicken_ram_bottom.address = chicken_address.q;
+        chicken_ram_bottom.write_en = b1;
+        chicken_ram_bottom.write_data = b011;
+        
+        chicken_counter.d = chicken_counter.q + 1;
+        chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
+        
+        if (chicken_counter.q > 0){ //after 4 pixel skies generated
+          chicken_counter.d = 0;
+          chicken_address.d =  MATRIX_WIDTH * current_chicken_column.q + 4;
+          state.d = state.LOOP;
+        }
+      
+      state.GENERATETOPBEGIN:
+        sky_address.d = MATRIX_WIDTH * current_sky_column.q + MATRIX_WIDTH - 1; //starts at the  highest row, thats 63
+        state.d = state.GENERATESKY1TOP;
+      
+      state.GENERATEBOTTOMBEGIN:
+        sky_address.d = MATRIX_WIDTH * current_sky_column.q + MATRIX_WIDTH - 1; //starts at the  highest row, thats 63
+        state.d = state.GENERATESKY1BOTTOM;
+      
+      state.GENERATESKY1BOTTOM:
+        background_ram_bottom.address = sky_address.q;
+        background_ram_bottom.write_en = b1;
+        background_ram_bottom.write_data = b100;
+        
+        sky_counter.d = sky_counter.q + 1;
+        sky_address.d = sky_address.q + MATRIX_WIDTH; //go to the next row
+        
+        if (sky_counter.q > 0){ //after 4 pixel skies generated
+          sky_counter.d = 0;
+          sky_address.d =  MATRIX_WIDTH * current_sky_column.q + MATRIX_WIDTH - 2;
+          state.d = state.GENERATESKY2BOTTOM;
+        }
+      
+      state.GENERATESKY2BOTTOM:
+        background_ram_bottom.address = sky_address.q;
+        background_ram_bottom.write_en = b1;
+        background_ram_bottom.write_data = b100;
+        
+        sky_counter.d = sky_counter.q + 1;
+        sky_address.d = sky_address.q + MATRIX_WIDTH; //go to the next row
+        
+        if (sky_counter.q > 0){ //after 4 pixel skies generated
+          sky_counter.d = 0;
+          sky_address.d =  MATRIX_WIDTH * current_sky_column.q + MATRIX_WIDTH - 3;
+          state.d = state.LOOP;
+        }
+        
+        /*state.GENERATESKY3BOTTOM:
+         background_ram_bottom.address = sky_address.q;
+         background_ram_bottom.write_en = b1;
+         background_ram_bottom.write_data = b100;
+         
+         sky_counter.d = sky_counter.q + 1;
+         sky_address.d = sky_address.q + MATRIX_WIDTH; //go to the next row
+         
+         if (sky_counter.q > 2){ //after 4 pixel skies generated
+         sky_counter.d = 0;
+         sky_address.d =  MATRIX_WIDTH * current_sky_column.q + MATRIX_WIDTH - 4;
+         state.d = state.GENERATESKY4BOTTOM;}
+         
+         state.GENERATESKY4BOTTOM:
+         background_ram_bottom.address = sky_address.q;
+         background_ram_bottom.write_en = b1;
+         background_ram_bottom.write_data = b100;
+         
+         sky_counter.d = sky_counter.q + 1;
+         sky_address.d = sky_address.q + MATRIX_WIDTH; //go to the next row
+         
+         if (sky_counter.q > 2){ //after 4 pixel skies generated
+         sky_counter.d = 0;
+         sky_address.d = 0;
+         
+         state.d = state.LOOP;}*/
+      
+      state.GENERATESKY1TOP:
+        background_ram_top.address = sky_address.q;
+        background_ram_top.write_en = b1;
+        background_ram_top.write_data = b100;
+        
+        
+        sky_counter.d = sky_counter.q + 1;
+        sky_address.d = sky_address.q + MATRIX_WIDTH; //go to the next row
+        
+        if (sky_counter.q > 0){ //after 4 pixel skies generated
+          sky_gen_counter.d = 0;
+          sky_counter.d = 0;
+          sky_address.d =  MATRIX_WIDTH * current_sky_column.q + MATRIX_WIDTH - 2;
+          state.d = state.GENERATESKY2TOP;
+        }
+      
+      state.GENERATESKY2TOP:
+        background_ram_top.address = sky_address.q;
+        background_ram_top.write_en = b1;
+        background_ram_top.write_data = b100;
+        
+        
+        sky_counter.d = sky_counter.q + 1;
+        
+        sky_address.d = sky_address.q + MATRIX_WIDTH; //go to the next row
+        
+        if (sky_counter.q > 0){ //after 4 pixel skies generated
+          sky_counter.d = 0;
+          sky_address.d =  MATRIX_WIDTH * current_sky_column.q + MATRIX_WIDTH - 3;
+          state.d = state.LOOP;
+        }
+        
+        /*state.GENERATESKY3TOP:
+         background_ram_top.address = sky_address.q;
+         background_ram_top.write_en = b1;
+         background_ram_top.write_data = b100;
+         
+         
+         sky_counter.d = sky_counter.q + 1;
+         sky_address.d = sky_address.q + MATRIX_WIDTH; //go to the next row
+         
+         if (sky_counter.q > 2){ //after 4 pixel skies generated
+         sky_counter.d = 0;
+         sky_address.d = MATRIX_WIDTH * current_sky_column.q + MATRIX_WIDTH - 4;
+         state.d = state.GENERATESKY4TOP;
+         }
+         
+         state.GENERATESKY4TOP:
+         background_ram_top.address = sky_address.q;
+         background_ram_top.write_en = b1;
+         background_ram_top.write_data = b100;
+         
+         
+         sky_counter.d = sky_counter.q + 1;
+         sky_address.d = sky_address.q + MATRIX_WIDTH; //go to the next row
+         
+         if (sky_counter.q > 2){ //after 4 pixel skies generated
+         sky_counter.d = 0;
+         sky_address.d = 0;
+         state.d = state.CHECKCOLSTART;
+         }*/
+      
+      
+      
+      
+      
+      
+      
+      
+      //  state.d = state.LOOP;
+      
+      
+      state.CHECKCOLSTART:
+        check_address.d = 3;
+        counter1.d =0;
+        //sky_address.d = MATRIX_WIDTH * (current_sky_column.q+1) + MATRIX_WIDTH - 3;
+        state.d = state.CHECKCOLREAD;
+      
+      state.CHECKCOLREAD:
+        background_ram_top.address = check_address.q;
+        chicken_ram_top.address = check_address.q;
+        background_ram_bottom.address = check_address.q;
+        chicken_ram_bottom.address = check_address.q;
+        counter1.d= counter1.q+1;
+        //   counter1.d = 0;
+        state.d = state.CHECKCOL1TOP;
+      
+      state.CHECKCOL1TOP:
+        topskyexist =  |background_ram_top.read_data;
+        topchickenexist = |chicken_ram_top.read_data;
+        bottomskyexist = |background_ram_bottom.read_data;
+        bottomchickenexist = |chicken_ram_bottom.read_data;
+        if((topskyexist&topchickenexist) |(bottomchickenexist&bottomskyexist)){
+          gameover=b1;
+          state.d = state.SKYWIN;
+          
+        }else if (counter1.q>14){
+          counter1.d = 0;
+          state.d = state.LOOP;
+        }else{
+          check_address.d = check_address.q+MATRIX_WIDTH;
+          //sky_address.d = MATRIX_WIDTH * (current_sky_column.q+1) + MATRIX_WIDTH - 3;
+          state.d = state.CHECKCOLREAD;
+        }
+        
+        
+        /*
+           case(counter1.q){
+           0:
+           counter2.d = |background_ram_top.read_data;
+           counter1.d = counter1.q+1;
+           
+           1:
+           counter3.d = |chicken_ram_top.read_data;
+           counter1.d = counter1.q+1;
+           
+           2:
+           counter2.d = counter2.q & counter3.q;
+           counter1.d = counter1.q+1;
+           
+           3:
+           counter3.d = |background_ram_bottom.read_data;
+           counter1.d = counter1.q+1;
+           
+           4:
+           counter4.d = |chicken_ram_bottom.read_data;
+           counter1.d = counter1.q+1;
+           5:
+           counter3.d = counter3.q&counter4.q;
+           counter1.d = counter1.q+1;
+           6:
+           counter1.d = counter1.q;
+           if( counter2.q | counter3.q){
+           gameover = b1;
+           }else if(chicken_counter.q >3){
+           chicken_counter.d = 0;
+           counter1.d =0;
+           counter2.d = 0;
+           counter3.d = 0;
+           state.d = state.LOOP;
+           }
+           
+           
+           else{
+           chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
+           background_ram_top.address = chicken_address.q;
+           chicken_ram_top.address = chicken_address.q;
+           background_ram_bottom.address = chicken_address.q;
+           chicken_ram_bottom.address = chicken_address.q;
+           chicken_counter.d = chicken_counter.q+1;
+           state.d = state.CHECKCOL1TOP;
+           }
+           } */
+        /*     else if(chicken_counter.q>3){
+           state.d = state.LOOP;
+           } */
+        
+        
+        /* state.CHECKCOL2TOP:
+         if(  (|background_ram_top.read_data) & (|chicken_ram_top.read_data)){
+         gameover = b1;
+         }
+         else if(chicken_counter.q>3){
+         chicken_counter.d = 0;
+         
+         chicken_address.d =  chicken_address.q - MATRIX_WIDTH *3;
+         state.d = state.LOOP;
+         }
+         else{
+         chicken_address.d = chicken_address.q +MATRIX_WIDTH;
+         //sky_address.d = sky_address.q;
+         background_ram_top.address = chicken_address.q;
+         chicken_ram_top.address = chicken_address.q;
+         background_ram_bottom.address = chicken_address.q;
+         chicken_ram_bottom.address = chicken_address.q;
+         chicken_counter.d = chicken_address.q +1;
+         
+         
+         
+         state.d = state.CHECKCOL2TOP ;
+         }*/
+      
+      state.CHICKENWIN:
+        
+        chicken_ram_top.address = 0;
+        chicken_ram_top.write_en = b1;
+        chicken_ram_top.write_data = b001;
+        state.d =state.LOOP;
+        
+      state.SKYWIN:
+        background_ram_top.address = 0;
+        chicken_ram_top.write_en = b1;
+        chicken_ram_top.write_data = b100;
+        state.d =state.LOOP;
+        
+      state.LOOP:
+        
+        //skyshifted = 1;
+        
+        if (genSky){
+          if (generateSky < 16){
+            current_sky_column.d = generateSky;
+            state.d = state.GENERATETOPBEGIN;
+          }
+          else if (15 < generateSky < 32){
+            current_sky_column.d = generateSky - 16;
+            state.d = state.GENERATEBOTTOMBEGIN;
+          }
+        } else if(shiftSky){
+          
+          state.d = state.SHIFTDOWNADDRESS;
+        }
+        
+        else if(shiftchickenleft){
+          state.d = state.SHIFTLEFTCHICKENBEGIN;
+        }
+        
+        else if(shiftchickenright){
+          state.d = state.SHIFTRIGHTCHICKENBEGIN;
+        }
+        else if(chickenwin){
+          state.d = state.CHICKENWIN;
+        }else if(skywin){
+          state.d = state.SKYWIN;
+          }
+          else if(startbutton){
           state.d = state.START;
           }
+        
+        
+        
+        
+        
+        
+        background_ram_bottom.address = (row_address * MATRIX_WIDTH) + column_address;
+        background_ram_top.address = (row_address * MATRIX_WIDTH) + column_address;
+        
+        chicken_ram_top.address = (row_address * MATRIX_WIDTH) + column_address;
+        chicken_ram_bottom.address = (row_address * MATRIX_WIDTH) + column_address;
+        
+        bottom_half_proc = background_ram_bottom.read_data;
+        top_half_proc = background_ram_top.read_data;
+        
+        if ( chicken_ram_top.read_data){
+          top_half_proc = chicken_ram_top.read_data;
+        }
+        
+        if(chicken_ram_bottom.read_data){
+          bottom_half_proc = chicken_ram_bottom.read_data;
+        }
+        
+        out = c{bottom_half_proc,top_half_proc};
       
-      state.LOOP:
-        if (shiftSky){
-          state.d = state.GENERATE;
-        }
-        if(shiftchickenleft){
-          state.d = state.CHICKENLEFT;
-        }
-        if(shiftchickenright){
-          state.d = state.CHICKENRIGHT;
-        }
       
-      state.CHICKENLEFT:
-        if (chicken_data_tophalf.q[0][3]){
-        
-        }else{
-        chicken_data_tophalf.d[15][2] = chicken_data_bottomhalf.q[0][2];
-        chicken_data_tophalf.d[0][2] = chicken_data_tophalf.q[1][2];
-        chicken_data_tophalf.d[1][2] = chicken_data_tophalf.q[2][2];
-        chicken_data_tophalf.d[2][2] = chicken_data_tophalf.q[3][2];
-        chicken_data_tophalf.d[3][2] = chicken_data_tophalf.q[4][2];
-        chicken_data_tophalf.d[4][2] = chicken_data_tophalf.q[5][2];
-        chicken_data_tophalf.d[5][2] = chicken_data_tophalf.q[6][2];
-        chicken_data_tophalf.d[6][2] = chicken_data_tophalf.q[7][2];
-        chicken_data_tophalf.d[7][2] = chicken_data_tophalf.q[8][2];
-        chicken_data_tophalf.d[8][2] = chicken_data_tophalf.q[9][2];
-        chicken_data_tophalf.d[9][2] = chicken_data_tophalf.q[10][2];
-        chicken_data_tophalf.d[10][2] = chicken_data_tophalf.q[11][2];
-        chicken_data_tophalf.d[11][2] = chicken_data_tophalf.q[12][2];
-        chicken_data_tophalf.d[12][2] = chicken_data_tophalf.q[13][2];
-        chicken_data_tophalf.d[13][2] = chicken_data_tophalf.q[14][2];
-        chicken_data_tophalf.d[14][2] = chicken_data_tophalf.q[15][2];
-        chicken_data_bottomhalf.d[0][2] = chicken_data_bottomhalf.q[1][2];
-        chicken_data_bottomhalf.d[1][2] = chicken_data_bottomhalf.q[2][2];
-        chicken_data_bottomhalf.d[2][2] = chicken_data_bottomhalf.q[3][2];
-        chicken_data_bottomhalf.d[3][2] = chicken_data_bottomhalf.q[4][2];
-        chicken_data_bottomhalf.d[4][2] = chicken_data_bottomhalf.q[5][2];
-        chicken_data_bottomhalf.d[5][2] = chicken_data_bottomhalf.q[6][2];
-        chicken_data_bottomhalf.d[6][2] = chicken_data_bottomhalf.q[7][2];
-        chicken_data_bottomhalf.d[7][2] = chicken_data_bottomhalf.q[8][2];
-        chicken_data_bottomhalf.d[8][2] = chicken_data_bottomhalf.q[9][2];
-        chicken_data_bottomhalf.d[9][2] = chicken_data_bottomhalf.q[10][2];
-        chicken_data_bottomhalf.d[10][2] = chicken_data_bottomhalf.q[11][2];
-        chicken_data_bottomhalf.d[11][2] = chicken_data_bottomhalf.q[12][2];
-        chicken_data_bottomhalf.d[12][2] = chicken_data_bottomhalf.q[13][2];
-        chicken_data_bottomhalf.d[13][2] = chicken_data_bottomhalf.q[14][2];
-        chicken_data_bottomhalf.d[14][2] = chicken_data_bottomhalf.q[15][2];
-        chicken_data_bottomhalf.d[15][2] = b000;
-        
-        chicken_data_tophalf.d[0][3]=chicken_data_tophalf.q[1][3];
-        chicken_data_tophalf.d[1][3]=chicken_data_tophalf.q[2][3];
-        chicken_data_tophalf.d[2][3]=chicken_data_tophalf.q[3][3];
-        chicken_data_tophalf.d[3][3]=chicken_data_tophalf.q[4][3];
-        chicken_data_tophalf.d[4][3]=chicken_data_tophalf.q[5][3];
-        chicken_data_tophalf.d[5][3]=chicken_data_tophalf.q[6][3];
-        chicken_data_tophalf.d[6][3]=chicken_data_tophalf.q[7][3];
-        chicken_data_tophalf.d[7][3]=chicken_data_tophalf.q[8][3];
-        chicken_data_tophalf.d[8][3]=chicken_data_tophalf.q[9][3];
-        chicken_data_tophalf.d[9][3]=chicken_data_tophalf.q[10][3];
-        chicken_data_tophalf.d[10][3]=chicken_data_tophalf.q[11][3];
-        chicken_data_tophalf.d[11][3]=chicken_data_tophalf.q[12][3];
-        chicken_data_tophalf.d[12][3]=chicken_data_tophalf.q[13][3];
-        chicken_data_tophalf.d[13][3]=chicken_data_tophalf.q[14][3];
-        chicken_data_tophalf.d[14][3]=chicken_data_tophalf.q[15][3];
-        chicken_data_tophalf.d[15][3]=chicken_data_bottomhalf.q[0][3];
-        chicken_data_bottomhalf.d[0][3]=chicken_data_bottomhalf.q[1][3];
-        chicken_data_bottomhalf.d[1][3]=chicken_data_bottomhalf.q[2][3];
-        chicken_data_bottomhalf.d[2][3]=chicken_data_bottomhalf.q[3][3];
-        chicken_data_bottomhalf.d[3][3]=chicken_data_bottomhalf.q[4][3];
-        chicken_data_bottomhalf.d[4][3]=chicken_data_bottomhalf.q[5][3];
-        chicken_data_bottomhalf.d[5][3]=chicken_data_bottomhalf.q[6][3];
-        chicken_data_bottomhalf.d[6][3]=chicken_data_bottomhalf.q[7][3];
-        chicken_data_bottomhalf.d[7][3]=chicken_data_bottomhalf.q[8][3];
-        chicken_data_bottomhalf.d[8][3]=chicken_data_bottomhalf.q[9][3];
-        chicken_data_bottomhalf.d[9][3]=chicken_data_bottomhalf.q[10][3];
-        chicken_data_bottomhalf.d[10][3]=chicken_data_bottomhalf.q[11][3];
-        chicken_data_bottomhalf.d[11][3]=chicken_data_bottomhalf.q[12][3];
-        chicken_data_bottomhalf.d[12][3]=chicken_data_bottomhalf.q[13][3];
-        chicken_data_bottomhalf.d[13][3]=chicken_data_bottomhalf.q[14][3];
-        chicken_data_bottomhalf.d[14][3]=chicken_data_bottomhalf.q[15][3];
-        chicken_data_bottomhalf.d[15][3]=b000;
-        chicken_data_tophalf.d[0][4]=chicken_data_tophalf.q[1][4];
-        chicken_data_tophalf.d[1][4]=chicken_data_tophalf.q[2][4];
-chicken_data_tophalf.d[2][4]=chicken_data_tophalf.q[3][4];
-chicken_data_tophalf.d[3][4]=chicken_data_tophalf.q[4][4];
-chicken_data_tophalf.d[4][4]=chicken_data_tophalf.q[5][4];
-chicken_data_tophalf.d[5][4]=chicken_data_tophalf.q[6][4];
-chicken_data_tophalf.d[6][4]=chicken_data_tophalf.q[7][4];
-chicken_data_tophalf.d[7][4]=chicken_data_tophalf.q[8][4];
-chicken_data_tophalf.d[8][4]=chicken_data_tophalf.q[9][4];
-chicken_data_tophalf.d[9][4]=chicken_data_tophalf.q[10][4];
-chicken_data_tophalf.d[10][4]=chicken_data_tophalf.q[11][4];
-chicken_data_tophalf.d[11][4]=chicken_data_tophalf.q[12][4];
-chicken_data_tophalf.d[12][4]=chicken_data_tophalf.q[13][4];
-chicken_data_tophalf.d[13][4]=chicken_data_tophalf.q[14][4];
-chicken_data_tophalf.d[14][4]=chicken_data_tophalf.q[15][4];
-chicken_data_tophalf.d[15][4]=chicken_data_bottomhalf.q[0][4];
-chicken_data_bottomhalf.d[0][4]=chicken_data_bottomhalf.q[1][4];
-chicken_data_bottomhalf.d[1][4]=chicken_data_bottomhalf.q[2][4];
-chicken_data_bottomhalf.d[2][4]=chicken_data_bottomhalf.q[3][4];
-chicken_data_bottomhalf.d[3][4]=chicken_data_bottomhalf.q[4][4];
-chicken_data_bottomhalf.d[4][4]=chicken_data_bottomhalf.q[5][4];
-chicken_data_bottomhalf.d[5][4]=chicken_data_bottomhalf.q[6][4];
-chicken_data_bottomhalf.d[6][4]=chicken_data_bottomhalf.q[7][4];
-chicken_data_bottomhalf.d[7][4]=chicken_data_bottomhalf.q[8][4];
-chicken_data_bottomhalf.d[8][4]=chicken_data_bottomhalf.q[9][4];
-chicken_data_bottomhalf.d[9][4]=chicken_data_bottomhalf.q[10][4];
-chicken_data_bottomhalf.d[10][4]=chicken_data_bottomhalf.q[11][4];
-chicken_data_bottomhalf.d[11][4]=chicken_data_bottomhalf.q[12][4];
-chicken_data_bottomhalf.d[12][4]=chicken_data_bottomhalf.q[13][4];
-chicken_data_bottomhalf.d[13][4]=chicken_data_bottomhalf.q[14][4];
-chicken_data_bottomhalf.d[14][4]=chicken_data_bottomhalf.q[15][4];
-chicken_data_bottomhalf.d[15][4]=b000;
-                chicken_data_tophalf.d[15][5] = chicken_data_bottomhalf.q[0][5];
-        chicken_data_tophalf.d[0][5] = chicken_data_tophalf.q[1][5];
-        chicken_data_tophalf.d[1][5] = chicken_data_tophalf.q[2][5];
-        chicken_data_tophalf.d[2][5] = chicken_data_tophalf.q[3][5];
-        chicken_data_tophalf.d[3][5] = chicken_data_tophalf.q[4][5];
-        chicken_data_tophalf.d[4][5] = chicken_data_tophalf.q[5][5];
-        chicken_data_tophalf.d[5][5] = chicken_data_tophalf.q[6][5];
-        chicken_data_tophalf.d[6][5] = chicken_data_tophalf.q[7][5];
-        chicken_data_tophalf.d[7][5] = chicken_data_tophalf.q[8][5];
-        chicken_data_tophalf.d[8][5] = chicken_data_tophalf.q[9][5];
-        chicken_data_tophalf.d[9][5] = chicken_data_tophalf.q[10][5];
-        chicken_data_tophalf.d[10][5] = chicken_data_tophalf.q[11][5];
-        chicken_data_tophalf.d[11][5] = chicken_data_tophalf.q[12][5];
-        chicken_data_tophalf.d[12][5] = chicken_data_tophalf.q[13][5];
-        chicken_data_tophalf.d[13][5] = chicken_data_tophalf.q[14][5];
-        chicken_data_tophalf.d[14][5] = chicken_data_tophalf.q[15][5];
-        chicken_data_bottomhalf.d[0][5] = chicken_data_bottomhalf.q[1][5];
-        chicken_data_bottomhalf.d[1][5] = chicken_data_bottomhalf.q[2][5];
-        chicken_data_bottomhalf.d[2][5] = chicken_data_bottomhalf.q[3][5];
-        chicken_data_bottomhalf.d[3][5] = chicken_data_bottomhalf.q[4][5];
-        chicken_data_bottomhalf.d[4][5] = chicken_data_bottomhalf.q[5][5];
-        chicken_data_bottomhalf.d[5][5] = chicken_data_bottomhalf.q[6][5];
-        chicken_data_bottomhalf.d[6][5] = chicken_data_bottomhalf.q[7][5];
-        chicken_data_bottomhalf.d[7][5] = chicken_data_bottomhalf.q[8][5];
-        chicken_data_bottomhalf.d[8][5] = chicken_data_bottomhalf.q[9][5];
-        chicken_data_bottomhalf.d[9][5] = chicken_data_bottomhalf.q[10][5];
-        chicken_data_bottomhalf.d[10][5] = chicken_data_bottomhalf.q[11][5];
-        chicken_data_bottomhalf.d[11][5] = chicken_data_bottomhalf.q[12][5];
-        chicken_data_bottomhalf.d[12][5] = chicken_data_bottomhalf.q[13][5];
-        chicken_data_bottomhalf.d[13][5] = chicken_data_bottomhalf.q[14][5];
-        chicken_data_bottomhalf.d[14][5] = chicken_data_bottomhalf.q[15][5];
-        chicken_data_bottomhalf.d[15][5] = b000;
-        
-chicken_data_tophalf.d[0][6]=chicken_data_tophalf.q[1][6];
-chicken_data_tophalf.d[1][6]=chicken_data_tophalf.q[2][6];
-chicken_data_tophalf.d[2][6]=chicken_data_tophalf.q[3][6];
-chicken_data_tophalf.d[3][6]=chicken_data_tophalf.q[4][6];
-chicken_data_tophalf.d[4][6]=chicken_data_tophalf.q[5][6];
-chicken_data_tophalf.d[5][6]=chicken_data_tophalf.q[6][6];
-chicken_data_tophalf.d[6][6]=chicken_data_tophalf.q[7][6];
-chicken_data_tophalf.d[7][6]=chicken_data_tophalf.q[8][6];
-chicken_data_tophalf.d[8][6]=chicken_data_tophalf.q[9][6];
-chicken_data_tophalf.d[9][6]=chicken_data_tophalf.q[10][6];
-chicken_data_tophalf.d[10][6]=chicken_data_tophalf.q[11][6];
-chicken_data_tophalf.d[11][6]=chicken_data_tophalf.q[12][6];
-chicken_data_tophalf.d[12][6]=chicken_data_tophalf.q[13][6];
-chicken_data_tophalf.d[13][6]=chicken_data_tophalf.q[14][6];
-chicken_data_tophalf.d[14][6]=chicken_data_tophalf.q[15][6];
-chicken_data_tophalf.d[15][6]=chicken_data_bottomhalf.q[0][6];
-chicken_data_bottomhalf.d[0][6]=chicken_data_bottomhalf.q[1][6];
-chicken_data_bottomhalf.d[1][6]=chicken_data_bottomhalf.q[2][6];
-chicken_data_bottomhalf.d[2][6]=chicken_data_bottomhalf.q[3][6];
-chicken_data_bottomhalf.d[3][6]=chicken_data_bottomhalf.q[4][6];
-chicken_data_bottomhalf.d[4][6]=chicken_data_bottomhalf.q[5][6];
-chicken_data_bottomhalf.d[5][6]=chicken_data_bottomhalf.q[6][6];
-chicken_data_bottomhalf.d[6][6]=chicken_data_bottomhalf.q[7][6];
-chicken_data_bottomhalf.d[7][6]=chicken_data_bottomhalf.q[8][6];
-chicken_data_bottomhalf.d[8][6]=chicken_data_bottomhalf.q[9][6];
-chicken_data_bottomhalf.d[9][6]=chicken_data_bottomhalf.q[10][6];
-chicken_data_bottomhalf.d[10][6]=chicken_data_bottomhalf.q[11][6];
-chicken_data_bottomhalf.d[11][6]=chicken_data_bottomhalf.q[12][6];
-chicken_data_bottomhalf.d[12][6]=chicken_data_bottomhalf.q[13][6];
-chicken_data_bottomhalf.d[13][6]=chicken_data_bottomhalf.q[14][6];
-chicken_data_bottomhalf.d[14][6]=chicken_data_bottomhalf.q[15][6];
-chicken_data_bottomhalf.d[15][6]=b000;}
-          state.d = state.LOOP;
-      
-        
-      state.CHICKENRIGHT:
-        if(chicken_data_bottomhalf.q[15][3]){}
-        else{
-        chicken_data_tophalf.d[0][2] = b000;
-        chicken_data_tophalf.d[1][2] = chicken_data_tophalf.q[0][2];
-        chicken_data_tophalf.d[2][2] = chicken_data_tophalf.q[1][2];
-        chicken_data_tophalf.d[3][2] = chicken_data_tophalf.q[2][2];
-        chicken_data_tophalf.d[4][2] = chicken_data_tophalf.q[3][2];
-        chicken_data_tophalf.d[5][2] = chicken_data_tophalf.q[4][2];
-        chicken_data_tophalf.d[6][2] = chicken_data_tophalf.q[5][2];
-        chicken_data_tophalf.d[7][2] = chicken_data_tophalf.q[6][2];
-        chicken_data_tophalf.d[8][2] = chicken_data_tophalf.q[7][2];
-        chicken_data_tophalf.d[9][2] = chicken_data_tophalf.q[8][2];
-        chicken_data_tophalf.d[10][2] = chicken_data_tophalf.q[9][2];
-        chicken_data_tophalf.d[11][2] = chicken_data_tophalf.q[10][2];
-        chicken_data_tophalf.d[12][2] = chicken_data_tophalf.q[11][2];
-        chicken_data_tophalf.d[13][2] = chicken_data_tophalf.q[12][2];
-        chicken_data_tophalf.d[14][2] = chicken_data_tophalf.q[13][2];
-        chicken_data_tophalf.d[15][2] = chicken_data_tophalf.q[14][2];
-        chicken_data_bottomhalf.d[0][2] = chicken_data_tophalf.q[15][2];
-        chicken_data_bottomhalf.d[1][2] = chicken_data_bottomhalf.q[0][2];
-        chicken_data_bottomhalf.d[2][2] = chicken_data_bottomhalf.q[1][2];
-        chicken_data_bottomhalf.d[3][2] = chicken_data_bottomhalf.q[2][2];
-        chicken_data_bottomhalf.d[4][2] = chicken_data_bottomhalf.q[3][2];
-        chicken_data_bottomhalf.d[5][2] = chicken_data_bottomhalf.q[4][2];
-        chicken_data_bottomhalf.d[6][2] = chicken_data_bottomhalf.q[5][2];
-        chicken_data_bottomhalf.d[7][2] = chicken_data_bottomhalf.q[6][2];
-        chicken_data_bottomhalf.d[8][2] = chicken_data_bottomhalf.q[7][2];
-        chicken_data_bottomhalf.d[9][2] = chicken_data_bottomhalf.q[8][2];
-        chicken_data_bottomhalf.d[10][2] = chicken_data_bottomhalf.q[9][2];
-        chicken_data_bottomhalf.d[11][2] = chicken_data_bottomhalf.q[10][2];
-        chicken_data_bottomhalf.d[12][2] = chicken_data_bottomhalf.q[11][2];
-        chicken_data_bottomhalf.d[13][2] = chicken_data_bottomhalf.q[12][2];
-        chicken_data_bottomhalf.d[14][2] = chicken_data_bottomhalf.q[13][2];
-        chicken_data_bottomhalf.d[15][2] = chicken_data_bottomhalf.q[14][2];
-          
-                chicken_data_tophalf.d[0][3] = b000;
-        chicken_data_tophalf.d[1][3] = chicken_data_tophalf.q[0][3];
-        chicken_data_tophalf.d[2][3] = chicken_data_tophalf.q[1][3];
-        chicken_data_tophalf.d[3][3] = chicken_data_tophalf.q[2][3];
-        chicken_data_tophalf.d[4][3] = chicken_data_tophalf.q[3][3];
-        chicken_data_tophalf.d[5][3] = chicken_data_tophalf.q[4][3];
-        chicken_data_tophalf.d[6][3] = chicken_data_tophalf.q[5][3];
-        chicken_data_tophalf.d[7][3] = chicken_data_tophalf.q[6][3];
-        chicken_data_tophalf.d[8][3] = chicken_data_tophalf.q[7][3];
-        chicken_data_tophalf.d[9][3] = chicken_data_tophalf.q[8][3];
-        chicken_data_tophalf.d[10][3] = chicken_data_tophalf.q[9][3];
-        chicken_data_tophalf.d[11][3] = chicken_data_tophalf.q[10][3];
-        chicken_data_tophalf.d[12][3] = chicken_data_tophalf.q[11][3];
-        chicken_data_tophalf.d[13][3] = chicken_data_tophalf.q[12][3];
-        chicken_data_tophalf.d[14][3] = chicken_data_tophalf.q[13][3];
-        chicken_data_tophalf.d[15][3] = chicken_data_tophalf.q[14][3];
-        chicken_data_bottomhalf.d[0][3] = chicken_data_tophalf.q[15][3];
-        chicken_data_bottomhalf.d[1][3] = chicken_data_bottomhalf.q[0][3];
-        chicken_data_bottomhalf.d[2][3] = chicken_data_bottomhalf.q[1][3];
-        chicken_data_bottomhalf.d[3][3] = chicken_data_bottomhalf.q[2][3];
-        chicken_data_bottomhalf.d[4][3] = chicken_data_bottomhalf.q[3][3];
-        chicken_data_bottomhalf.d[5][3] = chicken_data_bottomhalf.q[4][3];
-        chicken_data_bottomhalf.d[6][3] = chicken_data_bottomhalf.q[5][3];
-        chicken_data_bottomhalf.d[7][3] = chicken_data_bottomhalf.q[6][3];
-        chicken_data_bottomhalf.d[8][3] = chicken_data_bottomhalf.q[7][3];
-        chicken_data_bottomhalf.d[9][3] = chicken_data_bottomhalf.q[8][3];
-        chicken_data_bottomhalf.d[10][3] = chicken_data_bottomhalf.q[9][3];
-        chicken_data_bottomhalf.d[11][3] = chicken_data_bottomhalf.q[10][3];
-        chicken_data_bottomhalf.d[12][3] = chicken_data_bottomhalf.q[11][3];
-        chicken_data_bottomhalf.d[13][3] = chicken_data_bottomhalf.q[12][3];
-        chicken_data_bottomhalf.d[14][3] = chicken_data_bottomhalf.q[13][3];
-        chicken_data_bottomhalf.d[15][3] = chicken_data_bottomhalf.q[14][3];
-          
-        chicken_data_tophalf.d[0][4] = b000;
-        chicken_data_tophalf.d[1][4] = chicken_data_tophalf.q[0][4];
-        chicken_data_tophalf.d[2][4] = chicken_data_tophalf.q[1][4];
-        chicken_data_tophalf.d[3][4] = chicken_data_tophalf.q[2][4];
-        chicken_data_tophalf.d[4][4] = chicken_data_tophalf.q[3][4];
-        chicken_data_tophalf.d[5][4] = chicken_data_tophalf.q[4][4];
-        chicken_data_tophalf.d[6][4] = chicken_data_tophalf.q[5][4];
-        chicken_data_tophalf.d[7][4] = chicken_data_tophalf.q[6][4];
-        chicken_data_tophalf.d[8][4] = chicken_data_tophalf.q[7][4];
-        chicken_data_tophalf.d[9][4] = chicken_data_tophalf.q[8][4];
-        chicken_data_tophalf.d[10][4] = chicken_data_tophalf.q[9][4];
-        chicken_data_tophalf.d[11][4] = chicken_data_tophalf.q[10][4];
-        chicken_data_tophalf.d[12][4] = chicken_data_tophalf.q[11][4];
-        chicken_data_tophalf.d[13][4] = chicken_data_tophalf.q[12][4];
-        chicken_data_tophalf.d[14][4] = chicken_data_tophalf.q[13][4];
-        chicken_data_tophalf.d[15][4] = chicken_data_tophalf.q[14][4];
-        chicken_data_bottomhalf.d[0][4] = chicken_data_tophalf.q[15][4];
-        chicken_data_bottomhalf.d[1][4] = chicken_data_bottomhalf.q[0][4];
-        chicken_data_bottomhalf.d[2][4] = chicken_data_bottomhalf.q[1][4];
-        chicken_data_bottomhalf.d[3][4] = chicken_data_bottomhalf.q[2][4];
-        chicken_data_bottomhalf.d[4][4] = chicken_data_bottomhalf.q[3][4];
-        chicken_data_bottomhalf.d[5][4] = chicken_data_bottomhalf.q[4][4];
-        chicken_data_bottomhalf.d[6][4] = chicken_data_bottomhalf.q[5][4];
-        chicken_data_bottomhalf.d[7][4] = chicken_data_bottomhalf.q[6][4];
-        chicken_data_bottomhalf.d[8][4] = chicken_data_bottomhalf.q[7][4];
-        chicken_data_bottomhalf.d[9][4] = chicken_data_bottomhalf.q[8][4];
-        chicken_data_bottomhalf.d[10][4] = chicken_data_bottomhalf.q[9][4];
-        chicken_data_bottomhalf.d[11][4] = chicken_data_bottomhalf.q[10][4];
-        chicken_data_bottomhalf.d[12][4] = chicken_data_bottomhalf.q[11][4];
-        chicken_data_bottomhalf.d[13][4] = chicken_data_bottomhalf.q[12][4];
-        chicken_data_bottomhalf.d[14][4] = chicken_data_bottomhalf.q[13][4];
-        chicken_data_bottomhalf.d[15][4] = chicken_data_bottomhalf.q[14][4];
-          
-        chicken_data_tophalf.d[0][5] = b000;
-        chicken_data_tophalf.d[1][5] = chicken_data_tophalf.q[0][5];
-        chicken_data_tophalf.d[2][5] = chicken_data_tophalf.q[1][5];
-        chicken_data_tophalf.d[3][5] = chicken_data_tophalf.q[2][5];
-        chicken_data_tophalf.d[4][5] = chicken_data_tophalf.q[3][5];
-        chicken_data_tophalf.d[5][5] = chicken_data_tophalf.q[4][5];
-        chicken_data_tophalf.d[6][5] = chicken_data_tophalf.q[5][5];
-        chicken_data_tophalf.d[7][5] = chicken_data_tophalf.q[6][5];
-        chicken_data_tophalf.d[8][5] = chicken_data_tophalf.q[7][5];
-        chicken_data_tophalf.d[9][5] = chicken_data_tophalf.q[8][5];
-        chicken_data_tophalf.d[10][5] = chicken_data_tophalf.q[9][5];
-        chicken_data_tophalf.d[11][5] = chicken_data_tophalf.q[10][5];
-        chicken_data_tophalf.d[12][5] = chicken_data_tophalf.q[11][5];
-        chicken_data_tophalf.d[13][5] = chicken_data_tophalf.q[12][5];
-        chicken_data_tophalf.d[14][5] = chicken_data_tophalf.q[13][5];
-        chicken_data_tophalf.d[15][5] = chicken_data_tophalf.q[14][5];
-        chicken_data_bottomhalf.d[0][5] = chicken_data_tophalf.q[15][5];
-        chicken_data_bottomhalf.d[1][5] = chicken_data_bottomhalf.q[0][5];
-        chicken_data_bottomhalf.d[2][5] = chicken_data_bottomhalf.q[1][5];
-        chicken_data_bottomhalf.d[3][5] = chicken_data_bottomhalf.q[2][5];
-        chicken_data_bottomhalf.d[4][5] = chicken_data_bottomhalf.q[3][5];
-        chicken_data_bottomhalf.d[5][5] = chicken_data_bottomhalf.q[4][5];
-        chicken_data_bottomhalf.d[6][5] = chicken_data_bottomhalf.q[5][5];
-        chicken_data_bottomhalf.d[7][5] = chicken_data_bottomhalf.q[6][5];
-        chicken_data_bottomhalf.d[8][5] = chicken_data_bottomhalf.q[7][5];
-        chicken_data_bottomhalf.d[9][5] = chicken_data_bottomhalf.q[8][5];
-        chicken_data_bottomhalf.d[10][5] = chicken_data_bottomhalf.q[9][5];
-        chicken_data_bottomhalf.d[11][5] = chicken_data_bottomhalf.q[10][5];
-        chicken_data_bottomhalf.d[12][5] = chicken_data_bottomhalf.q[11][5];
-        chicken_data_bottomhalf.d[13][5] = chicken_data_bottomhalf.q[12][5];
-        chicken_data_bottomhalf.d[14][5] = chicken_data_bottomhalf.q[13][5];
-        chicken_data_bottomhalf.d[15][5] = chicken_data_bottomhalf.q[14][5];
-          
-        chicken_data_tophalf.d[0][6] = b000;
-        chicken_data_tophalf.d[1][6] = chicken_data_tophalf.q[0][6];
-        chicken_data_tophalf.d[2][6] = chicken_data_tophalf.q[1][6];
-        chicken_data_tophalf.d[3][6] = chicken_data_tophalf.q[2][6];
-        chicken_data_tophalf.d[4][6] = chicken_data_tophalf.q[3][6];
-        chicken_data_tophalf.d[5][6] = chicken_data_tophalf.q[4][6];
-        chicken_data_tophalf.d[6][6] = chicken_data_tophalf.q[5][6];
-        chicken_data_tophalf.d[7][6] = chicken_data_tophalf.q[6][6];
-        chicken_data_tophalf.d[8][6] = chicken_data_tophalf.q[7][6];
-        chicken_data_tophalf.d[9][6] = chicken_data_tophalf.q[8][6];
-        chicken_data_tophalf.d[10][6] = chicken_data_tophalf.q[9][6];
-        chicken_data_tophalf.d[11][6] = chicken_data_tophalf.q[10][6];
-        chicken_data_tophalf.d[12][6] = chicken_data_tophalf.q[11][6];
-        chicken_data_tophalf.d[13][6] = chicken_data_tophalf.q[12][6];
-        chicken_data_tophalf.d[14][6] = chicken_data_tophalf.q[13][6];
-        chicken_data_tophalf.d[15][6] = chicken_data_tophalf.q[14][6];
-        chicken_data_bottomhalf.d[0][6] = chicken_data_tophalf.q[15][6];
-        chicken_data_bottomhalf.d[1][6] = chicken_data_bottomhalf.q[0][6];
-        chicken_data_bottomhalf.d[2][6] = chicken_data_bottomhalf.q[1][6];
-        chicken_data_bottomhalf.d[3][6] = chicken_data_bottomhalf.q[2][6];
-        chicken_data_bottomhalf.d[4][6] = chicken_data_bottomhalf.q[3][6];
-        chicken_data_bottomhalf.d[5][6] = chicken_data_bottomhalf.q[4][6];
-        chicken_data_bottomhalf.d[6][6] = chicken_data_bottomhalf.q[5][6];
-        chicken_data_bottomhalf.d[7][6] = chicken_data_bottomhalf.q[6][6];
-        chicken_data_bottomhalf.d[8][6] = chicken_data_bottomhalf.q[7][6];
-        chicken_data_bottomhalf.d[9][6] = chicken_data_bottomhalf.q[8][6];
-        chicken_data_bottomhalf.d[10][6] = chicken_data_bottomhalf.q[9][6];
-        chicken_data_bottomhalf.d[11][6] = chicken_data_bottomhalf.q[10][6];
-        chicken_data_bottomhalf.d[12][6] = chicken_data_bottomhalf.q[11][6];
-        chicken_data_bottomhalf.d[13][6] = chicken_data_bottomhalf.q[12][6];
-        chicken_data_bottomhalf.d[14][6] = chicken_data_bottomhalf.q[13][6];
-        chicken_data_bottomhalf.d[15][6] = chicken_data_bottomhalf.q[14][6];
-          
-        
-          }
-        state.d = state.LOOP;
-        
-      state.GENERATE:
-        if (generateSky < 14){
-          //at top half
-          reg_data_tophalf.d[generateSky][63] = b100;
-          reg_data_tophalf.d[generateSky][62] = b100;
-          reg_data_tophalf.d[generateSky][61] = b100;
-          
-          reg_data_tophalf.d[generateSky+1][63] = b100;
-          reg_data_tophalf.d[generateSky+1][62] = b100;
-          reg_data_tophalf.d[generateSky+1][61] = b100;
-          
-          reg_data_tophalf.d[generateSky+2][63] = b100;
-          reg_data_tophalf.d[generateSky+2][62] = b100;
-          reg_data_tophalf.d[generateSky+2][61] = b100;
-        }
-        else if (15 < generateSky < 29){
-          reg_data_bottomhalf.d[generateSky][63] = b100;
-          reg_data_bottomhalf.d[generateSky][62] = b100;
-          reg_data_bottomhalf.d[generateSky][61] = b100;
-          
-          reg_data_bottomhalf.d[generateSky+1][63] = b100;
-          reg_data_bottomhalf.d[generateSky+1][62] = b100;
-          reg_data_bottomhalf.d[generateSky+1][61] = b100;
-          
-          reg_data_bottomhalf.d[generateSky+2][63] = b100;
-          reg_data_bottomhalf.d[generateSky+2][62] = b100;
-          reg_data_bottomhalf.d[generateSky+2][61] = b100;
-        }
-        
-        state.d = state.LOOP;
-      state.SHIFT: 
-         chicken_data_tophalf.d[0][62:2] = chicken_data_tophalf.q[0][63:3];
-        
-      //state.CHECKCOL:
-        
       
       
     }
     
-    if (chicken_data_bottomhalf.q[row_address][column_address]){
-      bottom_half_proc = chicken_data_bottomhalf.q[row_address][column_address];
-    }
-    else{
-      bottom_half_proc = reg_data_bottomhalf.q[row_address][column_address];
-    }
     
-    if (chicken_data_tophalf.q[row_address][column_address]){
-      top_half_proc = chicken_data_tophalf.q[row_address][column_address];
-    }
-    else{
-      top_half_proc =  reg_data_tophalf.q[row_address][column_address];
-    }
     
-    out = c{ top_half_proc, bottom_half_proc};
-    // out = DATA[row_address][column_address];
+    // out = c{row_address[2:0], column_address[2:0]};
+    
   }
 }

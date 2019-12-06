@@ -1,0 +1,39 @@
+module boolean (
+    input alufn[6],               //inputs
+    input a[16],
+    input b[16],
+    
+    output bool[16]               //outputs
+  ) {
+  
+  var i;
+  
+  always {
+  
+    for(i=0; i<16; i++){ //for loop, to loop through all 16 bits of a and b
+     
+     case(alufn[3:0]){
+      
+        4b1000: bool[i] = a[i]&b[i];      //when alufn[3:0] == 1000, AND operation  
+        
+        4b1110: bool[i] = a[i]|b[i];      //when alufn[3:0] == 1110, OR operation
+        
+        4b0110: bool[i] = a[i]^b[i];      //when alufn[3:0] == 0110, XOR operation
+        
+        4b1010: bool[i] = a[i];           //when alufn[3:0] == 1010, A operation
+        
+        4b1100: bool[i] = b[i];           //when alufn[3:0] == 1100, B operation
+        
+        4b0001: bool[i] = ~(a[i]|b[i]);   //when alufn[3:0] == 0001, NOR operation
+        
+        4b0111: bool[i] = ~(a[i]&b[i]);   //when alufn[3:0] == 0111, NAND operation
+             
+        default: bool[i] = 0;            //default is all 0s
+      }
+ 
+     
+      }
+    
+    
+  }
+}

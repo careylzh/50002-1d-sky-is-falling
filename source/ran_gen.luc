@@ -1,0 +1,118 @@
+module ran_gen #(
+    // SEED needs to always be non-zero
+    // Since seed is XORed with the 32MSBs of SEED, we need the 96 LSBs to be nonzero.
+    SEED = 128h843233523a613966423b622562592c62: SEED.WIDTH == 128 && SEED[95:0] != 0
+  )(
+    input clk,       // clock
+    input rst,       // reset
+    input next,      // generate next number flag
+    input seed [32], // seed used on reset
+    output num [16]  // "random" number output
+  ) {
+  
+  .clk(clk) {
+    dff x[16], y[16], z[16], w[16]; // state storage
+    dff getT[2];
+    dff getWD[3];
+   // fsm getT = {INIT,XSHIFT,XXOR};
+    //fsm getWD = {INIT,SHIFT1,SHIFT2,XOR1,XOR2,XOR3};
+  }
+  alu alu;
+  sig t [16];                       // temporary results
+  sig temp1[16];
+  sig temp2[16];
+  sig temp3[16];
+  
+  
+  always {
+  alu.a = 16b0;
+    alu.b =16b0;
+    alu.alufn =6b0;
+    temp1 = 0;
+    temp2 = 0;
+    temp3 = 0;
+    t =0;
+    num = w.q;                      // output is from w
+   // t = x.q ^ (x.q << 11);          // calculate intermediate value
+    
+    case(getT.q){
+      0:
+        alu.a = x.q;
+        alu.b = 16b0000000000001011;
+        alu.alufn = 6b100000;
+        temp1 = alu.alu;
+        getT.d = getT.q+1;
+        
+      1:
+        alu.a = temp1;
+        alu.b = x.q;
+        alu.alufn = 6b010110;
+        temp2 = alu.alu;
+        getT.d = getT.q+1;
+        
+      2:
+        t = temp2;
+        alu.a = 16b0;
+    alu.b =16b0;
+    alu.alufn =6b0;
+    temp1 = 0;
+    temp2 = 0;
+    temp3 = 0;
+        
+      }
+    
+    
+    if (next) {                     // if we need a new number
+      x.d = y.q;                    // shift values along
+      y.d = z.q;                   
+      z.d = w.q;
+      
+      // magic formula from Wikipedia
+      //w.d = w.q ^ (w.q >> 19) ^ t ^ (t >> 8);
+      case(getWD.q){
+       0:
+          alu.a = w.q;
+          alu.b = 16b0000000000010011;
+          alu.alufn = 6b100001;
+          temp1 = alu.alu;
+          getWD.d = getWD.q+1;
+          
+        1:
+          alu.a = t;
+          alu.b = 16b0000000000001000;
+          alu.alufn = 6b100001;
+          temp2 = alu.alu;
+          getWD.d = getWD.q+1;
+          
+        2:
+          alu.a = w.q;
+          alu.b = temp1;
+          alu.alufn = 6b100001;
+          temp3 = alu.alu;
+          getWD.d = getWD.q+1;
+          
+        3:
+          alu.a = t;
+          alu.b = temp3;
+          alu.alufn = 6b100001;
+          temp1 = alu.alu;
+          getWD.d = getWD.q+1;
+          
+        4:
+          alu.a = temp1;
+          alu.b = temp2;
+          alu.alufn = 6b100001;
+          w.d= alu.alu;       
+        }
+      
+    }
+    
+    // Manually reset the flip-flops so we can change the reset value
+    if (rst) {
+      x.d = SEED[0+:16];
+      y.d = SEED[32+:16];
+      z.d = SEED[64+:16];
+      w.d = SEED[96+:16] ^ seed;
+    }
+  }
+}

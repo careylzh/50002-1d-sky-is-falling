@@ -1,0 +1,257 @@
+//! **************************************************************************
+// Written by: Map P.20131013 on Fri Dec 06 14:10:06 2019
+//! **************************************************************************
+
+SCHEMATIC START;
+CONFIG VCCAUX = "3.3";
+COMP "startbutton" LOCATE = SITE "P5" LEVEL 1;
+COMP "clk" LOCATE = SITE "P56" LEVEL 1;
+COMP "cclk" LOCATE = SITE "P70" LEVEL 1;
+COMP "led_addr[0]" LOCATE = SITE "P29" LEVEL 1;
+COMP "led_addr[1]" LOCATE = SITE "P30" LEVEL 1;
+COMP "led_addr[2]" LOCATE = SITE "P32" LEVEL 1;
+COMP "led_addr[3]" LOCATE = SITE "P33" LEVEL 1;
+COMP "led_blk" LOCATE = SITE "P24" LEVEL 1;
+COMP "led_clk" LOCATE = SITE "P27" LEVEL 1;
+COMP "led_lat" LOCATE = SITE "P26" LEVEL 1;
+COMP "rst_n" LOCATE = SITE "P38" LEVEL 1;
+COMP "spi_sck" LOCATE = SITE "P43" LEVEL 1;
+COMP "rightbutton" LOCATE = SITE "P7" LEVEL 1;
+COMP "avr_rx_busy" LOCATE = SITE "P39" LEVEL 1;
+COMP "led_b[0]" LOCATE = SITE "P34" LEVEL 1;
+COMP "led_b[1]" LOCATE = SITE "P35" LEVEL 1;
+COMP "led_g[0]" LOCATE = SITE "P40" LEVEL 1;
+COMP "led_g[1]" LOCATE = SITE "P41" LEVEL 1;
+COMP "led_r[0]" LOCATE = SITE "P50" LEVEL 1;
+COMP "led_r[1]" LOCATE = SITE "P51" LEVEL 1;
+COMP "avr_tx" LOCATE = SITE "P55" LEVEL 1;
+COMP "spi_ss" LOCATE = SITE "P48" LEVEL 1;
+COMP "leftbutton" LOCATE = SITE "P9" LEVEL 1;
+COMP "spi_mosi" LOCATE = SITE "P44" LEVEL 1;
+PIN matrix_data/background_ram_bottom/Mram_ram_pins<11> = BEL
+        "matrix_data/background_ram_bottom/Mram_ram" PINNAME CLKAWRCLK;
+PIN matrix_data/background_ram_top/Mram_ram_pins<11> = BEL
+        "matrix_data/background_ram_top/Mram_ram" PINNAME CLKAWRCLK;
+PIN matrix_data/chicken_ram_top/Mram_ram_pins<11> = BEL
+        "matrix_data/chicken_ram_top/Mram_ram" PINNAME CLKAWRCLK;
+PIN matrix_data/chicken_ram_bottom/Mram_ram_pins<11> = BEL
+        "matrix_data/chicken_ram_bottom/Mram_ram" PINNAME CLKAWRCLK;
+TIMEGRP clk = BEL "game_fsm/M_state_q_FSM_FFd2" BEL
+        "game_fsm/M_state_q_FSM_FFd4" BEL "game_fsm/M_state_q_FSM_FFd3" BEL
+        "game_fsm/M_timeCount_q_31" BEL "game_fsm/M_timeCount_q_30" BEL
+        "game_fsm/M_timeCount_q_29" BEL "game_fsm/M_timeCount_q_28" BEL
+        "game_fsm/M_timeCount_q_27" BEL "game_fsm/M_timeCount_q_26" BEL
+        "game_fsm/M_timeCount_q_25" BEL "game_fsm/M_timeCount_q_24" BEL
+        "game_fsm/M_timeCount_q_23" BEL "game_fsm/M_timeCount_q_22" BEL
+        "game_fsm/M_timeCount_q_21" BEL "game_fsm/M_timeCount_q_20" BEL
+        "game_fsm/M_timeCount_q_19" BEL "game_fsm/M_timeCount_q_18" BEL
+        "game_fsm/M_timeCount_q_17" BEL "game_fsm/M_timeCount_q_16" BEL
+        "game_fsm/M_timeCount_q_15" BEL "game_fsm/M_timeCount_q_14" BEL
+        "game_fsm/M_timeCount_q_13" BEL "game_fsm/M_timeCount_q_12" BEL
+        "game_fsm/M_timeCount_q_11" BEL "game_fsm/M_timeCount_q_10" BEL
+        "game_fsm/M_timeCount_q_9" BEL "game_fsm/M_timeCount_q_8" BEL
+        "game_fsm/M_timeCount_q_7" BEL "game_fsm/M_timeCount_q_6" BEL
+        "game_fsm/M_timeCount_q_5" BEL "game_fsm/M_timeCount_q_4" BEL
+        "game_fsm/M_timeCount_q_3" BEL "game_fsm/M_timeCount_q_2" BEL
+        "game_fsm/M_timeCount_q_1" BEL "game_fsm/M_timeCount_q_0" BEL
+        "game_fsm/skyFalling_edge/M_last_q" BEL "clk_BUFGP/BUFG" BEL
+        "startbutton_edge/M_last_q" BEL "leftbutton_edge/M_last_q" BEL
+        "reset_cond/M_stage_q_3" BEL "reset_cond/M_stage_q_2" BEL
+        "reset_cond/M_stage_q_1" BEL "reset_cond/M_stage_q_0" BEL
+        "rightbutton_edge/M_last_q" BEL "matrix_writer/M_state_q_FSM_FFd2" BEL
+        "matrix_writer/M_led_bit_counter_q_6" BEL
+        "matrix_writer/M_state_q_FSM_FFd1" BEL
+        "matrix_writer/M_led_bit_counter_q_5" BEL
+        "matrix_writer/M_led_bit_counter_q_4" BEL
+        "matrix_writer/M_led_bit_counter_q_3" BEL
+        "matrix_writer/M_led_bit_counter_q_2" BEL
+        "matrix_writer/M_led_bit_counter_q_1" BEL
+        "matrix_writer/M_led_bit_counter_q_0" BEL
+        "matrix_writer/M_current_address_q_3" BEL
+        "matrix_writer/M_current_address_q_2" BEL
+        "matrix_writer/M_current_address_q_1" BEL
+        "matrix_writer/M_current_address_q_0" BEL
+        "matrix_writer/M_rgb_data_q_5" BEL "matrix_writer/M_rgb_data_q_4" BEL
+        "matrix_writer/M_rgb_data_q_3" BEL "matrix_writer/M_rgb_data_q_2" BEL
+        "matrix_writer/M_rgb_data_q_1" BEL "matrix_writer/M_rgb_data_q_0" BEL
+        "matrix_writer/M_latch_blank_q_1" BEL
+        "matrix_writer/M_latch_blank_q_0" BEL "matrix_writer/M_sclk_q" BEL
+        "startbutton_cond/M_ctr_q_0" BEL "startbutton_cond/M_ctr_q_1" BEL
+        "startbutton_cond/M_ctr_q_2" BEL "startbutton_cond/M_ctr_q_3" BEL
+        "startbutton_cond/M_ctr_q_4" BEL "startbutton_cond/M_ctr_q_5" BEL
+        "startbutton_cond/M_ctr_q_6" BEL "startbutton_cond/M_ctr_q_7" BEL
+        "startbutton_cond/M_ctr_q_8" BEL "startbutton_cond/M_ctr_q_9" BEL
+        "startbutton_cond/M_ctr_q_10" BEL "startbutton_cond/M_ctr_q_11" BEL
+        "startbutton_cond/M_ctr_q_12" BEL "startbutton_cond/M_ctr_q_13" BEL
+        "startbutton_cond/M_ctr_q_14" BEL "startbutton_cond/M_ctr_q_15" BEL
+        "startbutton_cond/M_ctr_q_16" BEL "startbutton_cond/M_ctr_q_17" BEL
+        "startbutton_cond/M_ctr_q_18" BEL "startbutton_cond/M_ctr_q_19" BEL
+        "startbutton_cond/sync/M_pipe_q_1" BEL
+        "startbutton_cond/sync/Mshreg_M_pipe_q_1" BEL
+        "leftbutton_cond/M_ctr_q_0" BEL "leftbutton_cond/M_ctr_q_1" BEL
+        "leftbutton_cond/M_ctr_q_2" BEL "leftbutton_cond/M_ctr_q_3" BEL
+        "leftbutton_cond/M_ctr_q_4" BEL "leftbutton_cond/M_ctr_q_5" BEL
+        "leftbutton_cond/M_ctr_q_6" BEL "leftbutton_cond/M_ctr_q_7" BEL
+        "leftbutton_cond/M_ctr_q_8" BEL "leftbutton_cond/M_ctr_q_9" BEL
+        "leftbutton_cond/M_ctr_q_10" BEL "leftbutton_cond/M_ctr_q_11" BEL
+        "leftbutton_cond/M_ctr_q_12" BEL "leftbutton_cond/M_ctr_q_13" BEL
+        "leftbutton_cond/M_ctr_q_14" BEL "leftbutton_cond/M_ctr_q_15" BEL
+        "leftbutton_cond/M_ctr_q_16" BEL "leftbutton_cond/M_ctr_q_17" BEL
+        "leftbutton_cond/M_ctr_q_18" BEL "leftbutton_cond/M_ctr_q_19" BEL
+        "leftbutton_cond/sync/M_pipe_q_1" BEL
+        "leftbutton_cond/sync/Mshreg_M_pipe_q_1" BEL
+        "rightbutton_cond/M_ctr_q_0" BEL "rightbutton_cond/M_ctr_q_1" BEL
+        "rightbutton_cond/M_ctr_q_2" BEL "rightbutton_cond/M_ctr_q_3" BEL
+        "rightbutton_cond/M_ctr_q_4" BEL "rightbutton_cond/M_ctr_q_5" BEL
+        "rightbutton_cond/M_ctr_q_6" BEL "rightbutton_cond/M_ctr_q_7" BEL
+        "rightbutton_cond/M_ctr_q_8" BEL "rightbutton_cond/M_ctr_q_9" BEL
+        "rightbutton_cond/M_ctr_q_10" BEL "rightbutton_cond/M_ctr_q_11" BEL
+        "rightbutton_cond/M_ctr_q_12" BEL "rightbutton_cond/M_ctr_q_13" BEL
+        "rightbutton_cond/M_ctr_q_14" BEL "rightbutton_cond/M_ctr_q_15" BEL
+        "rightbutton_cond/M_ctr_q_16" BEL "rightbutton_cond/M_ctr_q_17" BEL
+        "rightbutton_cond/M_ctr_q_18" BEL "rightbutton_cond/M_ctr_q_19" BEL
+        "rightbutton_cond/sync/M_pipe_q_1" BEL
+        "rightbutton_cond/sync/Mshreg_M_pipe_q_1" BEL "genSky/M_seed_q_0" BEL
+        "genSky/M_seed_q_1" BEL "genSky/M_seed_q_2" BEL "genSky/M_seed_q_3"
+        BEL "genSky/M_seed_q_4" BEL "genSky/M_seed_q_5" BEL
+        "genSky/M_seed_q_6" BEL "genSky/M_seed_q_7" BEL "genSky/M_seed_q_8"
+        BEL "genSky/M_seed_q_9" BEL "genSky/M_seed_q_10" BEL
+        "genSky/M_seed_q_11" BEL "genSky/M_seed_q_12" BEL "genSky/M_seed_q_13"
+        BEL "genSky/M_seed_q_14" BEL "genSky/M_seed_q_15" BEL
+        "genSky/M_seed_q_16" BEL "genSky/M_seed_q_17" BEL "genSky/M_seed_q_18"
+        BEL "genSky/M_seed_q_19" BEL "genSky/M_seed_q_20" BEL
+        "genSky/M_seed_q_21" BEL "genSky/M_seed_q_22" BEL "genSky/M_seed_q_23"
+        BEL "genSky/M_seed_q_24" BEL "genSky/M_seed_q_25" BEL
+        "genSky/M_seed_q_26" BEL "genSky/M_seed_q_27" BEL "genSky/M_seed_q_28"
+        BEL "genSky/M_seed_q_29" BEL "genSky/M_seed_q_30" BEL
+        "genSky/M_seed_q_31" BEL "genSky/skynum/M_x_q_0" BEL
+        "genSky/skynum/M_x_q_1" BEL "genSky/skynum/M_x_q_2" BEL
+        "genSky/skynum/M_x_q_3" BEL "genSky/skynum/M_x_q_4" BEL
+        "genSky/skynum/M_x_q_5" BEL "genSky/skynum/M_x_q_6" BEL
+        "genSky/skynum/M_x_q_7" BEL "genSky/skynum/M_x_q_8" BEL
+        "genSky/skynum/M_x_q_9" BEL "genSky/skynum/M_x_q_10" BEL
+        "genSky/skynum/M_x_q_11" BEL "genSky/skynum/M_x_q_12" BEL
+        "genSky/skynum/M_x_q_13" BEL "genSky/skynum/M_x_q_14" BEL
+        "genSky/skynum/M_x_q_15" BEL "genSky/skynum/M_x_q_16" BEL
+        "genSky/skynum/M_x_q_17" BEL "genSky/skynum/M_x_q_18" BEL
+        "genSky/skynum/M_x_q_19" BEL "genSky/skynum/M_x_q_20" BEL
+        "genSky/skynum/M_x_q_21" BEL "genSky/skynum/M_x_q_22" BEL
+        "genSky/skynum/M_x_q_23" BEL "genSky/skynum/M_x_q_24" BEL
+        "genSky/skynum/M_x_q_25" BEL "genSky/skynum/M_x_q_26" BEL
+        "genSky/skynum/M_x_q_27" BEL "genSky/skynum/M_x_q_28" BEL
+        "genSky/skynum/M_x_q_29" BEL "genSky/skynum/M_x_q_30" BEL
+        "genSky/skynum/M_x_q_31" BEL "genSky/skynum/M_w_q_0" BEL
+        "genSky/skynum/M_w_q_1" BEL "genSky/skynum/M_w_q_2" BEL
+        "genSky/skynum/M_w_q_3" BEL "genSky/skynum/M_w_q_4" BEL
+        "genSky/skynum/M_w_q_5" BEL "genSky/skynum/M_w_q_6" BEL
+        "genSky/skynum/M_w_q_7" BEL "genSky/skynum/M_w_q_8" BEL
+        "genSky/skynum/M_w_q_9" BEL "genSky/skynum/M_w_q_10" BEL
+        "genSky/skynum/M_w_q_11" BEL "genSky/skynum/M_w_q_12" BEL
+        "genSky/skynum/M_w_q_13" BEL "genSky/skynum/M_w_q_14" BEL
+        "genSky/skynum/M_w_q_15" BEL "genSky/skynum/M_w_q_16" BEL
+        "genSky/skynum/M_w_q_17" BEL "genSky/skynum/M_w_q_18" BEL
+        "genSky/skynum/M_w_q_19" BEL "genSky/skynum/M_w_q_20" BEL
+        "genSky/skynum/M_w_q_21" BEL "genSky/skynum/M_w_q_22" BEL
+        "genSky/skynum/M_w_q_23" BEL "genSky/skynum/M_w_q_24" BEL
+        "genSky/skynum/M_w_q_25" BEL "genSky/skynum/M_w_q_26" BEL
+        "genSky/skynum/M_w_q_27" BEL "genSky/skynum/M_w_q_28" BEL
+        "genSky/skynum/M_w_q_29" BEL "genSky/skynum/M_w_q_30" BEL
+        "genSky/skynum/M_w_q_31" BEL "genSky/skynum/M_z_q_0" BEL
+        "genSky/skynum/M_z_q_1" BEL "genSky/skynum/M_z_q_2" BEL
+        "genSky/skynum/M_z_q_3" BEL "genSky/skynum/M_z_q_4" BEL
+        "genSky/skynum/M_z_q_5" BEL "genSky/skynum/M_z_q_6" BEL
+        "genSky/skynum/M_z_q_7" BEL "genSky/skynum/M_z_q_8" BEL
+        "genSky/skynum/M_z_q_9" BEL "genSky/skynum/M_z_q_10" BEL
+        "genSky/skynum/M_z_q_11" BEL "genSky/skynum/M_z_q_12" BEL
+        "genSky/skynum/M_z_q_13" BEL "genSky/skynum/M_z_q_14" BEL
+        "genSky/skynum/M_z_q_15" BEL "genSky/skynum/M_z_q_16" BEL
+        "genSky/skynum/M_z_q_17" BEL "genSky/skynum/M_z_q_18" BEL
+        "genSky/skynum/M_z_q_19" BEL "genSky/skynum/M_z_q_20" BEL
+        "genSky/skynum/M_z_q_21" BEL "genSky/skynum/M_z_q_22" BEL
+        "genSky/skynum/M_z_q_23" BEL "genSky/skynum/M_z_q_24" BEL
+        "genSky/skynum/M_z_q_25" BEL "genSky/skynum/M_z_q_26" BEL
+        "genSky/skynum/M_z_q_27" BEL "genSky/skynum/M_z_q_28" BEL
+        "genSky/skynum/M_z_q_29" BEL "genSky/skynum/M_z_q_30" BEL
+        "genSky/skynum/M_z_q_31" BEL "genSky/skynum/M_y_q_0" BEL
+        "genSky/skynum/M_y_q_1" BEL "genSky/skynum/M_y_q_2" BEL
+        "genSky/skynum/M_y_q_3" BEL "genSky/skynum/M_y_q_4" BEL
+        "genSky/skynum/M_y_q_5" BEL "genSky/skynum/M_y_q_6" BEL
+        "genSky/skynum/M_y_q_7" BEL "genSky/skynum/M_y_q_8" BEL
+        "genSky/skynum/M_y_q_9" BEL "genSky/skynum/M_y_q_10" BEL
+        "genSky/skynum/M_y_q_11" BEL "genSky/skynum/M_y_q_12" BEL
+        "genSky/skynum/M_y_q_13" BEL "genSky/skynum/M_y_q_14" BEL
+        "genSky/skynum/M_y_q_15" BEL "genSky/skynum/M_y_q_16" BEL
+        "genSky/skynum/M_y_q_17" BEL "genSky/skynum/M_y_q_18" BEL
+        "genSky/skynum/M_y_q_19" BEL "genSky/skynum/M_y_q_20" BEL
+        "genSky/skynum/M_y_q_21" BEL "genSky/skynum/M_y_q_22" BEL
+        "genSky/skynum/M_y_q_23" BEL "genSky/skynum/M_y_q_24" BEL
+        "genSky/skynum/M_y_q_25" BEL "genSky/skynum/M_y_q_26" BEL
+        "genSky/skynum/M_y_q_27" BEL "genSky/skynum/M_y_q_28" BEL
+        "genSky/skynum/M_y_q_29" BEL "genSky/skynum/M_y_q_30" BEL
+        "genSky/skynum/M_y_q_31" BEL "matrix_data/M_current_sky_column_q_0"
+        BEL "matrix_data/M_current_sky_column_q_1" BEL
+        "matrix_data/M_current_sky_column_q_2" BEL
+        "matrix_data/M_current_sky_column_q_3" BEL
+        "matrix_data/M_chicken_address_q_0" BEL
+        "matrix_data/M_chicken_address_q_1" BEL
+        "matrix_data/M_chicken_address_q_2" BEL
+        "matrix_data/M_chicken_address_q_6" BEL
+        "matrix_data/M_chicken_address_q_7" BEL
+        "matrix_data/M_chicken_address_q_8" BEL
+        "matrix_data/M_chicken_address_q_9" BEL
+        "matrix_data/M_grass_address_q_7" BEL
+        "matrix_data/M_grass_address_q_8" BEL
+        "matrix_data/M_grass_address_q_9" PIN
+        "matrix_data/background_ram_bottom/Mram_ram_pins<11>" BEL
+        "matrix_data/M_state_q_FSM_FFd1" BEL "matrix_data/M_state_q_FSM_FFd3"
+        BEL "matrix_data/M_state_q_FSM_FFd4" BEL
+        "matrix_data/M_state_q_FSM_FFd5" BEL "matrix_data/M_state_q_FSM_FFd6"
+        BEL "matrix_data/M_state_q_FSM_FFd10" BEL
+        "matrix_data/M_state_q_FSM_FFd7" BEL "matrix_data/M_state_q_FSM_FFd11"
+        BEL "matrix_data/M_state_q_FSM_FFd8" BEL
+        "matrix_data/M_state_q_FSM_FFd12" BEL "matrix_data/M_state_q_FSM_FFd9"
+        BEL "matrix_data/M_state_q_FSM_FFd13" BEL
+        "matrix_data/M_state_q_FSM_FFd14" BEL
+        "matrix_data/M_state_q_FSM_FFd15" BEL
+        "matrix_data/M_state_q_FSM_FFd20" BEL
+        "matrix_data/M_state_q_FSM_FFd16" BEL
+        "matrix_data/M_state_q_FSM_FFd21" BEL
+        "matrix_data/M_state_q_FSM_FFd17" BEL
+        "matrix_data/M_state_q_FSM_FFd22" BEL
+        "matrix_data/M_state_q_FSM_FFd18" BEL
+        "matrix_data/M_state_q_FSM_FFd23" BEL
+        "matrix_data/M_state_q_FSM_FFd24" BEL
+        "matrix_data/M_state_q_FSM_FFd19" BEL
+        "matrix_data/M_shift_address_q_0" BEL
+        "matrix_data/M_shift_address_q_1" BEL
+        "matrix_data/M_shift_address_q_2" BEL
+        "matrix_data/M_shift_address_q_3" BEL
+        "matrix_data/M_shift_address_q_4" BEL
+        "matrix_data/M_shift_address_q_5" BEL
+        "matrix_data/M_shift_address_q_6" BEL
+        "matrix_data/M_shift_address_q_7" BEL
+        "matrix_data/M_shift_address_q_8" BEL
+        "matrix_data/M_shift_address_q_9" PIN
+        "matrix_data/background_ram_top/Mram_ram_pins<11>" BEL
+        "matrix_data/M_sky_counter_q_0" BEL "matrix_data/M_row_counter_q_0"
+        BEL "matrix_data/M_row_counter_q_1" BEL
+        "matrix_data/M_row_counter_q_2" BEL "matrix_data/M_row_counter_q_3"
+        BEL "matrix_data/M_row_counter_q_4" BEL
+        "matrix_data/M_row_counter_q_5" PIN
+        "matrix_data/chicken_ram_top/Mram_ram_pins<11>" PIN
+        "matrix_data/chicken_ram_bottom/Mram_ram_pins<11>" BEL
+        "matrix_data/M_chicken_counter_q_0" BEL
+        "matrix_data/M_chicken_counter_q_1" BEL
+        "matrix_data/M_chicken_counter_q_2" BEL
+        "matrix_data/M_grass_counter_q_0" BEL "matrix_data/M_sky_address_q_0"
+        BEL "matrix_data/M_sky_address_q_1" BEL
+        "matrix_data/M_sky_address_q_5" BEL "matrix_data/M_sky_address_q_6"
+        BEL "matrix_data/M_sky_address_q_7" BEL
+        "matrix_data/M_sky_address_q_8" BEL "matrix_data/M_sky_address_q_9"
+        BEL "matrix_data/M_current_chicken_column_q_0" BEL
+        "matrix_data/M_current_chicken_column_q_1" BEL
+        "matrix_data/M_current_chicken_column_q_2" BEL
+        "matrix_data/M_current_chicken_column_q_3";
+TS_clk = PERIOD TIMEGRP "clk" 50 MHz HIGH 50%;
+SCHEMATIC END;
+

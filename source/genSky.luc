@@ -3,7 +3,6 @@ module genSky ( //to generate sky positioned at the first row
     input rst,  // reset
     output sky[5]
   ) {
-  
   //sig sky1_[4];
   //sig sky2_[4];
   .clk(clk){ .rst(rst) {
@@ -16,14 +15,17 @@ module genSky ( //to generate sky positioned at the first row
   
   always {
     skynum.seed = seed.q;              // use seed.q as the seed
-    skynum.next = 0;                   // don't generate new numbers
+    skynum.next = 1;                   // don't generate new numbers
     skynum.rst = rst;                  // connect rst by default
-    sky = 5b0;
-    sky = skynum.num[4:0];            //first 5 bit as the starting position of the first sky    
-
+    sky =b00000;
+    seed.d = seed.q + 1;
+   
+               //first 5 bit as the starting position of the first sky    
+    
     //bin_to_dec.value = sky1;
     //sky1_ = bin_to_dec.digits[0];
-
+    sky = skynum.num[4:0];
+   
     /**if (sky1>5){
       sky[0][sky1:sky1-5]=5b11111;
       sky[1][sky1:sky1-5]=5b11111;

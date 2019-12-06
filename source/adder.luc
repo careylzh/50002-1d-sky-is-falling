@@ -1,0 +1,36 @@
+module adder (
+    input alufn[6],        //inputs
+    input a[16],  
+    input b[16],
+    
+    output sum[16],       //outputs
+    output v,
+    output z,
+    output n
+  ) {
+  
+  sig sum_[16];             
+
+  always {
+    
+    case(alufn[0]){
+    
+        b0: //when alufn[1:0] == 00, addition operation                                                    
+          sum_ = a+b;
+          v = (((a[15])&(b[15])&(~sum_[15])) | ((~a[15])&(~b[15])&(sum_[15]))); //overflow  checking, if overflow, v = 1
+        
+        b1: //when alufn[1:0] == 01, subtraction operation              
+          sum_ = a-b;
+          v = (((a[15])&(~b[15])&(~sum_[15])) | ((~a[15])&(b[15])&(sum_[15]))); //overflow  checking, if overflow, v = 1
+                 
+        
+        default: //default operation is addition
+          sum_ = a+b; 
+          v = (((a[15])&(b[15])&(~sum_[15])) | ((~a[15])&(~b[15])&(sum_[15])));     
+    }
+        
+    sum = sum_[15:0];     //output 16 bit sum
+    z = ~|sum_;           //16 bit nor gate; if z = 1, a and b are equal
+    n = sum_[15];         //most significant bit is the sign bit
+  }
+}

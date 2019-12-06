@@ -7,17 +7,17 @@ module stateCounterA (
   ) {
   
   //connect clk and rst to the clock, which allows synchronisation for the entire circuit
-  dff stateCounter[27](.clk(clk),.rst(rst));
+  dff stateCounter[30](.clk(clk),.rst(rst));
  // dff score_[10](.clk(clk),.rst(rst));
   always {
    // score_.d = 0;
-    out = stateCounter.q[26]; 
+    out = stateCounter.q[29]; 
     //score = score_.q;
     // connects out to the digid of the 26 index of dff stateCounter
     // every 2^26 cycle , out will be 1 (around 1.6 seconds)
     stateCounter.d = stateCounter.q + 1;
-    if (stateCounter.q[26]==1) {
-      stateCounter.d[26] = 0;
+    if (stateCounter.q[29]==1) {
+      stateCounter.d[29] = 0;
       //score_.d =score_.q+1;
     } 
     

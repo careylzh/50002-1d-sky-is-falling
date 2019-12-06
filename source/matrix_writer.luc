@@ -8,6 +8,7 @@ module matrix_writer #(
     
     output col_index[$clog2(MATRIX_WIDTH)],
     output row_index[ADDRESS_SIZE],
+    
     output red0,
     output green0, 
     output blue0,
@@ -80,6 +81,8 @@ module matrix_writer #(
     };*/
       
   
+   // sig col_index[$clog2(MATRIX_WIDTH)];
+   // sig row_index[ADDRESS_SIZE];
             
   .clk(clk){
     .rst(rst){
@@ -105,7 +108,7 @@ module matrix_writer #(
           dff latch_blank[2]; //[0] MSB is latch value, [1] LSB is blank value
       
        
-         // matrix_ram_rgb matrix_data;
+          //matrix_ram matrix_data;
             
     }
     
@@ -113,6 +116,15 @@ module matrix_writer #(
 
   
   always {
+  /*
+    matrix_data.generateSky = 5b0;
+    matrix_data.shiftSkyBool = 0;
+    matrix_data.generateSkyBool = 0;
+    matrix_data.shiftChickenLeft = 0;
+    matrix_data.shiftChickenRight = 0;
+    matrix_data.check_life = 0;
+    matrix_data.row_address = 0;
+    matrix_data.column_address = 0;*/
   
     row_index = 0;
     col_index = 0;
@@ -139,6 +151,10 @@ module matrix_writer #(
     if (state.q == b00){ //START state
       latch_blank.d = b01; //latch off, blank on, begin 
       current_address.d = ADDRESS_SIZEx{b1}; //start from address 1111 
+      
+      //start giving address to the ram 
+      col_index = led_bit_counter.q[$clog2(MATRIX_WIDTH)-1:0]; //column changes per cycle to load row led (until 64)
+      row_index = 0; //starts at address zero
       state.d = b01;
     }
     
@@ -149,18 +165,37 @@ module matrix_writer #(
       //off clock when changing data 
       sclk.d = 0;
       
-      //load data 
+      //load data for next column
       col_index = led_bit_counter.q[$clog2(MATRIX_WIDTH)-1:0]; //column changes per cycle to load row led (until 64)
       row_index = current_address.q + 1; //plus one because we are loading next row, while prev row is still being displayed
       //rgb_data.d = ROW_DATA[row_index[0]][col_index];
       
-
-      rgb_data.d = data;
+      //data read from the previous cycle's address
+      //rgb_data.d = data;
      
       //shift the index to go to next LED in the row 
       led_bit_counter.d = led_bit_counter.q + 1;
       
     }
+    
+    else if (sclk_counter.q == 1 && state.q == b01 && led_bit_counter.q <= MATRIX_WIDTH){
+        rgb_data.d = data;
+     }
+      
+   /*     //loading data when sclk is 0 
+    else if (sclk_counter.q == DIVx{b0} && state.q == b01 && led_bit_counter.q == MATRIX_WIDTH){
+      
+      //off clock when changing data 
+      sclk.d = 0;
+      
+      //just read data
+      rgb_data.d = data;
+     
+      //shift the index to go to next LED in the row 
+      led_bit_counter.d = led_bit_counter.q + 1;
+      
+    }*/
+      
     
     //change rising clock for shift registers in matrix to load input data in the second half of sclk_counter cycle
     else if (sclk_counter.q == (DIV-1)x{b1} && state.q == b01){
@@ -184,6 +219,11 @@ module matrix_writer #(
     else if(sclk_counter.q == (DIV)x{b1} && state.q == b10){
       latch_blank.d = b00; //latch off, blank off
       //change state to load again
+      
+      //give the appropriate read address now to the ram, next row, first column 
+      col_index = led_bit_counter.q[$clog2(MATRIX_WIDTH)-1:0]; //column changes per cycle to load row led (until 64)
+      row_index = current_address.q + 1; //starts at address zero since current_address is still 0 here
+      
       state.d = b01;
     }
 
