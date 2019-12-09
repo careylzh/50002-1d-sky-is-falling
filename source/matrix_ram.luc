@@ -70,11 +70,11 @@ module matrix_ram #(
       
       
       dff debug_reg[2];
-      dff counter1[2];
-      dff counter2[1];
-      dff counter3[1];
-      dff counter4[1];
-      dff counter5[1];
+
+      
+      dff check_column_address[$clog2(RAMSIZE)];
+      dff column_counter[4];
+      
       dff grass_address[$clog2(RAMSIZE)];
       dff grass_counter[4];
       
@@ -83,17 +83,15 @@ module matrix_ram #(
       dff current_sky_column[5];
       
       dff chicken_address[$clog2(RAMSIZE)];
-      dff check_address[$clog2(RAMSIZE)];
       dff current_chicken_column[6]; //where the chicken is
       
       dff chicken_counter[4];
       
-      
       dff shift_address[$clog2(RAMSIZE)];
       dff row_counter[$clog2(MATRIX_WIDTH)+1];
       
-      
-      dff sky_gen_counter;
+      dff gameover_Stats;
+     // dff sky_gen_counter;
       
       
     }
@@ -157,7 +155,7 @@ module matrix_ram #(
     //skygenerator.next = 0;
     //skygenerator.seed = 0;
     debug = debug_reg.q;
-    gameover = 0;
+    gameover = 0 ;//gameover_Stats.q;
     chickenbuild =0;
     
     
@@ -169,6 +167,7 @@ module matrix_ram #(
         background_ram_top.address = 63;
         background_ram_top.write_en = b1;
         background_ram_top.write_data = b111;
+        gameover_Stats.d = 0;
         if(init_chicken_en){
           state.d = state.GENGRASSFIRSTROW;
         }
@@ -210,7 +209,7 @@ module matrix_ram #(
             state.d = state.GEN1CHICKEN;
             
           } else {
-            state.d = state.LOOP;
+            state.d = state.CHECKCOLSTART;
           }
           
         }
@@ -465,7 +464,7 @@ module matrix_ram #(
         if (chicken_counter.q > 0){ //after 4 pixel skies generated
           chicken_counter.d = 0;
           chicken_address.d =  MATRIX_WIDTH * current_chicken_column.q + 4;
-          state.d = state.LOOP;
+          state.d = state.CHECKCOLSTART;
         }
       
       state.GENERATETOPBEGIN:
@@ -541,7 +540,6 @@ module matrix_ram #(
         sky_address.d = sky_address.q + MATRIX_WIDTH; //go to the next row
         
         if (sky_counter.q > 0){ //after 4 pixel skies generated
-          sky_gen_counter.d = 0;
           sky_counter.d = 0;
           sky_address.d =  MATRIX_WIDTH * current_sky_column.q + MATRIX_WIDTH - 2;
           state.d = state.GENERATESKY2TOP;
@@ -604,19 +602,25 @@ module matrix_ram #(
       
       
       state.CHECKCOLSTART:
-        check_address.d = 3;
-        counter1.d =0;
+        check_column_address.d = 3; //begin from address 3, top of the chicken head
+        column_counter.d =0; //this will loop from 0 to 15
         //sky_address.d = MATRIX_WIDTH * (current_sky_column.q+1) + MATRIX_WIDTH - 3;
         state.d = state.CHECKCOLREAD;
       
       state.CHECKCOLREAD:
-        background_ram_top.address = check_address.q;
-        chicken_ram_top.address = check_address.q;
-        background_ram_bottom.address = check_address.q;
-        chicken_ram_bottom.address = check_address.q;
-        counter1.d= counter1.q+1;
+        background_ram_top.address = check_column_address.q;
+        chicken_ram_top.address = check_column_address.q;
+        background_ram_bottom.address = check_column_address.q;
+        chicken_ram_bottom.address = check_column_address.q;
+        column_counter.d= column_counter.q+1;
         //   counter1.d = 0;
+        if (column_counter.q>14){
+          column_counter.d = 0;
+          state.d = state.LOOP; //finished, return to loop, no collision 
+          }
+        else{
         state.d = state.CHECKCOL1TOP;
+        }
       
       state.CHECKCOL1TOP:
         topskyexist =  |background_ram_top.read_data;
@@ -624,16 +628,12 @@ module matrix_ram #(
         bottomskyexist = |background_ram_bottom.read_data;
         bottomchickenexist = |chicken_ram_bottom.read_data;
         if((topskyexist&topchickenexist) |(bottomchickenexist&bottomskyexist)){
-          gameover=b1;
-          state.d = state.SKYWIN;
-          
-        }else if (counter1.q>14){
-          counter1.d = 0;
-          state.d = state.LOOP;
+          gameover_Stats.d=b1;
+          state.d = state.SKYWIN; //chickenloose 
         }else{
-          check_address.d = check_address.q+MATRIX_WIDTH;
+          check_column_address.d = check_column_address.q+MATRIX_WIDTH;
           //sky_address.d = MATRIX_WIDTH * (current_sky_column.q+1) + MATRIX_WIDTH - 3;
-          state.d = state.CHECKCOLREAD;
+          state.d = state.CHECKCOLREAD; //loops back, read next column 
         }
         
         
@@ -721,14 +721,18 @@ module matrix_ram #(
         state.d =state.LOOP;
         
       state.SKYWIN:
-        background_ram_top.address = 0;
-        chicken_ram_top.write_en = b1;
-        chicken_ram_top.write_data = b100;
-        state.d =state.LOOP;
+        background_ram_top.address = 50;
+        background_ram_top.write_en = b1;
+        background_ram_top.write_data = b110;
+        state.d = state.LOOP;
+ 
         
       state.LOOP:
-        
+        if (gameover_Stats.q == 0){
         //skyshifted = 1;
+        if(startbutton && shiftchickenleft && shiftchickenright){
+          state.d = state.START;
+          }
         
         if (genSky){
           if (generateSky < 16){
@@ -739,7 +743,9 @@ module matrix_ram #(
             current_sky_column.d = generateSky - 16;
             state.d = state.GENERATEBOTTOMBEGIN;
           }
-        } else if(shiftSky){
+        } 
+          
+         else if(shiftSky){
           
           state.d = state.SHIFTDOWNADDRESS;
         }
@@ -751,14 +757,24 @@ module matrix_ram #(
         else if(shiftchickenright){
           state.d = state.SHIFTRIGHTCHICKENBEGIN;
         }
+        }
+        else{
+        
+         if (startbutton){
+           gameover_Stats.d = 0;
+           state.d = state.GENGRASSFIRSTROW; 
+          } 
+          
+        }
+  
+          /*
         else if(chickenwin){
           state.d = state.CHICKENWIN;
         }else if(skywin){
           state.d = state.SKYWIN;
-          }
-          else if(startbutton){
-          state.d = state.START;
-          }
+          }*/
+          
+    
         
         
         

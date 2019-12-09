@@ -151,12 +151,12 @@ module mojo_top (
     
     matrix_data.shiftSky = startbutton_edge.out;//game_fsm.shift_sky_enable;
     
-    matrix_data.shiftchickenleft = game_fsm.shiftchickenleft_en;
-    matrix_data.shiftchickenright = game_fsm.shiftchickenright_en;
+    matrix_data.shiftchickenleft = leftbutton_edge.out; //game_fsm.shiftchickenleft_en;
+    matrix_data.shiftchickenright = rightbutton_edge.out;// game_fsm.shiftchickenright_en;
     matrix_data.init_chicken_en = game_fsm.init_chicken_en;
     matrix_data.sky_col_check = 0;//game_fsm.skyCollisionCheck_en;
     game_fsm.chickenbuld = matrix_data.chickenbuild;
-    matrix_data.skywin = game_fsm.skywin;
+    matrix_data.skywin =  0; //game_fsm.skywin;
     
     matrix_data.chicken_location = 0;  
        
@@ -171,7 +171,7 @@ module mojo_top (
     matrix_data.row_address = matrix_writer.row_index;
     matrix_data.column_address = matrix_writer.col_index;
     matrix_writer.data = matrix_data.out;
-    matrix_data.chickenwin = game_fsm.chickenWin;
+    matrix_data.chickenwin = 0;//game_fsm.chickenWin;
     matrix_data.start_en =game_fsm.start_en;
     led_r = c{matrix_writer.red0, matrix_writer.red1};
     led_g = c{ matrix_writer.green0, matrix_writer.green1};

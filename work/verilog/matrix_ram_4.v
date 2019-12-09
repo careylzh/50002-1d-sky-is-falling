@@ -128,23 +128,19 @@ module matrix_ram_4 (
   
   reg [5:0] M_state_d, M_state_q = START_state;
   reg [1:0] M_debug_reg_d, M_debug_reg_q = 1'h0;
-  reg [1:0] M_counter1_d, M_counter1_q = 1'h0;
-  reg [0:0] M_counter2_d, M_counter2_q = 1'h0;
-  reg [0:0] M_counter3_d, M_counter3_q = 1'h0;
-  reg [0:0] M_counter4_d, M_counter4_q = 1'h0;
-  reg [0:0] M_counter5_d, M_counter5_q = 1'h0;
+  reg [9:0] M_check_column_address_d, M_check_column_address_q = 1'h0;
+  reg [3:0] M_column_counter_d, M_column_counter_q = 1'h0;
   reg [9:0] M_grass_address_d, M_grass_address_q = 1'h0;
   reg [3:0] M_grass_counter_d, M_grass_counter_q = 1'h0;
   reg [3:0] M_sky_counter_d, M_sky_counter_q = 1'h0;
   reg [9:0] M_sky_address_d, M_sky_address_q = 1'h0;
   reg [4:0] M_current_sky_column_d, M_current_sky_column_q = 1'h0;
   reg [9:0] M_chicken_address_d, M_chicken_address_q = 1'h0;
-  reg [9:0] M_check_address_d, M_check_address_q = 1'h0;
   reg [5:0] M_current_chicken_column_d, M_current_chicken_column_q = 1'h0;
   reg [3:0] M_chicken_counter_d, M_chicken_counter_q = 1'h0;
   reg [9:0] M_shift_address_d, M_shift_address_q = 1'h0;
   reg [6:0] M_row_counter_d, M_row_counter_q = 1'h0;
-  reg M_sky_gen_counter_d, M_sky_gen_counter_q = 1'h0;
+  reg M_gameover_Stats_d, M_gameover_Stats_q = 1'h0;
   
   reg [2:0] top_half_proc;
   
@@ -174,15 +170,15 @@ module matrix_ram_4 (
   
   always @* begin
     M_state_d = M_state_q;
-    M_check_address_d = M_check_address_q;
-    M_sky_gen_counter_d = M_sky_gen_counter_q;
-    M_counter1_d = M_counter1_q;
+    M_gameover_Stats_d = M_gameover_Stats_q;
     M_chicken_address_d = M_chicken_address_q;
     M_current_sky_column_d = M_current_sky_column_q;
     M_grass_counter_d = M_grass_counter_q;
     M_sky_counter_d = M_sky_counter_q;
     M_row_counter_d = M_row_counter_q;
     M_chicken_counter_d = M_chicken_counter_q;
+    M_check_column_address_d = M_check_column_address_q;
+    M_column_counter_d = M_column_counter_q;
     M_grass_address_d = M_grass_address_q;
     M_shift_address_d = M_shift_address_q;
     M_current_chicken_column_d = M_current_chicken_column_q;
@@ -218,6 +214,7 @@ module matrix_ram_4 (
         M_background_ram_top_address = 6'h3f;
         M_background_ram_top_write_en = 1'h1;
         M_background_ram_top_write_data = 3'h7;
+        M_gameover_Stats_d = 1'h0;
         if (init_chicken_en) begin
           M_state_d = GENGRASSFIRSTROW_state;
         end
@@ -252,7 +249,7 @@ module matrix_ram_4 (
             M_chicken_address_d = 7'h40 * (M_current_chicken_column_q) + 2'h2;
             M_state_d = GEN1CHICKEN_state;
           end else begin
-            M_state_d = LOOP_state;
+            M_state_d = CHECKCOLSTART_state;
           end
         end
       end
@@ -440,7 +437,7 @@ module matrix_ram_4 (
         if (M_chicken_counter_q > 1'h0) begin
           M_chicken_counter_d = 1'h0;
           M_chicken_address_d = 7'h40 * M_current_chicken_column_q + 3'h4;
-          M_state_d = LOOP_state;
+          M_state_d = CHECKCOLSTART_state;
         end
       end
       GENERATETOPBEGIN_state: begin
@@ -482,7 +479,6 @@ module matrix_ram_4 (
         M_sky_counter_d = M_sky_counter_q + 1'h1;
         M_sky_address_d = M_sky_address_q + 7'h40;
         if (M_sky_counter_q > 1'h0) begin
-          M_sky_gen_counter_d = 1'h0;
           M_sky_counter_d = 1'h0;
           M_sky_address_d = 7'h40 * M_current_sky_column_q + 7'h40 - 2'h2;
           M_state_d = GENERATESKY2TOP_state;
@@ -501,17 +497,22 @@ module matrix_ram_4 (
         end
       end
       CHECKCOLSTART_state: begin
-        M_check_address_d = 2'h3;
-        M_counter1_d = 1'h0;
+        M_check_column_address_d = 2'h3;
+        M_column_counter_d = 1'h0;
         M_state_d = CHECKCOLREAD_state;
       end
       CHECKCOLREAD_state: begin
-        M_background_ram_top_address = M_check_address_q;
-        M_chicken_ram_top_address = M_check_address_q;
-        M_background_ram_bottom_address = M_check_address_q;
-        M_chicken_ram_bottom_address = M_check_address_q;
-        M_counter1_d = M_counter1_q + 1'h1;
-        M_state_d = CHECKCOL1TOP_state;
+        M_background_ram_top_address = M_check_column_address_q;
+        M_chicken_ram_top_address = M_check_column_address_q;
+        M_background_ram_bottom_address = M_check_column_address_q;
+        M_chicken_ram_bottom_address = M_check_column_address_q;
+        M_column_counter_d = M_column_counter_q + 1'h1;
+        if (M_column_counter_q > 4'he) begin
+          M_column_counter_d = 1'h0;
+          M_state_d = LOOP_state;
+        end else begin
+          M_state_d = CHECKCOL1TOP_state;
+        end
       end
       CHECKCOL1TOP_state: begin
         topskyexist = (|M_background_ram_top_read_data);
@@ -519,16 +520,11 @@ module matrix_ram_4 (
         bottomskyexist = (|M_background_ram_bottom_read_data);
         bottomchickenexist = (|M_chicken_ram_bottom_read_data);
         if ((topskyexist & topchickenexist) | (bottomchickenexist & bottomskyexist)) begin
-          gameover = 1'h1;
+          M_gameover_Stats_d = 1'h1;
           M_state_d = SKYWIN_state;
         end else begin
-          if (M_counter1_q > 4'he) begin
-            M_counter1_d = 1'h0;
-            M_state_d = LOOP_state;
-          end else begin
-            M_check_address_d = M_check_address_q + 7'h40;
-            M_state_d = CHECKCOLREAD_state;
-          end
+          M_check_column_address_d = M_check_column_address_q + 7'h40;
+          M_state_d = CHECKCOLREAD_state;
         end
       end
       CHICKENWIN_state: begin
@@ -538,45 +534,43 @@ module matrix_ram_4 (
         M_state_d = LOOP_state;
       end
       SKYWIN_state: begin
-        M_background_ram_top_address = 1'h0;
-        M_chicken_ram_top_write_en = 1'h1;
-        M_chicken_ram_top_write_data = 3'h4;
+        M_background_ram_top_address = 6'h32;
+        M_background_ram_top_write_en = 1'h1;
+        M_background_ram_top_write_data = 3'h6;
         M_state_d = LOOP_state;
       end
       LOOP_state: begin
-        if (genSky) begin
-          if (generateSky < 5'h10) begin
-            M_current_sky_column_d = generateSky;
-            M_state_d = GENERATETOPBEGIN_state;
-          end else begin
-            if (4'hf < generateSky < 6'h20) begin
-              M_current_sky_column_d = generateSky - 5'h10;
-              M_state_d = GENERATEBOTTOMBEGIN_state;
-            end
+        if (M_gameover_Stats_q == 1'h0) begin
+          if (startbutton && shiftchickenleft && shiftchickenright) begin
+            M_state_d = START_state;
           end
-        end else begin
-          if (shiftSky) begin
-            M_state_d = SHIFTDOWNADDRESS_state;
-          end else begin
-            if (shiftchickenleft) begin
-              M_state_d = SHIFTLEFTCHICKENBEGIN_state;
+          if (genSky) begin
+            if (generateSky < 5'h10) begin
+              M_current_sky_column_d = generateSky;
+              M_state_d = GENERATETOPBEGIN_state;
             end else begin
-              if (shiftchickenright) begin
-                M_state_d = SHIFTRIGHTCHICKENBEGIN_state;
+              if (4'hf < generateSky < 6'h20) begin
+                M_current_sky_column_d = generateSky - 5'h10;
+                M_state_d = GENERATEBOTTOMBEGIN_state;
+              end
+            end
+          end else begin
+            if (shiftSky) begin
+              M_state_d = SHIFTDOWNADDRESS_state;
+            end else begin
+              if (shiftchickenleft) begin
+                M_state_d = SHIFTLEFTCHICKENBEGIN_state;
               end else begin
-                if (chickenwin) begin
-                  M_state_d = CHICKENWIN_state;
-                end else begin
-                  if (skywin) begin
-                    M_state_d = SKYWIN_state;
-                  end else begin
-                    if (startbutton) begin
-                      M_state_d = START_state;
-                    end
-                  end
+                if (shiftchickenright) begin
+                  M_state_d = SHIFTRIGHTCHICKENBEGIN_state;
                 end
               end
             end
+          end
+        end else begin
+          if (startbutton) begin
+            M_gameover_Stats_d = 1'h0;
+            M_state_d = GENGRASSFIRSTROW_state;
           end
         end
         M_background_ram_bottom_address = (row_address * 7'h40) + column_address;
@@ -599,43 +593,35 @@ module matrix_ram_4 (
   always @(posedge clk) begin
     if (rst == 1'b1) begin
       M_debug_reg_q <= 1'h0;
-      M_counter1_q <= 1'h0;
-      M_counter2_q <= 1'h0;
-      M_counter3_q <= 1'h0;
-      M_counter4_q <= 1'h0;
-      M_counter5_q <= 1'h0;
+      M_check_column_address_q <= 1'h0;
+      M_column_counter_q <= 1'h0;
       M_grass_address_q <= 1'h0;
       M_grass_counter_q <= 1'h0;
       M_sky_counter_q <= 1'h0;
       M_sky_address_q <= 1'h0;
       M_current_sky_column_q <= 1'h0;
       M_chicken_address_q <= 1'h0;
-      M_check_address_q <= 1'h0;
       M_current_chicken_column_q <= 1'h0;
       M_chicken_counter_q <= 1'h0;
       M_shift_address_q <= 1'h0;
       M_row_counter_q <= 1'h0;
-      M_sky_gen_counter_q <= 1'h0;
+      M_gameover_Stats_q <= 1'h0;
       M_state_q <= 1'h0;
     end else begin
       M_debug_reg_q <= M_debug_reg_d;
-      M_counter1_q <= M_counter1_d;
-      M_counter2_q <= M_counter2_d;
-      M_counter3_q <= M_counter3_d;
-      M_counter4_q <= M_counter4_d;
-      M_counter5_q <= M_counter5_d;
+      M_check_column_address_q <= M_check_column_address_d;
+      M_column_counter_q <= M_column_counter_d;
       M_grass_address_q <= M_grass_address_d;
       M_grass_counter_q <= M_grass_counter_d;
       M_sky_counter_q <= M_sky_counter_d;
       M_sky_address_q <= M_sky_address_d;
       M_current_sky_column_q <= M_current_sky_column_d;
       M_chicken_address_q <= M_chicken_address_d;
-      M_check_address_q <= M_check_address_d;
       M_current_chicken_column_q <= M_current_chicken_column_d;
       M_chicken_counter_q <= M_chicken_counter_d;
       M_shift_address_q <= M_shift_address_d;
       M_row_counter_q <= M_row_counter_d;
-      M_sky_gen_counter_q <= M_sky_gen_counter_d;
+      M_gameover_Stats_q <= M_gameover_Stats_d;
       M_state_q <= M_state_d;
     end
   end

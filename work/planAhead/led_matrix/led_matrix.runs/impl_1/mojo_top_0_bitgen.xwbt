@@ -1,8 +1,0 @@
-INTSTYLE=pa
-INFILE=C:\Users\Carey\Desktop\led_matrix\work\planAhead\led_matrix\led_matrix.runs\impl_1\mojo_top_0_routed.ncd
-OUTFILE=C:\Users\Carey\Desktop\led_matrix\work\planAhead\led_matrix\led_matrix.runs\impl_1\mojo_top_0.bit
-FAMILY=Spartan6
-PART=xc6slx9-2tqg144
-WORKINGDIR=C:\Users\Carey\Desktop\led_matrix\work\planAhead\led_matrix\led_matrix.runs\impl_1
-LICENSE=ISE
-USER_INFO=135256_15690819_173552794_661

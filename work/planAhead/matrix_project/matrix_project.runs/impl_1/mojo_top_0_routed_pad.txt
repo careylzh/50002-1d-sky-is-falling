@@ -1,7 +1,7 @@
 Release 14.7 - par P.20131013 (nt64)
 Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
-Fri Dec 06 14:10:13 2019
+Mon Dec 09 18:04:01 2019
 
 
 INFO: The IO information is provided in three file formats as part of the Place and Route (PAR) process.  These formats are:
@@ -53,14 +53,14 @@ Pinout by Pin Number:
 |P31       |           |         |VCCO_3                    |         |           |3             |          |         |           |         |3.30     |          |           |                |
 |P32       |led_addr[2]|IOB      |IO_L2N_3                  |OUTPUT   |LVTTL      |3             |12        |SLOW     |           |         |         |LOCATED   |NO         |NONE            |
 |P33       |led_addr[3]|IOB      |IO_L2P_3                  |OUTPUT   |LVTTL      |3             |12        |SLOW     |           |         |         |LOCATED   |NO         |NONE            |
-|P34       |led_b[0]   |IOB      |IO_L1N_VREF_3             |OUTPUT   |LVTTL      |3             |12        |SLOW     |           |         |         |LOCATED   |YES        |NONE            |
-|P35       |led_b[1]   |IOB      |IO_L1P_3                  |OUTPUT   |LVTTL      |3             |12        |SLOW     |           |         |         |LOCATED   |YES        |NONE            |
+|P34       |led_b[0]   |IOB      |IO_L1N_VREF_3             |OUTPUT   |LVTTL      |3             |12        |SLOW     |           |         |         |LOCATED   |NO         |NONE            |
+|P35       |led_b[1]   |IOB      |IO_L1P_3                  |OUTPUT   |LVTTL      |3             |12        |SLOW     |           |         |         |LOCATED   |NO         |NONE            |
 |P36       |           |         |VCCAUX                    |         |           |              |          |         |           |         |3.3      |          |           |                |
 |P37       |           |         |PROGRAM_B_2               |         |           |              |          |         |           |         |         |          |           |                |
 |P38       |rst_n      |IOB      |IO_L65N_CSO_B_2           |INPUT    |LVTTL      |2             |          |         |           |NONE     |         |LOCATED   |NO         |NONE            |
 |P39       |avr_rx_busy|IOB      |IO_L65P_INIT_B_2          |INPUT    |LVTTL      |2             |          |         |           |NONE     |         |LOCATED   |NO         |NONE            |
-|P40       |led_g[0]   |IOB      |IO_L64N_D9_2              |OUTPUT   |LVTTL      |2             |12        |SLOW     |           |         |         |LOCATED   |YES        |NONE            |
-|P41       |led_g[1]   |IOB      |IO_L64P_D8_2              |OUTPUT   |LVTTL      |2             |12        |SLOW     |           |         |         |LOCATED   |YES        |NONE            |
+|P40       |led_g[0]   |IOB      |IO_L64N_D9_2              |OUTPUT   |LVTTL      |2             |12        |SLOW     |           |         |         |LOCATED   |NO         |NONE            |
+|P41       |led_g[1]   |IOB      |IO_L64P_D8_2              |OUTPUT   |LVTTL      |2             |12        |SLOW     |           |         |         |LOCATED   |NO         |NONE            |
 |P42       |           |         |VCCO_2                    |         |           |2             |          |         |           |         |3.30     |          |           |                |
 |P43       |spi_sck    |IOB      |IO_L62N_D6_2              |INPUT    |LVTTL      |2             |          |         |           |NONE     |         |LOCATED   |NO         |NONE            |
 |P44       |spi_mosi   |IOB      |IO_L62P_D5_2              |INPUT    |LVTTL      |2             |          |         |           |NONE     |         |LOCATED   |NO         |NONE            |
@@ -69,8 +69,8 @@ Pinout by Pin Number:
 |P47       |           |IOBS     |IO_L48N_RDWR_B_VREF_2     |UNUSED   |           |2             |          |         |           |         |         |          |           |                |
 |P48       |spi_ss     |IOB      |IO_L48P_D7_2              |INPUT    |LVTTL      |2             |          |         |           |NONE     |         |LOCATED   |NO         |NONE            |
 |P49       |           |         |GND                       |         |           |              |          |         |           |         |         |          |           |                |
-|P50       |led_r[0]   |IOB      |IO_L31N_GCLK30_D15_2      |OUTPUT   |LVTTL      |2             |12        |SLOW     |           |         |         |LOCATED   |YES        |NONE            |
-|P51       |led_r[1]   |IOB      |IO_L31P_GCLK31_D14_2      |OUTPUT   |LVTTL      |2             |12        |SLOW     |           |         |         |LOCATED   |YES        |NONE            |
+|P50       |led_r[0]   |IOB      |IO_L31N_GCLK30_D15_2      |OUTPUT   |LVTTL      |2             |12        |SLOW     |           |         |         |LOCATED   |NO         |NONE            |
+|P51       |led_r[1]   |IOB      |IO_L31P_GCLK31_D14_2      |OUTPUT   |LVTTL      |2             |12        |SLOW     |           |         |         |LOCATED   |NO         |NONE            |
 |P52       |           |         |VCCINT                    |         |           |              |          |         |           |         |1.2      |          |           |                |
 |P53       |           |         |VCCAUX                    |         |           |              |          |         |           |         |3.3      |          |           |                |
 |P54       |           |         |GND                       |         |           |              |          |         |           |         |         |          |           |                |

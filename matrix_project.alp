@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="matrix_project" board="Mojo" language="Lucid" version="2">
   <files>
-    <src>decimal_counter.luc</src>
-    <src>alu.luc</src>
+    <src>adder.luc</src>
+    <src>boolean.luc</src>
     <component>pipeline.luc</component>
-    <src>seven_seg.luc</src>
-    <src>stateCounterB.luc</src>
-    <component>counter.luc</component>
-    <src>multi_dec_ctr.luc</src>
     <src>ram_writer.luc</src>
     <src>matrix_writer.luc</src>
-    <src>boolean.luc</src>
+    <component>counter.luc</component>
+    <src>decimal_counter.luc</src>
+    <src>stateCounterA.luc</src>
+    <src>alu.luc</src>
     <src>matrix.luc</src>
-    <src>genSky.luc</src>
+    <src top="true">mojo_top.luc</src>
+    <src>multi_dec_ctr.luc</src>
+    <src>ran_gen.luc</src>
+    <src>compare.luc</src>
+    <src>matrix_ram.luc</src>
     <component>reset_conditioner.luc</component>
     <component>button_conditioner.luc</component>
-    <src>adder.luc</src>
-    <src>shifter.luc</src>
-    <src>compare.luc</src>
-    <src>multi_seven_seg.luc</src>
-    <src top="true">mojo_top.luc</src>
-    <component>decoder.luc</component>
-    <src>stateCounterA.luc</src>
-    <component>pn_gen.luc</component>
-    <src>ran_gen.luc</src>
-    <component>simple_ram.v</component>
+    <src>seven_seg.luc</src>
     <src>gamefsm.luc</src>
-    <src>matrix_ram.luc</src>
+    <component>decoder.luc</component>
+    <src>genSky.luc</src>
+    <src>multi_seven_seg.luc</src>
+    <component>pn_gen.luc</component>
+    <src>shifter.luc</src>
+    <component>simple_ram.v</component>
     <component>edge_detector.luc</component>
+    <src>stateCounterB.luc</src>
     <constraint>matrix_constraint.ucf</constraint>
     <constraint lib="true">mojo.ucf</constraint>
   </files>

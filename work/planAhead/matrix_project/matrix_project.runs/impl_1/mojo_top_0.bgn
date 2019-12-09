@@ -5,7 +5,7 @@ C:\Xilinx\14.7\ISE_DS\ISE\.
    "mojo_top_0" is an NCD, version 3.2, device xc6slx9, package tqg144, speed -2
 Opened constraints file mojo_top_0.pcf.
 
-Fri Dec 06 14:10:27 2019
+Mon Dec 09 18:04:16 2019
 
 C:\Xilinx\14.7\ISE_DS\ISE\bin\nt64\unwrapped\bitgen.exe -g Binary:Yes -g Compress -w -intstyle pa mojo_top_0_routed.ncd mojo_top_0.bit mojo_top_0.pcf 
 
@@ -146,6 +146,6 @@ Xilinx software updates or new releases.
 
 Creating bit map...
 Saving bit stream in "mojo_top_0.bit".
-Bitstream compression saved 975472 bits.
+Bitstream compression saved 1270656 bits.
 Saving bit stream in "mojo_top_0.bin".
 Bitstream generation is complete.
