@@ -6,8 +6,9 @@
 
 /*
    Parameters:
-     ADDRESS_SIZE = 4
+     ADDRESS_SIZE = 5
      MATRIX_WIDTH = 64
+     SPRITE_SIZE = 5
 */
 module matrix_ram_4 (
     input clk,
@@ -18,333 +19,239 @@ module matrix_ram_4 (
     input shiftchickenright,
     input shiftchickenleft,
     input init_chicken_en,
-    input sky_col_check,
+    input start_fromfsm,
+    input change_chicken,
     input [4:0] chicken_location,
-    input chickenwin,
-    input skywin,
-    input top_row_en,
-    input [3:0] top_row_address,
-    input [2:0] top_row_data_in,
-    output reg [2:0] top_row_data,
-    input bottom_row_en,
-    input [3:0] bottom_row_address,
-    input [2:0] bottom_row_data_in,
-    output reg [2:0] bottom_row_data,
     output reg gameover,
     output reg chickenbuild,
-    input start_en,
     input startbutton,
-    input [3:0] row_address,
+    output reg restart_tofsm,
+    input [4:0] row_address,
     input [5:0] column_address,
     output reg [5:0] out,
     output reg [1:0] debug
   );
   
-  localparam ADDRESS_SIZE = 3'h4;
+  localparam ADDRESS_SIZE = 3'h5;
   localparam MATRIX_WIDTH = 7'h40;
+  localparam SPRITE_SIZE = 3'h5;
   
   
-  localparam RAMSIZE = 12'h400;
+  localparam RAMSIZE = 13'h0800;
   
-  wire [3-1:0] M_background_ram_top_read_data;
-  reg [10-1:0] M_background_ram_top_address;
-  reg [3-1:0] M_background_ram_top_write_data;
-  reg [1-1:0] M_background_ram_top_write_en;
-  simple_ram_10 #(.SIZE(2'h3), .DEPTH(12'h400)) background_ram_top (
-    .clk(clk),
-    .address(M_background_ram_top_address),
-    .write_data(M_background_ram_top_write_data),
-    .write_en(M_background_ram_top_write_en),
-    .read_data(M_background_ram_top_read_data)
-  );
-  wire [3-1:0] M_background_ram_bottom_read_data;
-  reg [10-1:0] M_background_ram_bottom_address;
-  reg [3-1:0] M_background_ram_bottom_write_data;
-  reg [1-1:0] M_background_ram_bottom_write_en;
-  simple_ram_10 #(.SIZE(2'h3), .DEPTH(12'h400)) background_ram_bottom (
-    .clk(clk),
-    .address(M_background_ram_bottom_address),
-    .write_data(M_background_ram_bottom_write_data),
-    .write_en(M_background_ram_bottom_write_en),
-    .read_data(M_background_ram_bottom_read_data)
-  );
-  wire [3-1:0] M_chicken_ram_top_read_data;
-  reg [10-1:0] M_chicken_ram_top_address;
-  reg [3-1:0] M_chicken_ram_top_write_data;
-  reg [1-1:0] M_chicken_ram_top_write_en;
-  simple_ram_10 #(.SIZE(2'h3), .DEPTH(12'h400)) chicken_ram_top (
-    .clk(clk),
-    .address(M_chicken_ram_top_address),
-    .write_data(M_chicken_ram_top_write_data),
-    .write_en(M_chicken_ram_top_write_en),
-    .read_data(M_chicken_ram_top_read_data)
-  );
-  wire [3-1:0] M_chicken_ram_bottom_read_data;
-  reg [10-1:0] M_chicken_ram_bottom_address;
-  reg [3-1:0] M_chicken_ram_bottom_write_data;
-  reg [1-1:0] M_chicken_ram_bottom_write_en;
-  simple_ram_10 #(.SIZE(2'h3), .DEPTH(12'h400)) chicken_ram_bottom (
-    .clk(clk),
-    .address(M_chicken_ram_bottom_address),
-    .write_data(M_chicken_ram_bottom_write_data),
-    .write_en(M_chicken_ram_bottom_write_en),
-    .read_data(M_chicken_ram_bottom_read_data)
-  );
-  localparam START_state = 6'd0;
-  localparam GENGRASSFIRSTROW_state = 6'd1;
-  localparam GENGRASSSECONDROW_state = 6'd2;
-  localparam GENCHICKENSTARTTOP_state = 6'd3;
-  localparam GEN1CHICKEN_state = 6'd4;
-  localparam GEN2CHICKEN_state = 6'd5;
-  localparam GEN5CHICKEN_state = 6'd6;
-  localparam GEN6CHICKEN_state = 6'd7;
-  localparam LOOP_state = 6'd8;
-  localparam GENERATETOPBEGIN_state = 6'd9;
-  localparam GENERATESKY1TOP_state = 6'd10;
-  localparam GENERATESKY2TOP_state = 6'd11;
-  localparam GENERATEBOTTOMBEGIN_state = 6'd12;
-  localparam GENERATESKY1BOTTOM_state = 6'd13;
-  localparam GENERATESKY2BOTTOM_state = 6'd14;
-  localparam SHIFT_state = 6'd15;
-  localparam SHIFTDOWNADDRESS_state = 6'd16;
-  localparam SHIFTDOWNREADWRITE_state = 6'd17;
-  localparam CHICKENRIGHTREADWRITE_state = 6'd18;
-  localparam SHIFTRIGHTCHICKENBEGIN_state = 6'd19;
-  localparam SHIFTLEFTCHICKENBEGIN_state = 6'd20;
-  localparam ERASECHICKEN1TOP_state = 6'd21;
-  localparam ERASECHICKEN2TOP_state = 6'd22;
-  localparam SHIFTRIGHTMID_state = 6'd23;
-  localparam ERASECHICKEN1TOPLEFT_state = 6'd24;
-  localparam ERASECHICKEN2TOPLEFT_state = 6'd25;
-  localparam SHIFTLEFTMID_state = 6'd26;
-  localparam ERASECHICKEN1TOPRESET_state = 6'd27;
-  localparam ERASECHICKEN2TOPRESET_state = 6'd28;
-  localparam GENCHICKENMID_state = 6'd29;
-  localparam CHECKCOLSTART_state = 6'd30;
-  localparam CHECKCOLREAD_state = 6'd31;
-  localparam CHECKCOL1TOP_state = 6'd32;
-  localparam CHICKENWIN_state = 6'd33;
-  localparam SKYWIN_state = 6'd34;
+  localparam SPRITE = 75'h00401ff1e79ffff8ff8;
   
-  reg [5:0] M_state_d, M_state_q = START_state;
+  wire [3-1:0] M_background_ram_read_data;
+  reg [11-1:0] M_background_ram_address;
+  reg [3-1:0] M_background_ram_write_data;
+  reg [1-1:0] M_background_ram_write_en;
+  simple_ram_9 #(.SIZE(2'h3), .DEPTH(13'h0800)) background_ram (
+    .clk(clk),
+    .address(M_background_ram_address),
+    .write_data(M_background_ram_write_data),
+    .write_en(M_background_ram_write_en),
+    .read_data(M_background_ram_read_data)
+  );
+  wire [3-1:0] M_chicken_ram_read_data;
+  reg [11-1:0] M_chicken_ram_address;
+  reg [3-1:0] M_chicken_ram_write_data;
+  reg [1-1:0] M_chicken_ram_write_en;
+  simple_ram_9 #(.SIZE(2'h3), .DEPTH(13'h0800)) chicken_ram (
+    .clk(clk),
+    .address(M_chicken_ram_address),
+    .write_data(M_chicken_ram_write_data),
+    .write_en(M_chicken_ram_write_en),
+    .read_data(M_chicken_ram_read_data)
+  );
+  localparam PREP_state = 6'd0;
+  localparam START_state = 6'd1;
+  localparam GENGRASSFIRSTROW_state = 6'd2;
+  localparam GENGRASSSECONDROW_state = 6'd3;
+  localparam GENCHICKENSTARTTOP_state = 6'd4;
+  localparam GEN1CHICKEN_state = 6'd5;
+  localparam GEN2CHICKEN_state = 6'd6;
+  localparam GEN3CHICKEN_state = 6'd7;
+  localparam GEN4CHICKEN_state = 6'd8;
+  localparam GEN5CHICKEN_state = 6'd9;
+  localparam LOOP_state = 6'd10;
+  localparam GENERATESKYBEGIN_state = 6'd11;
+  localparam GENERATESKY1_state = 6'd12;
+  localparam GENERATESKY2_state = 6'd13;
+  localparam SHIFT_state = 6'd14;
+  localparam SHIFTDOWNADDRESS_state = 6'd15;
+  localparam SHIFTDOWNREADWRITE_state = 6'd16;
+  localparam CHICKENRIGHTREADWRITE_state = 6'd17;
+  localparam SHIFTRIGHTCHICKENBEGIN_state = 6'd18;
+  localparam SHIFTLEFTCHICKENBEGIN_state = 6'd19;
+  localparam ERASECHICKEN1TOP_state = 6'd20;
+  localparam ERASECHICKEN2TOP_state = 6'd21;
+  localparam ERASECHICKEN3TOP_state = 6'd22;
+  localparam ERASECHICKEN4TOP_state = 6'd23;
+  localparam ERASECHICKEN5TOP_state = 6'd24;
+  localparam SHIFTRIGHTMID_state = 6'd25;
+  localparam ERASECHICKEN1TOPLEFT_state = 6'd26;
+  localparam ERASECHICKEN2TOPLEFT_state = 6'd27;
+  localparam ERASECHICKEN3TOPLEFT_state = 6'd28;
+  localparam ERASECHICKEN4TOPLEFT_state = 6'd29;
+  localparam ERASECHICKEN5TOPLEFT_state = 6'd30;
+  localparam SHIFTLEFTMID_state = 6'd31;
+  localparam GENCHICKENMID_state = 6'd32;
+  localparam CHECKCOLSTART_state = 6'd33;
+  localparam CHECKCOLREAD_state = 6'd34;
+  localparam CHECKCOL1TOP_state = 6'd35;
+  localparam CHICKENWIN_state = 6'd36;
+  localparam SKYWIN_state = 6'd37;
+  localparam CLEARRAM_state = 6'd38;
+  
+  reg [5:0] M_state_d, M_state_q = PREP_state;
   reg [1:0] M_debug_reg_d, M_debug_reg_q = 1'h0;
-  reg [9:0] M_check_column_address_d, M_check_column_address_q = 1'h0;
-  reg [3:0] M_column_counter_d, M_column_counter_q = 1'h0;
-  reg [9:0] M_grass_address_d, M_grass_address_q = 1'h0;
-  reg [3:0] M_grass_counter_d, M_grass_counter_q = 1'h0;
-  reg [3:0] M_sky_counter_d, M_sky_counter_q = 1'h0;
-  reg [9:0] M_sky_address_d, M_sky_address_q = 1'h0;
+  reg [10:0] M_check_column_address_d, M_check_column_address_q = 1'h0;
+  reg [4:0] M_column_counter_d, M_column_counter_q = 1'h0;
+  reg [10:0] M_grass_address_d, M_grass_address_q = 1'h0;
+  reg [4:0] M_grass_counter_d, M_grass_counter_q = 1'h0;
+  reg [4:0] M_sky_counter_d, M_sky_counter_q = 1'h0;
+  reg [10:0] M_sky_address_d, M_sky_address_q = 1'h0;
   reg [4:0] M_current_sky_column_d, M_current_sky_column_q = 1'h0;
-  reg [9:0] M_chicken_address_d, M_chicken_address_q = 1'h0;
-  reg [5:0] M_current_chicken_column_d, M_current_chicken_column_q = 1'h0;
-  reg [3:0] M_chicken_counter_d, M_chicken_counter_q = 1'h0;
-  reg [9:0] M_shift_address_d, M_shift_address_q = 1'h0;
+  reg [10:0] M_chicken_address_d, M_chicken_address_q = 1'h0;
+  reg [4:0] M_current_chicken_column_d, M_current_chicken_column_q = 1'h0;
+  reg [4:0] M_chicken_counter_d, M_chicken_counter_q = 1'h0;
+  reg [10:0] M_shift_address_d, M_shift_address_q = 1'h0;
   reg [6:0] M_row_counter_d, M_row_counter_q = 1'h0;
-  reg M_gameover_Stats_d, M_gameover_Stats_q = 1'h0;
+  reg [10:0] M_clearReg_d, M_clearReg_q = 1'h0;
+  reg M_restart_d, M_restart_q = 1'h0;
+  reg [3:0] M_fromstart_d, M_fromstart_q = 1'h0;
+  reg M_shiftChickenWhich_d, M_shiftChickenWhich_q = 1'h0;
   
-  reg [2:0] top_half_proc;
+  reg bgexist;
   
-  reg [2:0] bottom_half_proc;
-  
-  reg [4:0] currentsky;
-  
-  reg topskyexist;
-  
-  reg topchickenexist;
-  
-  reg bottomskyexist;
-  
-  reg bottomchickenexist;
-  
-  reg write_address_top;
-  
-  reg write_en_top;
-  
-  reg write_data_top;
-  
-  reg write_address_bottom;
-  
-  reg write_en_bottom;
-  
-  reg write_data_bottom;
+  reg chickexist;
   
   always @* begin
     M_state_d = M_state_q;
-    M_gameover_Stats_d = M_gameover_Stats_q;
+    M_restart_d = M_restart_q;
+    M_shiftChickenWhich_d = M_shiftChickenWhich_q;
     M_chicken_address_d = M_chicken_address_q;
     M_current_sky_column_d = M_current_sky_column_q;
     M_grass_counter_d = M_grass_counter_q;
+    M_fromstart_d = M_fromstart_q;
     M_sky_counter_d = M_sky_counter_q;
     M_row_counter_d = M_row_counter_q;
     M_chicken_counter_d = M_chicken_counter_q;
     M_check_column_address_d = M_check_column_address_q;
     M_column_counter_d = M_column_counter_q;
+    M_current_chicken_column_d = M_current_chicken_column_q;
     M_grass_address_d = M_grass_address_q;
     M_shift_address_d = M_shift_address_q;
-    M_current_chicken_column_d = M_current_chicken_column_q;
     M_sky_address_d = M_sky_address_q;
+    M_clearReg_d = M_clearReg_q;
     
-    M_background_ram_top_address = 1'h0;
-    M_background_ram_top_write_data = 1'h0;
-    M_background_ram_top_write_en = 1'h0;
-    M_chicken_ram_top_address = 1'h0;
-    M_chicken_ram_top_write_data = 1'h0;
-    M_chicken_ram_top_write_en = 1'h0;
-    top_row_data = 1'h0;
-    M_background_ram_bottom_address = 1'h0;
-    M_background_ram_bottom_write_data = 1'h0;
-    M_background_ram_bottom_write_en = 1'h0;
-    M_chicken_ram_bottom_address = 1'h0;
-    M_chicken_ram_bottom_write_data = 1'h0;
-    M_chicken_ram_bottom_write_en = 1'h0;
-    bottom_row_data = 1'h0;
-    write_address_top = 1'h0;
-    write_en_top = 1'h0;
-    write_data_top = 1'h0;
-    write_address_bottom = 1'h0;
-    write_en_bottom = 1'h0;
-    write_data_bottom = 1'h0;
+    M_background_ram_address = 1'h0;
+    M_background_ram_write_data = 1'h0;
+    M_background_ram_write_en = 1'h0;
+    M_chicken_ram_address = 1'h0;
+    M_chicken_ram_write_data = 1'h0;
+    M_chicken_ram_write_en = 1'h0;
     debug = M_debug_reg_q;
     gameover = 1'h0;
     chickenbuild = 1'h0;
     out = 1'h0;
+    restart_tofsm = M_restart_q;
     
     case (M_state_q)
+      PREP_state: begin
+        M_fromstart_d = M_fromstart_q + 1'h1;
+        if (M_fromstart_q == 4'hf) begin
+          M_fromstart_d = 4'hf;
+          M_state_d = START_state;
+        end
+      end
       START_state: begin
-        M_background_ram_top_address = 6'h3f;
-        M_background_ram_top_write_en = 1'h1;
-        M_background_ram_top_write_data = 3'h7;
-        M_gameover_Stats_d = 1'h0;
-        if (init_chicken_en) begin
+        if (M_restart_q) begin
+          M_current_chicken_column_d = 1'h0;
+          M_state_d = GENGRASSFIRSTROW_state;
+        end
+        if (startbutton) begin
+          M_current_chicken_column_d = 1'h0;
           M_state_d = GENGRASSFIRSTROW_state;
         end
       end
       GENGRASSFIRSTROW_state: begin
-        M_background_ram_top_address = M_grass_address_q;
-        M_background_ram_top_write_en = 1'h1;
-        M_background_ram_top_write_data = 3'h2;
-        M_background_ram_bottom_address = M_grass_address_q;
-        M_background_ram_bottom_write_en = 1'h1;
-        M_background_ram_bottom_write_data = 3'h2;
+        M_background_ram_address = M_grass_address_q;
+        M_background_ram_write_en = 1'h1;
+        M_background_ram_write_data = 3'h2;
         M_grass_address_d = M_grass_address_q + 7'h40;
         M_grass_counter_d = M_grass_counter_q + 1'h1;
-        if (M_grass_counter_q > 4'he) begin
+        if (M_grass_counter_q > 5'h1e) begin
           M_grass_counter_d = 1'h0;
           M_state_d = GENGRASSSECONDROW_state;
         end
       end
       GENGRASSSECONDROW_state: begin
-        M_background_ram_top_address = M_grass_address_q + 1'h1;
-        M_background_ram_top_write_en = 1'h1;
-        M_background_ram_top_write_data = 3'h2;
-        M_background_ram_bottom_address = M_grass_address_q + 1'h1;
-        M_background_ram_bottom_write_en = 1'h1;
-        M_background_ram_bottom_write_data = 3'h2;
+        M_background_ram_address = M_grass_address_q + 1'h1;
+        M_background_ram_write_en = 1'h1;
+        M_background_ram_write_data = 3'h2;
         M_grass_address_d = M_grass_address_q + 7'h40;
         M_grass_counter_d = M_grass_counter_q + 1'h1;
-        if (M_grass_counter_q > 4'he) begin
+        if (M_grass_counter_q > 5'h1e) begin
           M_grass_counter_d = 1'h0;
-          if (init_chicken_en) begin
-            chickenbuild = 1'h1;
+          if (M_fromstart_q == 4'hf) begin
+            M_fromstart_d = 1'h0;
             M_chicken_address_d = 7'h40 * (M_current_chicken_column_q) + 2'h2;
             M_state_d = GEN1CHICKEN_state;
           end else begin
-            M_state_d = CHECKCOLSTART_state;
+            if (M_restart_q) begin
+              M_restart_d = 1'h0;
+              M_chicken_address_d = 7'h40 * (M_current_chicken_column_q) + 2'h2;
+              M_state_d = GEN1CHICKEN_state;
+            end else begin
+              M_state_d = CHECKCOLSTART_state;
+            end
           end
         end
       end
       SHIFTDOWNADDRESS_state: begin
         if (M_row_counter_q < 6'h3f) begin
-          M_background_ram_top_address = M_shift_address_q + 1'h1;
-          M_background_ram_bottom_address = M_shift_address_q + 1'h1;
+          M_background_ram_address = M_shift_address_q + 1'h1;
           M_row_counter_d = M_row_counter_q + 1'h1;
           M_state_d = SHIFTDOWNREADWRITE_state;
         end else begin
-          if (M_shift_address_q < 10'h3ff) begin
+          if (M_shift_address_q < 14'h07ff) begin
             M_shift_address_d = M_shift_address_q + 1'h1;
             M_row_counter_d = 1'h0;
-            M_background_ram_top_address = M_shift_address_q;
-            M_background_ram_top_write_en = 1'h1;
-            M_background_ram_top_write_data = 3'h0;
-            M_background_ram_bottom_address = M_shift_address_q;
-            M_background_ram_bottom_write_en = 1'h1;
-            M_background_ram_bottom_write_data = 3'h0;
+            M_background_ram_address = M_shift_address_q;
+            M_background_ram_write_en = 1'h1;
+            M_background_ram_write_data = 3'h0;
             M_state_d = SHIFTDOWNADDRESS_state;
           end else begin
             M_shift_address_d = 1'h0;
             M_row_counter_d = 1'h0;
-            M_background_ram_top_address = M_shift_address_q;
-            M_background_ram_top_write_en = 1'h1;
-            M_background_ram_top_write_data = 3'h0;
-            M_background_ram_bottom_address = M_shift_address_q;
-            M_background_ram_bottom_write_en = 1'h1;
-            M_background_ram_bottom_write_data = 3'h0;
+            M_background_ram_address = M_shift_address_q;
+            M_background_ram_write_en = 1'h1;
+            M_background_ram_write_data = 3'h0;
+            M_background_ram_address = M_shift_address_q;
+            M_background_ram_write_en = 1'h1;
+            M_background_ram_write_data = 3'h0;
             M_state_d = GENGRASSFIRSTROW_state;
           end
         end
       end
       SHIFTDOWNREADWRITE_state: begin
-        M_background_ram_top_address = M_shift_address_q;
-        M_background_ram_top_write_en = 1'h1;
-        M_background_ram_top_write_data = M_background_ram_top_read_data;
-        M_background_ram_bottom_address = M_shift_address_q;
-        M_background_ram_bottom_write_en = 1'h1;
-        M_background_ram_bottom_write_data = M_background_ram_bottom_read_data;
+        M_background_ram_address = M_shift_address_q;
+        M_background_ram_write_en = 1'h1;
+        M_background_ram_write_data = M_background_ram_read_data;
         M_shift_address_d = M_shift_address_q + 1'h1;
         M_state_d = SHIFTDOWNADDRESS_state;
-      end
-      GENCHICKENSTARTTOP_state: begin
-        M_chicken_address_d = 7'h40 * (M_current_chicken_column_q) + 2'h2;
-        M_state_d = ERASECHICKEN1TOPRESET_state;
-      end
-      ERASECHICKEN1TOPRESET_state: begin
-        M_chicken_ram_top_address = M_chicken_address_q;
-        M_chicken_ram_top_write_en = 1'h1;
-        M_chicken_ram_top_write_data = 3'h0;
-        M_chicken_ram_bottom_address = M_chicken_address_q;
-        M_chicken_ram_bottom_write_en = 1'h1;
-        M_chicken_ram_bottom_write_data = 3'h0;
-        M_chicken_counter_d = M_chicken_counter_q + 1'h1;
-        M_chicken_address_d = M_chicken_address_q + 7'h40;
-        if (M_chicken_counter_q > 2'h3) begin
-          M_chicken_counter_d = 1'h0;
-          M_chicken_address_d = 7'h40 * M_current_chicken_column_q + 2'h3;
-          M_state_d = ERASECHICKEN2TOPRESET_state;
-        end
-      end
-      ERASECHICKEN2TOPRESET_state: begin
-        M_chicken_ram_top_address = M_chicken_address_q;
-        M_chicken_ram_top_write_en = 1'h1;
-        M_chicken_ram_top_write_data = 3'h0;
-        M_chicken_ram_bottom_address = M_chicken_address_q;
-        M_chicken_ram_bottom_write_en = 1'h1;
-        M_chicken_ram_bottom_write_data = 3'h0;
-        M_chicken_counter_d = M_chicken_counter_q + 1'h1;
-        M_chicken_address_d = M_chicken_address_q + 7'h40;
-        if (M_chicken_counter_q > 2'h3) begin
-          M_chicken_counter_d = 1'h0;
-          M_chicken_address_d = 7'h40 * M_current_chicken_column_q + 2'h3;
-          M_state_d = GENCHICKENMID_state;
-        end
-      end
-      GENCHICKENMID_state: begin
-        M_current_chicken_column_d = chicken_location;
-        M_chicken_address_d = 7'h40 * M_current_chicken_column_q + 2'h2;
-        M_state_d = GEN1CHICKEN_state;
       end
       SHIFTLEFTCHICKENBEGIN_state: begin
         M_chicken_address_d = 7'h40 * (M_current_chicken_column_q) + 2'h2;
         M_state_d = ERASECHICKEN1TOPLEFT_state;
       end
       ERASECHICKEN1TOPLEFT_state: begin
-        M_chicken_ram_top_address = M_chicken_address_q;
-        M_chicken_ram_top_write_en = 1'h1;
-        M_chicken_ram_top_write_data = 3'h0;
-        M_chicken_ram_bottom_address = M_chicken_address_q;
-        M_chicken_ram_bottom_write_en = 1'h1;
-        M_chicken_ram_bottom_write_data = 3'h0;
-        M_chicken_counter_d = M_chicken_counter_q + 1'h1;
+        M_chicken_ram_address = M_chicken_address_q;
+        M_chicken_ram_write_en = 1'h1;
+        M_chicken_ram_write_data = 3'h0;
         M_chicken_address_d = M_chicken_address_q + 7'h40;
+        M_chicken_counter_d = M_chicken_counter_q + 1'h1;
         if (M_chicken_counter_q > 2'h3) begin
           M_chicken_counter_d = 1'h0;
           M_chicken_address_d = 7'h40 * M_current_chicken_column_q + 2'h3;
@@ -352,23 +259,60 @@ module matrix_ram_4 (
         end
       end
       ERASECHICKEN2TOPLEFT_state: begin
-        M_chicken_ram_top_address = M_chicken_address_q;
-        M_chicken_ram_top_write_en = 1'h1;
-        M_chicken_ram_top_write_data = 3'h0;
-        M_chicken_ram_bottom_address = M_chicken_address_q;
-        M_chicken_ram_bottom_write_en = 1'h1;
-        M_chicken_ram_bottom_write_data = 3'h0;
-        M_chicken_counter_d = M_chicken_counter_q + 1'h1;
+        M_chicken_ram_address = M_chicken_address_q;
+        M_chicken_ram_write_en = 1'h1;
+        M_chicken_ram_write_data = 3'h0;
         M_chicken_address_d = M_chicken_address_q + 7'h40;
+        M_chicken_counter_d = M_chicken_counter_q + 1'h1;
         if (M_chicken_counter_q > 2'h3) begin
           M_chicken_counter_d = 1'h0;
-          M_chicken_address_d = 7'h40 * M_current_chicken_column_q + 2'h3;
+          M_chicken_address_d = 7'h40 * M_current_chicken_column_q + 3'h4;
+          M_state_d = ERASECHICKEN3TOPLEFT_state;
+        end
+      end
+      ERASECHICKEN3TOPLEFT_state: begin
+        M_chicken_ram_address = M_chicken_address_q;
+        M_chicken_ram_write_en = 1'h1;
+        M_chicken_ram_write_data = 3'h0;
+        M_chicken_address_d = M_chicken_address_q + 7'h40;
+        M_chicken_counter_d = M_chicken_counter_q + 1'h1;
+        if (M_chicken_counter_q > 2'h3) begin
+          M_chicken_counter_d = 1'h0;
+          M_chicken_address_d = 7'h40 * M_current_chicken_column_q + 3'h5;
+          M_state_d = ERASECHICKEN4TOPLEFT_state;
+        end
+      end
+      ERASECHICKEN4TOPLEFT_state: begin
+        M_chicken_ram_address = M_chicken_address_q;
+        M_chicken_ram_write_en = 1'h1;
+        M_chicken_ram_write_data = 3'h0;
+        M_chicken_address_d = M_chicken_address_q + 7'h40;
+        M_chicken_counter_d = M_chicken_counter_q + 1'h1;
+        if (M_chicken_counter_q > 2'h3) begin
+          M_chicken_counter_d = 1'h0;
+          M_chicken_address_d = 7'h40 * M_current_chicken_column_q + 3'h6;
+          M_state_d = ERASECHICKEN5TOPLEFT_state;
+        end
+      end
+      ERASECHICKEN5TOPLEFT_state: begin
+        M_chicken_ram_address = M_chicken_address_q;
+        M_chicken_ram_write_en = 1'h1;
+        M_chicken_ram_write_data = 3'h0;
+        M_chicken_address_d = M_chicken_address_q + 7'h40;
+        M_chicken_counter_d = M_chicken_counter_q + 1'h1;
+        if (M_chicken_counter_q > 2'h3) begin
+          M_chicken_counter_d = 1'h0;
           M_state_d = SHIFTLEFTMID_state;
         end
       end
       SHIFTLEFTMID_state: begin
-        M_current_chicken_column_d = M_current_chicken_column_q - 1'h1;
-        M_chicken_address_d = 7'h40 * (M_current_chicken_column_q - 1'h1) + 2'h2;
+        if (M_current_chicken_column_q == 1'h0) begin
+          M_current_chicken_column_d = 5'h1b;
+          M_chicken_address_d = 13'h06c2;
+        end else begin
+          M_current_chicken_column_d = M_current_chicken_column_q - 1'h1;
+          M_chicken_address_d = 7'h40 * (M_current_chicken_column_q - 1'h1) + 2'h2;
+        end
         M_state_d = GEN1CHICKEN_state;
       end
       SHIFTRIGHTCHICKENBEGIN_state: begin
@@ -376,118 +320,154 @@ module matrix_ram_4 (
         M_state_d = ERASECHICKEN1TOP_state;
       end
       ERASECHICKEN1TOP_state: begin
-        M_chicken_ram_top_address = M_chicken_address_q;
-        M_chicken_ram_top_write_en = 1'h1;
-        M_chicken_ram_top_write_data = 3'h0;
-        M_chicken_ram_bottom_address = M_chicken_address_q;
-        M_chicken_ram_bottom_write_en = 1'h1;
-        M_chicken_ram_bottom_write_data = 3'h0;
-        M_chicken_counter_d = M_chicken_counter_q + 1'h1;
+        M_chicken_ram_address = M_chicken_address_q;
+        M_chicken_ram_write_en = 1'h1;
+        M_chicken_ram_write_data = 3'h0;
         M_chicken_address_d = M_chicken_address_q + 7'h40;
-        if (M_chicken_counter_q > 2'h3) begin
+        M_chicken_counter_d = M_chicken_counter_q + 1'h1;
+        if (M_chicken_counter_q > 4'h3) begin
           M_chicken_counter_d = 1'h0;
           M_chicken_address_d = 7'h40 * M_current_chicken_column_q + 2'h3;
           M_state_d = ERASECHICKEN2TOP_state;
         end
       end
       ERASECHICKEN2TOP_state: begin
-        M_chicken_ram_top_address = M_chicken_address_q;
-        M_chicken_ram_top_write_en = 1'h1;
-        M_chicken_ram_top_write_data = 3'h0;
-        M_chicken_ram_bottom_address = M_chicken_address_q;
-        M_chicken_ram_bottom_write_en = 1'h1;
-        M_chicken_ram_bottom_write_data = 3'h0;
-        M_chicken_counter_d = M_chicken_counter_q + 1'h1;
+        M_chicken_ram_address = M_chicken_address_q;
+        M_chicken_ram_write_en = 1'h1;
+        M_chicken_ram_write_data = 3'h0;
         M_chicken_address_d = M_chicken_address_q + 7'h40;
-        if (M_chicken_counter_q > 2'h3) begin
+        M_chicken_counter_d = M_chicken_counter_q + 1'h1;
+        if (M_chicken_counter_q > 4'h3) begin
           M_chicken_counter_d = 1'h0;
-          M_chicken_address_d = 7'h40 * M_current_chicken_column_q + 2'h3;
+          M_chicken_address_d = 7'h40 * M_current_chicken_column_q + 3'h4;
+          M_state_d = ERASECHICKEN3TOP_state;
+        end
+      end
+      ERASECHICKEN3TOP_state: begin
+        M_chicken_ram_address = M_chicken_address_q;
+        M_chicken_ram_write_en = 1'h1;
+        M_chicken_ram_write_data = 3'h0;
+        M_chicken_address_d = M_chicken_address_q + 7'h40;
+        M_chicken_counter_d = M_chicken_counter_q + 1'h1;
+        if (M_chicken_counter_q > 4'h3) begin
+          M_chicken_counter_d = 1'h0;
+          M_chicken_address_d = 7'h40 * M_current_chicken_column_q + 3'h5;
+          M_state_d = ERASECHICKEN4TOP_state;
+        end
+      end
+      ERASECHICKEN4TOP_state: begin
+        M_chicken_ram_address = M_chicken_address_q;
+        M_chicken_ram_write_en = 1'h1;
+        M_chicken_ram_write_data = 3'h0;
+        M_chicken_address_d = M_chicken_address_q + 7'h40;
+        M_chicken_counter_d = M_chicken_counter_q + 1'h1;
+        if (M_chicken_counter_q > 4'h3) begin
+          M_chicken_counter_d = 1'h0;
+          M_chicken_address_d = 7'h40 * M_current_chicken_column_q + 3'h6;
+          M_state_d = ERASECHICKEN5TOP_state;
+        end
+      end
+      ERASECHICKEN5TOP_state: begin
+        M_chicken_ram_address = M_chicken_address_q;
+        M_chicken_ram_write_en = 1'h1;
+        M_chicken_ram_write_data = 3'h0;
+        M_chicken_address_d = M_chicken_address_q + 7'h40;
+        M_chicken_counter_d = M_chicken_counter_q + 1'h1;
+        if (M_chicken_counter_q > 4'h3) begin
+          M_chicken_counter_d = 1'h0;
           M_state_d = SHIFTRIGHTMID_state;
         end
       end
       SHIFTRIGHTMID_state: begin
-        M_current_chicken_column_d = M_current_chicken_column_q + 1'h1;
-        M_chicken_address_d = 7'h40 * (M_current_chicken_column_q + 1'h1) + 2'h2;
+        if (M_current_chicken_column_q == 5'h1b) begin
+          M_current_chicken_column_d = 1'h0;
+          M_chicken_address_d = 2'h2;
+        end else begin
+          M_current_chicken_column_d = M_current_chicken_column_q + 1'h1;
+          M_chicken_address_d = 7'h40 * (M_current_chicken_column_q + 1'h1) + 2'h2;
+        end
         M_state_d = GEN1CHICKEN_state;
       end
       GEN1CHICKEN_state: begin
-        M_chicken_ram_top_address = M_chicken_address_q;
-        M_chicken_ram_top_write_en = 1'h1;
-        M_chicken_ram_top_write_data = 3'h7;
-        M_chicken_ram_bottom_address = M_chicken_address_q;
-        M_chicken_ram_bottom_write_en = 1'h1;
-        M_chicken_ram_bottom_write_data = 3'h3;
+        M_chicken_ram_address = M_chicken_address_q;
+        M_chicken_ram_write_en = 1'h1;
+        M_chicken_ram_write_data = SPRITE[0+(M_chicken_counter_q)*3+2-:3];
         M_chicken_counter_d = M_chicken_counter_q + 1'h1;
         M_chicken_address_d = M_chicken_address_q + 7'h40;
-        if (M_chicken_counter_q > 1'h0) begin
+        if (M_chicken_counter_q > 4'h3) begin
           M_chicken_counter_d = 1'h0;
-          M_chicken_address_d = 7'h40 * M_current_chicken_column_q + 2'h3;
+          M_chicken_address_d = 7'h40 * (M_current_chicken_column_q) + 2'h3;
           M_state_d = GEN2CHICKEN_state;
         end
       end
       GEN2CHICKEN_state: begin
-        M_chicken_ram_top_address = M_chicken_address_q;
-        M_chicken_ram_top_write_en = 1'h1;
-        M_chicken_ram_top_write_data = 3'h7;
-        M_chicken_ram_bottom_address = M_chicken_address_q;
-        M_chicken_ram_bottom_write_en = 1'h1;
-        M_chicken_ram_bottom_write_data = 3'h3;
+        M_chicken_ram_address = M_chicken_address_q;
+        M_chicken_ram_write_en = 1'h1;
+        M_chicken_ram_write_data = SPRITE[15+(M_chicken_counter_q)*3+2-:3];
         M_chicken_counter_d = M_chicken_counter_q + 1'h1;
         M_chicken_address_d = M_chicken_address_q + 7'h40;
-        if (M_chicken_counter_q > 1'h0) begin
+        if (M_chicken_counter_q > 4'h3) begin
           M_chicken_counter_d = 1'h0;
-          M_chicken_address_d = 7'h40 * M_current_chicken_column_q + 3'h4;
+          M_chicken_address_d = 7'h40 * (M_current_chicken_column_q) + 3'h4;
+          M_state_d = GEN3CHICKEN_state;
+        end
+      end
+      GEN3CHICKEN_state: begin
+        M_chicken_ram_address = M_chicken_address_q;
+        M_chicken_ram_write_en = 1'h1;
+        M_chicken_ram_write_data = SPRITE[30+(M_chicken_counter_q)*3+2-:3];
+        M_chicken_counter_d = M_chicken_counter_q + 1'h1;
+        M_chicken_address_d = M_chicken_address_q + 7'h40;
+        if (M_chicken_counter_q > 4'h3) begin
+          M_chicken_counter_d = 1'h0;
+          M_chicken_address_d = 7'h40 * (M_current_chicken_column_q) + 3'h5;
+          M_state_d = GEN4CHICKEN_state;
+        end
+      end
+      GEN4CHICKEN_state: begin
+        M_chicken_ram_address = M_chicken_address_q;
+        M_chicken_ram_write_en = 1'h1;
+        M_chicken_ram_write_data = SPRITE[45+(M_chicken_counter_q)*3+2-:3];
+        M_chicken_counter_d = M_chicken_counter_q + 1'h1;
+        M_chicken_address_d = M_chicken_address_q + 7'h40;
+        if (M_chicken_counter_q > 4'h3) begin
+          M_chicken_counter_d = 1'h0;
+          M_chicken_address_d = 7'h40 * (M_current_chicken_column_q) + 3'h6;
+          M_state_d = GEN5CHICKEN_state;
+        end
+      end
+      GEN5CHICKEN_state: begin
+        M_chicken_ram_address = M_chicken_address_q;
+        M_chicken_ram_write_en = 1'h1;
+        M_chicken_ram_write_data = SPRITE[60+(M_chicken_counter_q)*3+2-:3];
+        M_chicken_counter_d = M_chicken_counter_q + 1'h1;
+        M_chicken_address_d = M_chicken_address_q + 7'h40;
+        if (M_chicken_counter_q > 4'h3) begin
+          M_chicken_counter_d = 1'h0;
           M_state_d = CHECKCOLSTART_state;
         end
       end
-      GENERATETOPBEGIN_state: begin
+      GENERATESKYBEGIN_state: begin
+        M_sky_counter_d = 1'h0;
         M_sky_address_d = 7'h40 * M_current_sky_column_q + 7'h40 - 1'h1;
-        M_state_d = GENERATESKY1TOP_state;
+        M_state_d = GENERATESKY1_state;
       end
-      GENERATEBOTTOMBEGIN_state: begin
-        M_sky_address_d = 7'h40 * M_current_sky_column_q + 7'h40 - 1'h1;
-        M_state_d = GENERATESKY1BOTTOM_state;
-      end
-      GENERATESKY1BOTTOM_state: begin
-        M_background_ram_bottom_address = M_sky_address_q;
-        M_background_ram_bottom_write_en = 1'h1;
-        M_background_ram_bottom_write_data = 3'h4;
+      GENERATESKY1_state: begin
+        M_background_ram_address = M_sky_address_q;
+        M_background_ram_write_en = 1'h1;
+        M_background_ram_write_data = 3'h4;
         M_sky_counter_d = M_sky_counter_q + 1'h1;
         M_sky_address_d = M_sky_address_q + 7'h40;
         if (M_sky_counter_q > 1'h0) begin
           M_sky_counter_d = 1'h0;
           M_sky_address_d = 7'h40 * M_current_sky_column_q + 7'h40 - 2'h2;
-          M_state_d = GENERATESKY2BOTTOM_state;
+          M_state_d = GENERATESKY2_state;
         end
       end
-      GENERATESKY2BOTTOM_state: begin
-        M_background_ram_bottom_address = M_sky_address_q;
-        M_background_ram_bottom_write_en = 1'h1;
-        M_background_ram_bottom_write_data = 3'h4;
-        M_sky_counter_d = M_sky_counter_q + 1'h1;
-        M_sky_address_d = M_sky_address_q + 7'h40;
-        if (M_sky_counter_q > 1'h0) begin
-          M_sky_counter_d = 1'h0;
-          M_sky_address_d = 7'h40 * M_current_sky_column_q + 7'h40 - 2'h3;
-          M_state_d = LOOP_state;
-        end
-      end
-      GENERATESKY1TOP_state: begin
-        M_background_ram_top_address = M_sky_address_q;
-        M_background_ram_top_write_en = 1'h1;
-        M_background_ram_top_write_data = 3'h4;
-        M_sky_counter_d = M_sky_counter_q + 1'h1;
-        M_sky_address_d = M_sky_address_q + 7'h40;
-        if (M_sky_counter_q > 1'h0) begin
-          M_sky_counter_d = 1'h0;
-          M_sky_address_d = 7'h40 * M_current_sky_column_q + 7'h40 - 2'h2;
-          M_state_d = GENERATESKY2TOP_state;
-        end
-      end
-      GENERATESKY2TOP_state: begin
-        M_background_ram_top_address = M_sky_address_q;
-        M_background_ram_top_write_en = 1'h1;
-        M_background_ram_top_write_data = 3'h4;
+      GENERATESKY2_state: begin
+        M_background_ram_address = M_sky_address_q;
+        M_background_ram_write_en = 1'h1;
+        M_background_ram_write_data = 3'h4;
         M_sky_counter_d = M_sky_counter_q + 1'h1;
         M_sky_address_d = M_sky_address_q + 7'h40;
         if (M_sky_counter_q > 1'h0) begin
@@ -497,17 +477,17 @@ module matrix_ram_4 (
         end
       end
       CHECKCOLSTART_state: begin
-        M_check_column_address_d = 2'h3;
+        M_check_column_address_d = 3'h5;
         M_column_counter_d = 1'h0;
         M_state_d = CHECKCOLREAD_state;
       end
       CHECKCOLREAD_state: begin
-        M_background_ram_top_address = M_check_column_address_q;
-        M_chicken_ram_top_address = M_check_column_address_q;
-        M_background_ram_bottom_address = M_check_column_address_q;
-        M_chicken_ram_bottom_address = M_check_column_address_q;
+        M_chicken_ram_address = M_check_column_address_q;
+        M_chicken_ram_address = M_check_column_address_q;
+        M_background_ram_address = M_check_column_address_q;
+        M_background_ram_address = M_check_column_address_q;
         M_column_counter_d = M_column_counter_q + 1'h1;
-        if (M_column_counter_q > 4'he) begin
+        if (M_column_counter_q > 5'h1e) begin
           M_column_counter_d = 1'h0;
           M_state_d = LOOP_state;
         end else begin
@@ -515,77 +495,72 @@ module matrix_ram_4 (
         end
       end
       CHECKCOL1TOP_state: begin
-        topskyexist = (|M_background_ram_top_read_data);
-        topchickenexist = (|M_chicken_ram_top_read_data);
-        bottomskyexist = (|M_background_ram_bottom_read_data);
-        bottomchickenexist = (|M_chicken_ram_bottom_read_data);
-        if ((topskyexist & topchickenexist) | (bottomchickenexist & bottomskyexist)) begin
-          M_gameover_Stats_d = 1'h1;
+        bgexist = (|M_background_ram_read_data);
+        chickexist = (|M_chicken_ram_read_data);
+        if ((bgexist & chickexist)) begin
           M_state_d = SKYWIN_state;
         end else begin
           M_check_column_address_d = M_check_column_address_q + 7'h40;
           M_state_d = CHECKCOLREAD_state;
         end
       end
-      CHICKENWIN_state: begin
-        M_chicken_ram_top_address = 1'h0;
-        M_chicken_ram_top_write_en = 1'h1;
-        M_chicken_ram_top_write_data = 3'h1;
-        M_state_d = LOOP_state;
+      CLEARRAM_state: begin
+        if (M_clearReg_q < 14'h07ff) begin
+          M_background_ram_address = M_clearReg_q;
+          M_background_ram_write_en = 1'h1;
+          M_background_ram_write_data = 3'h0;
+          M_chicken_ram_address = M_clearReg_q;
+          M_chicken_ram_write_en = 1'h1;
+          M_chicken_ram_write_data = 3'h0;
+          M_chicken_ram_address = M_clearReg_q;
+          M_chicken_ram_write_en = 1'h1;
+          M_chicken_ram_write_data = 3'h0;
+          M_clearReg_d = M_clearReg_q + 1'h1;
+        end else begin
+          M_clearReg_d = 1'h0;
+          M_state_d = START_state;
+        end
       end
       SKYWIN_state: begin
-        M_background_ram_top_address = 6'h32;
-        M_background_ram_top_write_en = 1'h1;
-        M_background_ram_top_write_data = 3'h6;
+        M_background_ram_address = 1'h0;
+        M_background_ram_write_en = 1'h1;
+        M_background_ram_write_data = 3'h1;
+        M_restart_d = 1'h1;
         M_state_d = LOOP_state;
       end
       LOOP_state: begin
-        if (M_gameover_Stats_q == 1'h0) begin
-          if (startbutton && shiftchickenleft && shiftchickenright) begin
-            M_state_d = START_state;
-          end
-          if (genSky) begin
-            if (generateSky < 5'h10) begin
+        if (start_fromfsm && M_restart_q == 1'h1) begin
+          M_state_d = CLEARRAM_state;
+        end else begin
+          if (M_restart_q == 1'h0) begin
+            if (genSky) begin
               M_current_sky_column_d = generateSky;
-              M_state_d = GENERATETOPBEGIN_state;
+              M_state_d = GENERATESKYBEGIN_state;
             end else begin
-              if (4'hf < generateSky < 6'h20) begin
-                M_current_sky_column_d = generateSky - 5'h10;
-                M_state_d = GENERATEBOTTOMBEGIN_state;
-              end
-            end
-          end else begin
-            if (shiftSky) begin
-              M_state_d = SHIFTDOWNADDRESS_state;
-            end else begin
-              if (shiftchickenleft) begin
-                M_state_d = SHIFTLEFTCHICKENBEGIN_state;
+              if (shiftSky) begin
+                M_shift_address_d = 1'h0;
+                M_state_d = SHIFTDOWNADDRESS_state;
               end else begin
-                if (shiftchickenright) begin
-                  M_state_d = SHIFTRIGHTCHICKENBEGIN_state;
+                if (shiftchickenleft) begin
+                  M_shiftChickenWhich_d = 1'h0;
+                  M_state_d = SHIFTLEFTCHICKENBEGIN_state;
+                end else begin
+                  if (shiftchickenright) begin
+                    M_shiftChickenWhich_d = 1'h0;
+                    M_state_d = SHIFTRIGHTCHICKENBEGIN_state;
+                  end
                 end
               end
             end
           end
+        end
+        M_background_ram_address = (row_address * 7'h40) + column_address;
+        M_chicken_ram_address = (row_address * 7'h40) + column_address;
+        if (M_chicken_ram_read_data) begin
+          out = {3'h6, M_chicken_ram_read_data};
         end else begin
-          if (startbutton) begin
-            M_gameover_Stats_d = 1'h0;
-            M_state_d = GENGRASSFIRSTROW_state;
-          end
+          out = {3'h3, M_background_ram_read_data};
         end
-        M_background_ram_bottom_address = (row_address * 7'h40) + column_address;
-        M_background_ram_top_address = (row_address * 7'h40) + column_address;
-        M_chicken_ram_top_address = (row_address * 7'h40) + column_address;
-        M_chicken_ram_bottom_address = (row_address * 7'h40) + column_address;
-        bottom_half_proc = M_background_ram_bottom_read_data;
-        top_half_proc = M_background_ram_top_read_data;
-        if (M_chicken_ram_top_read_data) begin
-          top_half_proc = M_chicken_ram_top_read_data;
-        end
-        if (M_chicken_ram_bottom_read_data) begin
-          bottom_half_proc = M_chicken_ram_bottom_read_data;
-        end
-        out = {bottom_half_proc, top_half_proc};
       end
     endcase
   end
@@ -605,7 +580,10 @@ module matrix_ram_4 (
       M_chicken_counter_q <= 1'h0;
       M_shift_address_q <= 1'h0;
       M_row_counter_q <= 1'h0;
-      M_gameover_Stats_q <= 1'h0;
+      M_clearReg_q <= 1'h0;
+      M_restart_q <= 1'h0;
+      M_fromstart_q <= 1'h0;
+      M_shiftChickenWhich_q <= 1'h0;
       M_state_q <= 1'h0;
     end else begin
       M_debug_reg_q <= M_debug_reg_d;
@@ -621,7 +599,10 @@ module matrix_ram_4 (
       M_chicken_counter_q <= M_chicken_counter_d;
       M_shift_address_q <= M_shift_address_d;
       M_row_counter_q <= M_row_counter_d;
-      M_gameover_Stats_q <= M_gameover_Stats_d;
+      M_clearReg_q <= M_clearReg_d;
+      M_restart_q <= M_restart_d;
+      M_fromstart_q <= M_fromstart_d;
+      M_shiftChickenWhich_q <= M_shiftChickenWhich_d;
       M_state_q <= M_state_d;
     end
   end

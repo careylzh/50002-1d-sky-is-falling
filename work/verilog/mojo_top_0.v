@@ -78,10 +78,9 @@ module mojo_top_0 (
     .in(M_startbutton_edge_in),
     .out(M_startbutton_edge_out)
   );
-  wire [3-1:0] M_matrix_data_top_row_data;
-  wire [3-1:0] M_matrix_data_bottom_row_data;
   wire [1-1:0] M_matrix_data_gameover;
   wire [1-1:0] M_matrix_data_chickenbuild;
+  wire [1-1:0] M_matrix_data_restart_tofsm;
   wire [6-1:0] M_matrix_data_out;
   wire [2-1:0] M_matrix_data_debug;
   reg [5-1:0] M_matrix_data_generateSky;
@@ -90,19 +89,11 @@ module mojo_top_0 (
   reg [1-1:0] M_matrix_data_shiftchickenright;
   reg [1-1:0] M_matrix_data_shiftchickenleft;
   reg [1-1:0] M_matrix_data_init_chicken_en;
-  reg [1-1:0] M_matrix_data_sky_col_check;
+  reg [1-1:0] M_matrix_data_start_fromfsm;
+  reg [1-1:0] M_matrix_data_change_chicken;
   reg [5-1:0] M_matrix_data_chicken_location;
-  reg [1-1:0] M_matrix_data_chickenwin;
-  reg [1-1:0] M_matrix_data_skywin;
-  reg [1-1:0] M_matrix_data_top_row_en;
-  reg [4-1:0] M_matrix_data_top_row_address;
-  reg [3-1:0] M_matrix_data_top_row_data_in;
-  reg [1-1:0] M_matrix_data_bottom_row_en;
-  reg [4-1:0] M_matrix_data_bottom_row_address;
-  reg [3-1:0] M_matrix_data_bottom_row_data_in;
-  reg [1-1:0] M_matrix_data_start_en;
   reg [1-1:0] M_matrix_data_startbutton;
-  reg [4-1:0] M_matrix_data_row_address;
+  reg [5-1:0] M_matrix_data_row_address;
   reg [6-1:0] M_matrix_data_column_address;
   matrix_ram_4 matrix_data (
     .clk(clk),
@@ -113,29 +104,20 @@ module mojo_top_0 (
     .shiftchickenright(M_matrix_data_shiftchickenright),
     .shiftchickenleft(M_matrix_data_shiftchickenleft),
     .init_chicken_en(M_matrix_data_init_chicken_en),
-    .sky_col_check(M_matrix_data_sky_col_check),
+    .start_fromfsm(M_matrix_data_start_fromfsm),
+    .change_chicken(M_matrix_data_change_chicken),
     .chicken_location(M_matrix_data_chicken_location),
-    .chickenwin(M_matrix_data_chickenwin),
-    .skywin(M_matrix_data_skywin),
-    .top_row_en(M_matrix_data_top_row_en),
-    .top_row_address(M_matrix_data_top_row_address),
-    .top_row_data_in(M_matrix_data_top_row_data_in),
-    .bottom_row_en(M_matrix_data_bottom_row_en),
-    .bottom_row_address(M_matrix_data_bottom_row_address),
-    .bottom_row_data_in(M_matrix_data_bottom_row_data_in),
-    .start_en(M_matrix_data_start_en),
     .startbutton(M_matrix_data_startbutton),
     .row_address(M_matrix_data_row_address),
     .column_address(M_matrix_data_column_address),
-    .top_row_data(M_matrix_data_top_row_data),
-    .bottom_row_data(M_matrix_data_bottom_row_data),
     .gameover(M_matrix_data_gameover),
     .chickenbuild(M_matrix_data_chickenbuild),
+    .restart_tofsm(M_matrix_data_restart_tofsm),
     .out(M_matrix_data_out),
     .debug(M_matrix_data_debug)
   );
   wire [6-1:0] M_matrix_writer_col_index;
-  wire [4-1:0] M_matrix_writer_row_index;
+  wire [5-1:0] M_matrix_writer_row_index;
   wire [1-1:0] M_matrix_writer_red0;
   wire [1-1:0] M_matrix_writer_green0;
   wire [1-1:0] M_matrix_writer_blue0;
@@ -179,19 +161,21 @@ module mojo_top_0 (
   wire [1-1:0] M_game_fsm_init_chicken_en;
   wire [1-1:0] M_game_fsm_start_en;
   wire [1-1:0] M_game_fsm_skywin;
-  reg [1-1:0] M_game_fsm_left_button;
-  reg [1-1:0] M_game_fsm_right_button;
-  reg [1-1:0] M_game_fsm_start_button;
+  reg [1-1:0] M_game_fsm_left_button_raw;
+  reg [1-1:0] M_game_fsm_right_button_raw;
+  reg [1-1:0] M_game_fsm_start_button_raw;
   reg [1-1:0] M_game_fsm_gameover;
   reg [1-1:0] M_game_fsm_chickenbuld;
+  reg [1-1:0] M_game_fsm_restart_req;
   gamefsm_6 game_fsm (
     .clk(clk),
     .rst(rst),
-    .left_button(M_game_fsm_left_button),
-    .right_button(M_game_fsm_right_button),
-    .start_button(M_game_fsm_start_button),
+    .left_button_raw(M_game_fsm_left_button_raw),
+    .right_button_raw(M_game_fsm_right_button_raw),
+    .start_button_raw(M_game_fsm_start_button_raw),
     .gameover(M_game_fsm_gameover),
     .chickenbuld(M_game_fsm_chickenbuld),
+    .restart_req(M_game_fsm_restart_req),
     .led_matrix(M_game_fsm_led_matrix),
     .debug(M_game_fsm_debug),
     .debug1(M_game_fsm_debug1),
@@ -206,28 +190,8 @@ module mojo_top_0 (
     .start_en(M_game_fsm_start_en),
     .skywin(M_game_fsm_skywin)
   );
-  wire [3-1:0] M_ram_writer_write_data_top;
-  wire [3-1:0] M_ram_writer_write_data_bottom;
-  wire [1-1:0] M_ram_writer_write_en_top;
-  wire [1-1:0] M_ram_writer_write_en_bottom;
-  wire [1-1:0] M_ram_writer_write_address_top;
-  wire [1-1:0] M_ram_writer_write_address_bottom;
-  reg [3-1:0] M_ram_writer_data_read_top;
-  reg [3-1:0] M_ram_writer_data_read_bottom;
-  ram_writer_7 ram_writer (
-    .clk(clk),
-    .rst(rst),
-    .data_read_top(M_ram_writer_data_read_top),
-    .data_read_bottom(M_ram_writer_data_read_bottom),
-    .write_data_top(M_ram_writer_write_data_top),
-    .write_data_bottom(M_ram_writer_write_data_bottom),
-    .write_en_top(M_ram_writer_write_en_top),
-    .write_en_bottom(M_ram_writer_write_en_bottom),
-    .write_address_top(M_ram_writer_write_address_top),
-    .write_address_bottom(M_ram_writer_write_address_bottom)
-  );
   wire [5-1:0] M_genSky_sky;
-  genSky_8 genSky (
+  genSky_7 genSky (
     .clk(clk),
     .rst(rst),
     .sky(M_genSky_sky)
@@ -249,34 +213,25 @@ module mojo_top_0 (
     M_rightbutton_edge_in = M_rightbutton_cond_out;
     M_startbutton_cond_in = startbutton;
     M_startbutton_edge_in = M_startbutton_cond_out;
-    M_matrix_data_top_row_data_in = M_ram_writer_write_data_top;
-    M_matrix_data_top_row_en = M_ram_writer_write_en_top;
-    M_matrix_data_top_row_address = M_ram_writer_write_address_top;
-    M_matrix_data_bottom_row_data_in = M_ram_writer_write_data_bottom;
-    M_matrix_data_bottom_row_en = M_ram_writer_write_en_bottom;
-    M_matrix_data_bottom_row_address = M_ram_writer_write_address_bottom;
-    M_matrix_data_startbutton = M_startbutton_edge_out;
-    M_ram_writer_data_read_top = M_matrix_data_top_row_data;
-    M_ram_writer_data_read_bottom = M_matrix_data_bottom_row_data;
-    M_game_fsm_right_button = M_rightbutton_edge_out;
-    M_game_fsm_left_button = M_leftbutton_edge_out;
-    M_game_fsm_start_button = M_startbutton_edge_out;
+    M_game_fsm_right_button_raw = rightbutton;
+    M_game_fsm_left_button_raw = leftbutton;
+    M_game_fsm_start_button_raw = startbutton;
     M_game_fsm_gameover = M_matrix_data_gameover;
     M_matrix_data_genSky = M_game_fsm_gen_sky_enable;
     M_matrix_data_generateSky = M_genSky_sky;
-    M_matrix_data_shiftSky = M_startbutton_edge_out;
+    M_matrix_data_startbutton = M_startbutton_edge_out;
+    M_matrix_data_start_fromfsm = M_game_fsm_start_en;
+    M_matrix_data_shiftSky = M_game_fsm_shift_sky_enable;
     M_matrix_data_shiftchickenleft = M_leftbutton_edge_out;
     M_matrix_data_shiftchickenright = M_rightbutton_edge_out;
     M_matrix_data_init_chicken_en = M_game_fsm_init_chicken_en;
-    M_matrix_data_sky_col_check = 1'h0;
+    M_matrix_data_change_chicken = startbutton;
+    M_game_fsm_restart_req = M_matrix_data_restart_tofsm;
     M_game_fsm_chickenbuld = M_matrix_data_chickenbuild;
-    M_matrix_data_skywin = 1'h0;
     M_matrix_data_chicken_location = 1'h0;
     M_matrix_data_row_address = M_matrix_writer_row_index;
     M_matrix_data_column_address = M_matrix_writer_col_index;
     M_matrix_writer_data = M_matrix_data_out;
-    M_matrix_data_chickenwin = 1'h0;
-    M_matrix_data_start_en = M_game_fsm_start_en;
     led_r = {M_matrix_writer_red0, M_matrix_writer_red1};
     led_g = {M_matrix_writer_green0, M_matrix_writer_green1};
     led_b = {M_matrix_writer_blue0, M_matrix_writer_blue1};

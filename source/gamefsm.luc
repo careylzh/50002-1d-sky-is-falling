@@ -3,11 +3,12 @@ module gamefsm (
     input rst,            // reset button (active low)
     // input io_button [5],    // 5 buttons on IO Shield
     
-    input left_button,
-    input right_button,
-    input start_button,
+    input left_button_raw,
+    input right_button_raw,
+    input start_button_raw,
     input gameover,
     input chickenbuld,
+    input restart_req,
     //input skyshifted,
     output led_matrix[8][8],
     output debug[8],
@@ -48,6 +49,9 @@ module gamefsm (
       dff debug_reg1[8];
       dff debug_reg2[8];
       dff timeCount[33];
+      
+      dff skyshifter[25];
+      
       counter skyFalling(#SIZE(1),#DIV(25));
       //counter skyShift(#SIZE(1),#DIV(25));
       //counter skyCollision(#SIZE(1),#DIV(28));
@@ -70,9 +74,11 @@ module gamefsm (
   
   
   always {
-    start_en=1;
+    start_en=0;
     chickenWin = 0;
     seed.d = seed.q + 1;
+    skyshifter.d = skyshifter.q+1;
+    
     skygenerator.seed = seed.q;
     //skygenerator.next = 1;
     //gen_sky_enable =0;
@@ -113,36 +119,9 @@ module gamefsm (
     
     case (state.q){                 //initial start state of finite state machine
       state.START:
-        start_en = 1;
-        gen_sky_enable = 0;
-        if(start_button){
-          state.d = state.INITGRASS;
-        }
-      //   if(io_button[1]){      //if center button is pressed, init the game
-      
-      // }
-      
-      state.INITGRASS:
-        start_en = 0;
-        gen_sky_enable = 0;
-        /*sky[7] = initgame.sky[0];
-           chicken[0] = initgame.chicken[0];
-           
-           debug_reg.d = initgame.sky[0];
-           debug_reg1.d = initgame.chicken[0];
-           
-           led_matrix[0] = chicken[0]; //chicken is spawn at the bottom row
-           led_matrix[7] = sky[7]; // sky spawned at the topmost row*/
-        
-        state.d = state.INITCHICKEN;
-      
-      state.INITCHICKEN:
-        gen_sky_enable =0;
-        init_chicken_en = b1;
-        if(chickenbuld){
+        if(start_button_raw){
           state.d = state.IDLE;
         }
-      
       
       state.IDLE:
         timeCount.d = timeCount.q + 1 ;
@@ -152,21 +131,20 @@ module gamefsm (
         shiftchickenright_en = 0;
         shift_sky_enable = 0;
         
-        if(gameover){
-          state.d = state.SKYWIN;
-          //}else if(skyFall_check){
-          // state.d = state.GENRAN;
-        }else if(skyFall_check){
+        if(skyFall_check){
           state.d = state.GENRAN;
-        }else if (left_button){
-          state.d = state.MOVELEFT;
-        }else if (right_button){
-          state.d = state.MOVERIGHT;
-          
-        }else if(timeCount.q[31]){
-          state.d =state.CHICKENWIN;
         }
         
+        else if (restart_req){
+          if(start_button_raw){
+            start_en = 1;
+          }
+        }
+        
+        if (skyshifter.q[24]){
+          skyshifter.d = 0;
+          shift_sky_enable = 1;
+        }
         /* led_matrix = sky&chicken; //display the entire led matrix
          
          debug_reg.d = b1111;
@@ -181,24 +159,12 @@ module gamefsm (
          //  }
          //if (button){ //when button is pressed, chicken moves left or right*/
       
-      
-      state.MOVELEFT:
-        gen_sky_enable =0;
-        shiftchickenleft_en = 1;
-        
-        state.d = state.IDLE;
-      
-      
-      
-      state.MOVERIGHT:
-        gen_sky_enable =0;
-        shiftchickenright_en = 1;
-        
-        state.d = state.IDLE;
+
       
       state.GENRAN:
         //gen_ran_en.d = skygenerator.num[4:0];
         gen_sky_enable =1;
+        shift_sky_enable = 1;
         //sky[7] = genSky.sky[0];
         //led_matrix[7] = sky[7];
         
@@ -211,27 +177,7 @@ module gamefsm (
         // debug_reg1.d = initgame.chicken[0];
         state.d = state.IDLE;
       
-      state.CHICKENWIN:
-        //PLAYER CHICKEN WIN
-        chickenWin = 1;
-        gen_sky_enable = 0;
-        if(start_button){
-          chickenWin = 0;
-          start_en=0;
-          state.d = state.START;
-          
-        }
-      state.SKYWIN:
-        skywin =1;
-        gen_sky_enable = 0;
-        //PLAYER SKY WIN
-        //game over display
-        if(start_button){
-        skywin =0; 
-        start_en=0;
-          state.d = state.START;
-        }
-        
+
         /*  state.SKYFALL:
          //sky fall shift first
          //shift sky[7:1] down to sky[6:0]

@@ -4,7 +4,7 @@
    This is a temporary file and any changes made to it will be destroyed.
 */
 
-module genSky_8 (
+module genSky_7 (
     input clk,
     input rst,
     output reg [4:0] sky
@@ -17,7 +17,7 @@ module genSky_8 (
   reg [1-1:0] M_skynum_rst;
   reg [1-1:0] M_skynum_next;
   reg [32-1:0] M_skynum_seed;
-  pn_gen_13 skynum (
+  pn_gen_12 skynum (
     .clk(clk),
     .rst(M_skynum_rst),
     .next(M_skynum_next),

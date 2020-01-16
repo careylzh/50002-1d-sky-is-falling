@@ -1,6 +1,7 @@
 module matrix_ram #(
-    ADDRESS_SIZE = 4 : ADDRESS_SIZE > 0, //width of the address field (ABCD signals for matrix_led)
-    MATRIX_WIDTH = 64 : MATRIX_WIDTH > 0 //number of LEDs per row in the matrix
+    ADDRESS_SIZE = 5 : ADDRESS_SIZE > 0, //width of the address field (ABCD signals for matrix_led)
+    MATRIX_WIDTH = 64 : MATRIX_WIDTH > 0, //number of LEDs per row in the matrix
+    SPRITE_SIZE = 5 : SPRITE_SIZE > 0 
   )(
     input clk,  // clock
     input rst,  // reset
@@ -10,31 +11,23 @@ module matrix_ram #(
     input shiftchickenright,
     input shiftchickenleft,
     input init_chicken_en,
-    input sky_col_check,
-    input chicken_location[5],
-    input chickenwin,
-    input skywin,
-    input top_row_en,
-    input top_row_address[ADDRESS_SIZE],
-    input top_row_data_in[3],
-    output top_row_data[3],
+    input start_fromfsm,
     
-    input bottom_row_en,
-    input bottom_row_address[ADDRESS_SIZE],
-    input bottom_row_data_in[3],
-    output bottom_row_data[3],
+    input change_chicken,
+
+    input chicken_location[5],
+
     output gameover,
     output chickenbuild,
-    input start_en,
     input startbutton,
     
+    output restart_tofsm,
     
-    //  input write_row_address[ADDRESS_SIZE],
-    //  input write_column_address[ADDRESS_SIZE],
-    //   input write_enable,
-    //  input write_data[6],
+    
+
     input row_address[ADDRESS_SIZE],
     input column_address[$clog2(MATRIX_WIDTH)],
+    
     output out[6], //6b b1g1r1b0g1r0
     
     output debug[2]
@@ -42,118 +35,113 @@ module matrix_ram #(
   
   const RAMSIZE = $pow(2,ADDRESS_SIZE) * MATRIX_WIDTH;
   
+  const SPRITE =         {{3b000,3b000,3b001,3b000, 3b000}, 
+                          {3b000,3b111,3b111,3b111, 3b000}, 
+                          {3b111,3b100,3b111,3b100, 3b111}, 
+                          {3b111,3b111,3b111,3b111, 3b111}, 
+                          {3b000,3b111,3b111,3b111, 3b000}};    
   .clk(clk){
     
-    simple_ram background_ram_top(#SIZE(3), #DEPTH(RAMSIZE));
-    simple_ram background_ram_bottom(#SIZE(3), #DEPTH(RAMSIZE));
     
-    simple_ram chicken_ram_top(#SIZE(3), #DEPTH(RAMSIZE));
-    simple_ram chicken_ram_bottom(#SIZE(3), #DEPTH(RAMSIZE));
+    simple_ram background_ram(#SIZE(3), #DEPTH(RAMSIZE));
+    simple_ram chicken_ram(#SIZE(3), #DEPTH(RAMSIZE));
     
     .rst(rst){
       
-      fsm state = {START, GENGRASSFIRSTROW,GENGRASSSECONDROW,
+      fsm state = {PREP,
+        START, 
+        GENGRASSFIRSTROW,
+        GENGRASSSECONDROW,
         GENCHICKENSTARTTOP,
-        GEN1CHICKEN,GEN2CHICKEN,GEN5CHICKEN,GEN6CHICKEN,
+        GEN1CHICKEN,
+        GEN2CHICKEN,
+        GEN3CHICKEN,
+        GEN4CHICKEN,
+        GEN5CHICKEN,
         LOOP,
-        GENERATETOPBEGIN,
-        GENERATESKY1TOP,GENERATESKY2TOP,
-        GENERATEBOTTOMBEGIN,
-        GENERATESKY1BOTTOM,  GENERATESKY2BOTTOM,
+        GENERATESKYBEGIN,
+        GENERATESKY1,
+        GENERATESKY2,
         SHIFT,
-        SHIFTDOWNADDRESS, SHIFTDOWNREADWRITE, CHICKENRIGHTREADWRITE, SHIFTRIGHTCHICKENBEGIN, SHIFTLEFTCHICKENBEGIN,
-        ERASECHICKEN1TOP, ERASECHICKEN2TOP, SHIFTRIGHTMID, ERASECHICKEN1TOPLEFT, ERASECHICKEN2TOPLEFT, SHIFTLEFTMID,
-        ERASECHICKEN1TOPRESET, ERASECHICKEN2TOPRESET, GENCHICKENMID,
-        CHECKCOLSTART,CHECKCOLREAD,
+        SHIFTDOWNADDRESS, 
+        SHIFTDOWNREADWRITE, 
+        CHICKENRIGHTREADWRITE, 
+        SHIFTRIGHTCHICKENBEGIN, 
+        SHIFTLEFTCHICKENBEGIN,
+        ERASECHICKEN1TOP, 
+        ERASECHICKEN2TOP, 
+        ERASECHICKEN3TOP, 
+        ERASECHICKEN4TOP, 
+        ERASECHICKEN5TOP, 
+        SHIFTRIGHTMID, 
+        ERASECHICKEN1TOPLEFT, 
+        ERASECHICKEN2TOPLEFT, 
+        ERASECHICKEN3TOPLEFT, 
+        ERASECHICKEN4TOPLEFT, 
+        ERASECHICKEN5TOPLEFT, 
+        SHIFTLEFTMID,
+        GENCHICKENMID,
+        CHECKCOLSTART,
+        CHECKCOLREAD,
         CHECKCOL1TOP,
-        CHICKENWIN,SKYWIN};
+        CHICKENWIN,
+        SKYWIN,
+        CLEARRAM};
       
       
       dff debug_reg[2];
 
-      
       dff check_column_address[$clog2(RAMSIZE)];
-      dff column_counter[4];
+      dff column_counter[ADDRESS_SIZE];
       
       dff grass_address[$clog2(RAMSIZE)];
-      dff grass_counter[4];
+      dff grass_counter[ADDRESS_SIZE];
       
-      dff sky_counter[4];
+      dff sky_counter[ADDRESS_SIZE];
       dff sky_address[$clog2(RAMSIZE)];
-      dff current_sky_column[5];
+      dff current_sky_column[ADDRESS_SIZE];
       
       dff chicken_address[$clog2(RAMSIZE)];
-      dff current_chicken_column[6]; //where the chicken is
+      dff current_chicken_column[ADDRESS_SIZE]; //where the chicken is
       
-      dff chicken_counter[4];
+      dff chicken_counter[ADDRESS_SIZE];
       
       dff shift_address[$clog2(RAMSIZE)];
       dff row_counter[$clog2(MATRIX_WIDTH)+1];
       
-      dff gameover_Stats;
-     // dff sky_gen_counter;
+      dff clearReg[$clog2(RAMSIZE)];
+      
+      dff restart;
+      dff fromstart[4];
+      
+      
+      dff shiftChickenWhich;
+    
       
       
     }
     
   }
+
   
-  sig top_half_proc[3];
-  sig bottom_half_proc[3];
-  sig currentsky[5];
-  sig topskyexist;
-  sig topchickenexist;
-  sig bottomskyexist;
-  sig bottomchickenexist;
-  
-  sig write_address_top;
-  sig write_en_top;
-  sig write_data_top;
-  
-  sig write_address_bottom;
-  sig      write_en_bottom;
-  sig     write_data_bottom;
+  sig bgexist;
+  sig chickexist;
   
   always{
-    /*
-       
-       background_ram_top.address = top_row_address;
-       background_ram_top.write_data = top_row_data_in;
-       background_ram_top.write_en = top_row_en;
-       top_row_data = background_ram_top.read_data;
-       
-       background_ram_bottom.address = bottom_row_address;
-       background_ram_bottom.write_data = bottom_row_data_in;
-       background_ram_bottom.write_en = bottom_row_en;
-       bottom_row_data = background_ram_bottom.read_data;   */
     
-    background_ram_top.address = 0;
-    background_ram_top.write_data = 0;
-    background_ram_top.write_en = 0;
+
+    background_ram.address = 0;
+    background_ram.write_data = 0;
+    background_ram.write_en = 0;
+
     
-    chicken_ram_top.address = 0;
-    chicken_ram_top.write_data = 0;
-    chicken_ram_top.write_en = 0;
-    top_row_data = 0;
     
-    background_ram_bottom.address = 0;
-    background_ram_bottom.write_data = 0;
-    background_ram_bottom.write_en = 0;
-    chicken_ram_bottom.address = 0;
-    chicken_ram_bottom.write_data = 0;
-    chicken_ram_bottom.write_en = 0;
-    bottom_row_data = 0;
-    
-    write_address_top = b0;
-    write_en_top = b0;
-    write_data_top = b0; // blue
-    
-    write_address_bottom = b0;
-    write_en_bottom = b0;
-    write_data_bottom = b0; // white
-    
-    //skygenerator.next = 0;
-    //skygenerator.seed = 0;
+    chicken_ram.address = 0;
+    chicken_ram.write_data = 0;
+    chicken_ram.write_en = 0;
+
+
+
     debug = debug_reg.q;
     gameover = 0 ;//gameover_Stats.q;
     chickenbuild =0;
@@ -161,338 +149,422 @@ module matrix_ram #(
     
     out = 0;
     
+    restart_tofsm = restart.q;
+
+    
     case(state.q){
-      
-      state.START:
-        background_ram_top.address = 63;
-        background_ram_top.write_en = b1;
-        background_ram_top.write_data = b111;
-        gameover_Stats.d = 0;
-        if(init_chicken_en){
+
+          
+         
+      state.PREP: //WAIT FOR RESET REGISTER 
+        fromstart.d = fromstart.q + 1;
+        if (fromstart.q == b1111){
+           fromstart.d = b1111;
+           state.d = state.START; 
+        }
+        
+     
+      state.START:   
+        if(restart.q){
+          current_chicken_column.d = 0;
           state.d = state.GENGRASSFIRSTROW;
         }
+        
+        if (startbutton){
+          current_chicken_column.d = 0;
+          state.d = state.GENGRASSFIRSTROW;
+        }
+
       
       state.GENGRASSFIRSTROW:
         // draw grass at the bottom two rows, loop in this state until all grass are drawn
-        background_ram_top.address = grass_address.q;
-        background_ram_top.write_en = b1;
-        background_ram_top.write_data = b010;
-        
-        background_ram_bottom.address = grass_address.q;
-        background_ram_bottom.write_en = b1;
-        background_ram_bottom.write_data = b010;
+        background_ram.address = grass_address.q;
+        background_ram.write_en = b1;
+        background_ram.write_data = b010;
         
         grass_address.d = grass_address.q + MATRIX_WIDTH;
         grass_counter.d = grass_counter.q + 1;
-        if (grass_counter.q > 14){
+        if (grass_counter.q > 30){
           grass_counter.d = 0;
           state.d = state.GENGRASSSECONDROW;
         }
       
       state.GENGRASSSECONDROW:
         // draw grass at the bottom two rows, loop in this state until all grass are drawn
-        background_ram_top.address = grass_address.q + 1;
-        background_ram_top.write_en = b1;
-        background_ram_top.write_data = b010;
+        background_ram.address = grass_address.q + 1;
+        background_ram.write_en = b1;
+        background_ram.write_data = b010;
         
-        background_ram_bottom.address = grass_address.q + 1;
-        background_ram_bottom.write_en = b1;
-        background_ram_bottom.write_data = b010;
         
         grass_address.d = grass_address.q + MATRIX_WIDTH;
         grass_counter.d = grass_counter.q + 1;
-        if (grass_counter.q > 14){
+        if (grass_counter.q > 30){
           grass_counter.d = 0;
-          if (init_chicken_en){
-            chickenbuild = 1;
+          
+          if(fromstart.q == b1111){
+            fromstart.d = 0;
+            chicken_address.d = MATRIX_WIDTH * (current_chicken_column.q ) + 2;
+            state.d = state.GEN1CHICKEN;
+          }
+          else if (restart.q){
+            restart.d = 0;
             chicken_address.d = MATRIX_WIDTH * (current_chicken_column.q ) + 2;
             state.d = state.GEN1CHICKEN;
             
-          } else {
+            
+          }
+          else 
+          {
             state.d = state.CHECKCOLSTART;
           }
           
         }
-        /*
-         else if (shift_address.q > 1023){
-         background_ram_top.address = shift_address.q-1;
-         background_ram_top.write_en = b1;
-         background_ram_top.write_data = b000;
-         
-         background_ram_bottom.address = shift_address.q-1;
-         background_ram_bottom.write_en = b1;
-         background_ram_bottom.write_data = b000;
-         state.d = state.LOOP;
-         }
-         else if (row_counter.q == 63){
-         //shift_address + 1 is 63 now (pointing to topmost row)
-         background_ram_top.address = shift_address.q+1;
-         background_ram_top.write_en = b1;
-         background_ram_top.write_data = b000;
-         
-         background_ram_bottom.address = shift_address.q+1;
-         background_ram_bottom.write_en = b1;
-         background_ram_bottom.write_data = b000;
-         row_counter.d = 0;
-         shift_address.d = shift_address.q + 2;
-         }*/
+
       
       state.SHIFTDOWNADDRESS:
         
         //give address
-        if(row_counter.q < 63){
-          background_ram_top.address = shift_address.q+1;
-          
-          background_ram_bottom.address = shift_address.q+1;
+        if(row_counter.q < 63){ //as long as we haven't reached the last row 
+          background_ram.address = shift_address.q+1; // get the next address' data
           row_counter.d = row_counter.q + 1;
           state.d = state.SHIFTDOWNREADWRITE;
         }
         else{
-          if (shift_address.q < 1023){
-            shift_address.d = shift_address.q+1;
+          if (shift_address.q < (RAMSIZE-1)){ // clear the topmost row
+            shift_address.d = shift_address.q+1; //if shift address was at 63, this is 64
             row_counter.d = 0;
-            background_ram_top.address = shift_address.q;
-            background_ram_top.write_en = b1;
-            background_ram_top.write_data = b000;
-            
-            background_ram_bottom.address = shift_address.q;
-            background_ram_bottom.write_en = b1;
-            background_ram_bottom.write_data = b000;
+            background_ram.address = shift_address.q; //write to address 63, clear it, loop back
+            background_ram.write_en = b1;
+            background_ram.write_data = b000;
+
             state.d = state.SHIFTDOWNADDRESS;
           }
           else{
             shift_address.d = 0;
             row_counter.d = 0;
-            background_ram_top.address = shift_address.q;
-            background_ram_top.write_en = b1;
-            background_ram_top.write_data = b000;
+            background_ram.address = shift_address.q;
+            background_ram.write_en = b1;
+            background_ram.write_data = b000;
             
-            background_ram_bottom.address = shift_address.q;
-            background_ram_bottom.write_en = b1;
-            background_ram_bottom.write_data = b000;
+            background_ram.address = shift_address.q;
+            background_ram.write_en = b1;
+            background_ram.write_data = b000;
             state.d = state.GENGRASSFIRSTROW;
             
           }
           
         }
       
+        
+        
       state.SHIFTDOWNREADWRITE:
-        background_ram_top.address = shift_address.q;
-        background_ram_top.write_en = b1;
-        background_ram_top.write_data = background_ram_top.read_data;
+        background_ram.address = shift_address.q; //write it to current address
+        background_ram.write_en = b1;
+        background_ram.write_data = background_ram.read_data;
         
-        background_ram_bottom.address = shift_address.q;
-        background_ram_bottom.write_en = b1;
-        background_ram_bottom.write_data = background_ram_bottom.read_data;
-        
-        shift_address.d = shift_address.q + 1;
+        shift_address.d = shift_address.q + 1; //increase address by 1
         
         state.d = state.SHIFTDOWNADDRESS;
       
       
-      
-      
-      
-      
-      state.GENCHICKENSTARTTOP:
-        chicken_address.d = MATRIX_WIDTH * (current_chicken_column.q) + 2;
-        state.d = state.ERASECHICKEN1TOPRESET;
-      
-      state.ERASECHICKEN1TOPRESET:
-        chicken_ram_top.address = chicken_address.q;
-        chicken_ram_top.write_en = b1;
-        chicken_ram_top.write_data = b000;
-        
-        chicken_ram_bottom.address = chicken_address.q;
-        chicken_ram_bottom.write_en = b1;
-        chicken_ram_bottom.write_data = b000;
-        
-        chicken_counter.d = chicken_counter.q + 1;
-        chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
-        
-        if (chicken_counter.q > 3){ //after 4 pixel skies generated
-          chicken_counter.d = 0;
-          chicken_address.d =  MATRIX_WIDTH * current_chicken_column.q + 3;
-          state.d = state.ERASECHICKEN2TOPRESET;
-        }
-      
-      state.ERASECHICKEN2TOPRESET:
-        chicken_ram_top.address = chicken_address.q;
-        chicken_ram_top.write_en = b1;
-        chicken_ram_top.write_data = b000;
-        
-        chicken_ram_bottom.address = chicken_address.q;
-        chicken_ram_bottom.write_en = b1;
-        chicken_ram_bottom.write_data = b000;
-        
-        chicken_counter.d = chicken_counter.q + 1;
-        chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
-        
-        if (chicken_counter.q > 3){ //after 4 pixel skies generated
-          chicken_counter.d = 0;
-          chicken_address.d =  MATRIX_WIDTH * current_chicken_column.q + 3;
-          state.d = state.GENCHICKENMID;
-        }
-      
-      state.GENCHICKENMID:
-        current_chicken_column.d = chicken_location;
-        chicken_address.d = MATRIX_WIDTH * current_chicken_column.q + 2; //starts at the third row
-        state.d = state.GEN1CHICKEN;
-      
+
       state.SHIFTLEFTCHICKENBEGIN:
+
         chicken_address.d = MATRIX_WIDTH * (current_chicken_column.q) + 2;
         state.d = state.ERASECHICKEN1TOPLEFT;
       
       state.ERASECHICKEN1TOPLEFT:
-        chicken_ram_top.address = chicken_address.q;
-        chicken_ram_top.write_en = b1;
-        chicken_ram_top.write_data = b000;
+
+        chicken_ram.address = chicken_address.q;
+        chicken_ram.write_en = b1;
+        chicken_ram.write_data = b000;
         
-        chicken_ram_bottom.address = chicken_address.q;
-        chicken_ram_bottom.write_en = b1;
-        chicken_ram_bottom.write_data = b000;
-        
-        chicken_counter.d = chicken_counter.q + 1;
         chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
+        chicken_counter.d = chicken_counter.q + 1;
         
-        if (chicken_counter.q > 3){ //after 4 pixel skies generated
+        if (chicken_counter.q > 3){ //after 2 pixels erased
           chicken_counter.d = 0;
+
           chicken_address.d =  MATRIX_WIDTH * current_chicken_column.q + 3;
+
           state.d = state.ERASECHICKEN2TOPLEFT;
         }
       
       state.ERASECHICKEN2TOPLEFT:
-        chicken_ram_top.address = chicken_address.q;
-        chicken_ram_top.write_en = b1;
-        chicken_ram_top.write_data = b000;
+
+
+        chicken_ram.address = chicken_address.q;
+        chicken_ram.write_en = b1;
+        chicken_ram.write_data = b000;
         
-        chicken_ram_bottom.address = chicken_address.q;
-        chicken_ram_bottom.write_en = b1;
-        chicken_ram_bottom.write_data = b000;
-        
-        chicken_counter.d = chicken_counter.q + 1;
         chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
-        
+        chicken_counter.d = chicken_counter.q + 1;
+
         if (chicken_counter.q > 3){ //after 4 pixel skies generated
           chicken_counter.d = 0;
-          chicken_address.d =  MATRIX_WIDTH * current_chicken_column.q + 3;
-          state.d = state.SHIFTLEFTMID;
+                    chicken_address.d =  MATRIX_WIDTH * current_chicken_column.q + 4;
+          state.d = state.ERASECHICKEN3TOPLEFT;
         }
       
+     state.ERASECHICKEN3TOPLEFT:
+        chicken_ram.address = chicken_address.q;
+        chicken_ram.write_en = b1;
+        chicken_ram.write_data = b000;
+        
+        chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
+        chicken_counter.d = chicken_counter.q + 1;
+
+        if (chicken_counter.q > 3){ //after 4 pixel skies generated
+          chicken_counter.d = 0;
+                    chicken_address.d =  MATRIX_WIDTH * current_chicken_column.q + 5;
+          state.d = state.ERASECHICKEN4TOPLEFT;
+        }
+     
+     state.ERASECHICKEN4TOPLEFT:
+        chicken_ram.address = chicken_address.q;
+        chicken_ram.write_en = b1;
+        chicken_ram.write_data = b000;
+        
+        chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
+        chicken_counter.d = chicken_counter.q + 1;
+
+        if (chicken_counter.q > 3){ //after 4 pixel skies generated
+          chicken_counter.d = 0;
+                    chicken_address.d =  MATRIX_WIDTH * current_chicken_column.q + 6;
+          state.d = state.ERASECHICKEN5TOPLEFT;
+        }  
+         
+    state.ERASECHICKEN5TOPLEFT:
+        chicken_ram.address = chicken_address.q;
+        chicken_ram.write_en = b1;
+        chicken_ram.write_data = b000;
+        
+        chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
+        chicken_counter.d = chicken_counter.q + 1;
+
+        if (chicken_counter.q > 3){ //after 4 pixel skies generated
+          chicken_counter.d = 0;
+          state.d = state.SHIFTLEFTMID;
+        }  
+           
       state.SHIFTLEFTMID:
-        current_chicken_column.d = current_chicken_column.q - 1;
-        chicken_address.d = MATRIX_WIDTH * (current_chicken_column.q - 1) + 2;
+        if(current_chicken_column.q == 0){
+          current_chicken_column.d = 27;
+          chicken_address.d = MATRIX_WIDTH * 27 + 2;
+        }
+        else{
+          current_chicken_column.d = current_chicken_column.q - 1;
+          chicken_address.d = MATRIX_WIDTH * (current_chicken_column.q - 1) + 2;
+          
+        }
         state.d = state.GEN1CHICKEN;
       
+        
+        
       state.SHIFTRIGHTCHICKENBEGIN:
+  
         chicken_address.d = MATRIX_WIDTH * (current_chicken_column.q) + 2;
         state.d = state.ERASECHICKEN1TOP;
       
       
       state.ERASECHICKEN1TOP:
-        chicken_ram_top.address = chicken_address.q;
-        chicken_ram_top.write_en = b1;
-        chicken_ram_top.write_data = b000;
-        
-        chicken_ram_bottom.address = chicken_address.q;
-        chicken_ram_bottom.write_en = b1;
-        chicken_ram_bottom.write_data = b000;
-        
-        chicken_counter.d = chicken_counter.q + 1;
+        chicken_ram.address = chicken_address.q;
+        chicken_ram.write_en = b1;
+        chicken_ram.write_data = b000;
         chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
-        
-        if (chicken_counter.q > 3){ //after 4 pixel skies generated
+          
+        chicken_counter.d = chicken_counter.q + 1;
+ 
+        if (chicken_counter.q > (SPRITE_SIZE-2)){ 
           chicken_counter.d = 0;
           chicken_address.d =  MATRIX_WIDTH * current_chicken_column.q + 3;
           state.d = state.ERASECHICKEN2TOP;
         }
       
       state.ERASECHICKEN2TOP:
-        chicken_ram_top.address = chicken_address.q;
-        chicken_ram_top.write_en = b1;
-        chicken_ram_top.write_data = b000;
-        
-        chicken_ram_bottom.address = chicken_address.q;
-        chicken_ram_bottom.write_en = b1;
-        chicken_ram_bottom.write_data = b000;
+        chicken_ram.address = chicken_address.q;
+        chicken_ram.write_en = b1;
+        chicken_ram.write_data = b000;
+        chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
+
         
         chicken_counter.d = chicken_counter.q + 1;
-        chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
+       
         
-        if (chicken_counter.q > 3){ //after 4 pixel skies generated
+        if (chicken_counter.q > (SPRITE_SIZE-2)){ //after 4 pixel skies generated
           chicken_counter.d = 0;
-          chicken_address.d =  MATRIX_WIDTH * current_chicken_column.q + 3;
-          state.d = state.SHIFTRIGHTMID;
+          chicken_address.d =  MATRIX_WIDTH * current_chicken_column.q + 4;
+
+          state.d = state.ERASECHICKEN3TOP;
         }
       
+        
+      state.ERASECHICKEN3TOP:
+        chicken_ram.address = chicken_address.q;
+        chicken_ram.write_en = b1;
+        chicken_ram.write_data = b000;
+        chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
+
+        
+        chicken_counter.d = chicken_counter.q + 1;
+       
+        
+        if (chicken_counter.q > (SPRITE_SIZE-2)){ //after 4 pixel skies generated
+          chicken_counter.d = 0;
+          chicken_address.d =  MATRIX_WIDTH * current_chicken_column.q + 5;
+
+          state.d = state.ERASECHICKEN4TOP;
+        }
       
+     state.ERASECHICKEN4TOP:
+        chicken_ram.address = chicken_address.q;
+        chicken_ram.write_en = b1;
+        chicken_ram.write_data = b000;
+        chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
+
+        
+        chicken_counter.d = chicken_counter.q + 1;
+       
+        
+        if (chicken_counter.q > (SPRITE_SIZE-2)){ //after 4 pixel skies generated
+          chicken_counter.d = 0;
+          chicken_address.d =  MATRIX_WIDTH * current_chicken_column.q + 6;
+
+          state.d = state.ERASECHICKEN5TOP;
+        }
+        
+      state.ERASECHICKEN5TOP:
+        chicken_ram.address = chicken_address.q;
+        chicken_ram.write_en = b1;
+        chicken_ram.write_data = b000;
+        chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
+
+        
+        chicken_counter.d = chicken_counter.q + 1;
+       
+        
+        if (chicken_counter.q > (SPRITE_SIZE-2)){ //after 4 pixel skies generated
+          chicken_counter.d = 0;
+          state.d = state.SHIFTRIGHTMID;
+        }  
+        
       state.SHIFTRIGHTMID:
-        current_chicken_column.d = current_chicken_column.q + 1;
-        chicken_address.d = MATRIX_WIDTH * (current_chicken_column.q + 1) + 2;
+      if(current_chicken_column.q == 27){
+          current_chicken_column.d = 0;
+          chicken_address.d = 2;
+        }
+        
+        else{
+       current_chicken_column.d = current_chicken_column.q + 1;
+       chicken_address.d = MATRIX_WIDTH * (current_chicken_column.q + 1) + 2;
+          
+        }
         state.d = state.GEN1CHICKEN;
       
-      state.GEN1CHICKEN:
-        chicken_ram_top.address = chicken_address.q;
-        chicken_ram_top.write_en = b1;
-        chicken_ram_top.write_data = b111;
         
-        chicken_ram_bottom.address = chicken_address.q;
-        chicken_ram_bottom.write_en = b1;
-        chicken_ram_bottom.write_data = b011;
+        
+      state.GEN1CHICKEN:
+        chicken_ram.address = chicken_address.q;
+        chicken_ram.write_en = b1;
+        chicken_ram.write_data = SPRITE[0][chicken_counter.q];
         
         chicken_counter.d = chicken_counter.q + 1;
         chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
         
-        if (chicken_counter.q > 0){ //after 4 pixel skies generated
+        if (chicken_counter.q > (SPRITE_SIZE-2)){ 
           chicken_counter.d = 0;
-          chicken_address.d =  MATRIX_WIDTH * current_chicken_column.q + 3;
+          chicken_address.d = MATRIX_WIDTH * (current_chicken_column.q) + 3; //reset to the beginning, but now the fourth from the bottom pixel
           state.d = state.GEN2CHICKEN;
         }
       
       state.GEN2CHICKEN:
-        chicken_ram_top.address = chicken_address.q;
-        chicken_ram_top.write_en = b1;
-        chicken_ram_top.write_data = b111;
-        
-        chicken_ram_bottom.address = chicken_address.q;
-        chicken_ram_bottom.write_en = b1;
-        chicken_ram_bottom.write_data = b011;
+        chicken_ram.address = chicken_address.q;
+        chicken_ram.write_en = b1;
+        chicken_ram.write_data = SPRITE[1][chicken_counter.q];
         
         chicken_counter.d = chicken_counter.q + 1;
         chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
         
-        if (chicken_counter.q > 0){ //after 4 pixel skies generated
+        if (chicken_counter.q > (SPRITE_SIZE-2)){ 
           chicken_counter.d = 0;
-          chicken_address.d =  MATRIX_WIDTH * current_chicken_column.q + 4;
+           chicken_address.d = MATRIX_WIDTH * (current_chicken_column.q) + 4; //reset to the beginning, but now the fourth from the bottom pixel
+          state.d = state.GEN3CHICKEN;
+        }
+      
+      state.GEN3CHICKEN:
+        chicken_ram.address = chicken_address.q;
+        chicken_ram.write_en = b1;
+        chicken_ram.write_data = SPRITE[2][chicken_counter.q];
+        
+        chicken_counter.d = chicken_counter.q + 1;
+        chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
+        
+        if (chicken_counter.q > (SPRITE_SIZE-2)){ 
+          chicken_counter.d = 0;
+          chicken_address.d = MATRIX_WIDTH * (current_chicken_column.q) + 5; //reset to the beginning, but now the fourth from the bottom pixel
+          state.d = state.GEN4CHICKEN;
+        }
+        
+   
+      state.GEN4CHICKEN:
+        chicken_ram.address = chicken_address.q;
+        chicken_ram.write_en = b1;
+        chicken_ram.write_data = SPRITE[3][chicken_counter.q];
+        
+        chicken_counter.d = chicken_counter.q + 1;
+        chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
+        
+        if (chicken_counter.q > (SPRITE_SIZE-2)){ 
+          chicken_counter.d = 0;
+          chicken_address.d = MATRIX_WIDTH * (current_chicken_column.q) + 6; //reset to the beginning, but now the fourth from the bottom pixel
+          state.d = state.GEN5CHICKEN;
+        }
+      
+        
+        
+        
+        
+        
+      state.GEN5CHICKEN:
+        chicken_ram.address = chicken_address.q;
+        chicken_ram.write_en = b1;
+        chicken_ram.write_data = SPRITE[4][chicken_counter.q];
+        
+        chicken_counter.d = chicken_counter.q + 1;
+        chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
+        
+        if (chicken_counter.q > (SPRITE_SIZE-2)){ 
+          chicken_counter.d = 0;
           state.d = state.CHECKCOLSTART;
         }
+        
       
-      state.GENERATETOPBEGIN:
+        
+      
+      state.GENERATESKYBEGIN:
+        sky_counter.d = 0;
         sky_address.d = MATRIX_WIDTH * current_sky_column.q + MATRIX_WIDTH - 1; //starts at the  highest row, thats 63
-        state.d = state.GENERATESKY1TOP;
+        state.d = state.GENERATESKY1;
       
-      state.GENERATEBOTTOMBEGIN:
-        sky_address.d = MATRIX_WIDTH * current_sky_column.q + MATRIX_WIDTH - 1; //starts at the  highest row, thats 63
-        state.d = state.GENERATESKY1BOTTOM;
-      
-      state.GENERATESKY1BOTTOM:
-        background_ram_bottom.address = sky_address.q;
-        background_ram_bottom.write_en = b1;
-        background_ram_bottom.write_data = b100;
+
+      state.GENERATESKY1:
+        background_ram.address = sky_address.q;
+        background_ram.write_en = b1;
+        background_ram.write_data = b100;
         
         sky_counter.d = sky_counter.q + 1;
         sky_address.d = sky_address.q + MATRIX_WIDTH; //go to the next row
         
-        if (sky_counter.q > 0){ //after 4 pixel skies generated
+        if (sky_counter.q > 0){ //after 2 pixels skies generated
           sky_counter.d = 0;
           sky_address.d =  MATRIX_WIDTH * current_sky_column.q + MATRIX_WIDTH - 2;
-          state.d = state.GENERATESKY2BOTTOM;
+          state.d = state.GENERATESKY2;
         }
       
-      state.GENERATESKY2BOTTOM:
-        background_ram_bottom.address = sky_address.q;
-        background_ram_bottom.write_en = b1;
-        background_ram_bottom.write_data = b100;
+      state.GENERATESKY2:
+        background_ram.address = sky_address.q;
+        background_ram.write_en = b1;
+        background_ram.write_data = b100;
         
         sky_counter.d = sky_counter.q + 1;
         sky_address.d = sky_address.q + MATRIX_WIDTH; //go to the next row
@@ -503,118 +575,25 @@ module matrix_ram #(
           state.d = state.LOOP;
         }
         
-        /*state.GENERATESKY3BOTTOM:
-         background_ram_bottom.address = sky_address.q;
-         background_ram_bottom.write_en = b1;
-         background_ram_bottom.write_data = b100;
-         
-         sky_counter.d = sky_counter.q + 1;
-         sky_address.d = sky_address.q + MATRIX_WIDTH; //go to the next row
-         
-         if (sky_counter.q > 2){ //after 4 pixel skies generated
-         sky_counter.d = 0;
-         sky_address.d =  MATRIX_WIDTH * current_sky_column.q + MATRIX_WIDTH - 4;
-         state.d = state.GENERATESKY4BOTTOM;}
-         
-         state.GENERATESKY4BOTTOM:
-         background_ram_bottom.address = sky_address.q;
-         background_ram_bottom.write_en = b1;
-         background_ram_bottom.write_data = b100;
-         
-         sky_counter.d = sky_counter.q + 1;
-         sky_address.d = sky_address.q + MATRIX_WIDTH; //go to the next row
-         
-         if (sky_counter.q > 2){ //after 4 pixel skies generated
-         sky_counter.d = 0;
-         sky_address.d = 0;
-         
-         state.d = state.LOOP;}*/
       
-      state.GENERATESKY1TOP:
-        background_ram_top.address = sky_address.q;
-        background_ram_top.write_en = b1;
-        background_ram_top.write_data = b100;
-        
-        
-        sky_counter.d = sky_counter.q + 1;
-        sky_address.d = sky_address.q + MATRIX_WIDTH; //go to the next row
-        
-        if (sky_counter.q > 0){ //after 4 pixel skies generated
-          sky_counter.d = 0;
-          sky_address.d =  MATRIX_WIDTH * current_sky_column.q + MATRIX_WIDTH - 2;
-          state.d = state.GENERATESKY2TOP;
-        }
-      
-      state.GENERATESKY2TOP:
-        background_ram_top.address = sky_address.q;
-        background_ram_top.write_en = b1;
-        background_ram_top.write_data = b100;
-        
-        
-        sky_counter.d = sky_counter.q + 1;
-        
-        sky_address.d = sky_address.q + MATRIX_WIDTH; //go to the next row
-        
-        if (sky_counter.q > 0){ //after 4 pixel skies generated
-          sky_counter.d = 0;
-          sky_address.d =  MATRIX_WIDTH * current_sky_column.q + MATRIX_WIDTH - 3;
-          state.d = state.LOOP;
-        }
-        
-        /*state.GENERATESKY3TOP:
-         background_ram_top.address = sky_address.q;
-         background_ram_top.write_en = b1;
-         background_ram_top.write_data = b100;
-         
-         
-         sky_counter.d = sky_counter.q + 1;
-         sky_address.d = sky_address.q + MATRIX_WIDTH; //go to the next row
-         
-         if (sky_counter.q > 2){ //after 4 pixel skies generated
-         sky_counter.d = 0;
-         sky_address.d = MATRIX_WIDTH * current_sky_column.q + MATRIX_WIDTH - 4;
-         state.d = state.GENERATESKY4TOP;
-         }
-         
-         state.GENERATESKY4TOP:
-         background_ram_top.address = sky_address.q;
-         background_ram_top.write_en = b1;
-         background_ram_top.write_data = b100;
-         
-         
-         sky_counter.d = sky_counter.q + 1;
-         sky_address.d = sky_address.q + MATRIX_WIDTH; //go to the next row
-         
-         if (sky_counter.q > 2){ //after 4 pixel skies generated
-         sky_counter.d = 0;
-         sky_address.d = 0;
-         state.d = state.CHECKCOLSTART;
-         }*/
-      
-      
-      
-      
-      
-      
-      
-      
-      //  state.d = state.LOOP;
-      
+
+ 
+
       
       state.CHECKCOLSTART:
-        check_column_address.d = 3; //begin from address 3, top of the chicken head
+        check_column_address.d = 5; //begin from address 7, top of the chicken head
         column_counter.d =0; //this will loop from 0 to 15
         //sky_address.d = MATRIX_WIDTH * (current_sky_column.q+1) + MATRIX_WIDTH - 3;
         state.d = state.CHECKCOLREAD;
       
       state.CHECKCOLREAD:
-        background_ram_top.address = check_column_address.q;
-        chicken_ram_top.address = check_column_address.q;
-        background_ram_bottom.address = check_column_address.q;
-        chicken_ram_bottom.address = check_column_address.q;
+        chicken_ram.address = check_column_address.q;
+        chicken_ram.address = check_column_address.q;
+        background_ram.address = check_column_address.q;
+        background_ram.address = check_column_address.q;
         column_counter.d= column_counter.q+1;
         //   counter1.d = 0;
-        if (column_counter.q>14){
+        if (column_counter.q>30){
           column_counter.d = 0;
           state.d = state.LOOP; //finished, return to loop, no collision 
           }
@@ -623,191 +602,98 @@ module matrix_ram #(
         }
       
       state.CHECKCOL1TOP:
-        topskyexist =  |background_ram_top.read_data;
-        topchickenexist = |chicken_ram_top.read_data;
-        bottomskyexist = |background_ram_bottom.read_data;
-        bottomchickenexist = |chicken_ram_bottom.read_data;
-        if((topskyexist&topchickenexist) |(bottomchickenexist&bottomskyexist)){
-          gameover_Stats.d=b1;
+        bgexist =  |background_ram.read_data;
+        chickexist = |chicken_ram.read_data;
+        if((bgexist&chickexist)){// |(bottomchickenexist&bottomskyexist)){
+
           state.d = state.SKYWIN; //chickenloose 
         }else{
           check_column_address.d = check_column_address.q+MATRIX_WIDTH;
-          //sky_address.d = MATRIX_WIDTH * (current_sky_column.q+1) + MATRIX_WIDTH - 3;
           state.d = state.CHECKCOLREAD; //loops back, read next column 
         }
         
+   
+      state.CLEARRAM:
         
-        /*
-           case(counter1.q){
-           0:
-           counter2.d = |background_ram_top.read_data;
-           counter1.d = counter1.q+1;
-           
-           1:
-           counter3.d = |chicken_ram_top.read_data;
-           counter1.d = counter1.q+1;
-           
-           2:
-           counter2.d = counter2.q & counter3.q;
-           counter1.d = counter1.q+1;
-           
-           3:
-           counter3.d = |background_ram_bottom.read_data;
-           counter1.d = counter1.q+1;
-           
-           4:
-           counter4.d = |chicken_ram_bottom.read_data;
-           counter1.d = counter1.q+1;
-           5:
-           counter3.d = counter3.q&counter4.q;
-           counter1.d = counter1.q+1;
-           6:
-           counter1.d = counter1.q;
-           if( counter2.q | counter3.q){
-           gameover = b1;
-           }else if(chicken_counter.q >3){
-           chicken_counter.d = 0;
-           counter1.d =0;
-           counter2.d = 0;
-           counter3.d = 0;
-           state.d = state.LOOP;
-           }
-           
-           
-           else{
-           chicken_address.d = chicken_address.q + MATRIX_WIDTH; //go to the next row
-           background_ram_top.address = chicken_address.q;
-           chicken_ram_top.address = chicken_address.q;
-           background_ram_bottom.address = chicken_address.q;
-           chicken_ram_bottom.address = chicken_address.q;
-           chicken_counter.d = chicken_counter.q+1;
-           state.d = state.CHECKCOL1TOP;
-           }
-           } */
-        /*     else if(chicken_counter.q>3){
-           state.d = state.LOOP;
-           } */
-        
-        
-        /* state.CHECKCOL2TOP:
-         if(  (|background_ram_top.read_data) & (|chicken_ram_top.read_data)){
-         gameover = b1;
-         }
-         else if(chicken_counter.q>3){
-         chicken_counter.d = 0;
-         
-         chicken_address.d =  chicken_address.q - MATRIX_WIDTH *3;
-         state.d = state.LOOP;
-         }
-         else{
-         chicken_address.d = chicken_address.q +MATRIX_WIDTH;
-         //sky_address.d = sky_address.q;
-         background_ram_top.address = chicken_address.q;
-         chicken_ram_top.address = chicken_address.q;
-         background_ram_bottom.address = chicken_address.q;
-         chicken_ram_bottom.address = chicken_address.q;
-         chicken_counter.d = chicken_address.q +1;
-         
-         
-         
-         state.d = state.CHECKCOL2TOP ;
-         }*/
-      
-      state.CHICKENWIN:
-        
-        chicken_ram_top.address = 0;
-        chicken_ram_top.write_en = b1;
-        chicken_ram_top.write_data = b001;
-        state.d =state.LOOP;
-        
-      state.SKYWIN:
-        background_ram_top.address = 50;
-        background_ram_top.write_en = b1;
-        background_ram_top.write_data = b110;
-        state.d = state.LOOP;
- 
-        
-      state.LOOP:
-        if (gameover_Stats.q == 0){
-        //skyshifted = 1;
-        if(startbutton && shiftchickenleft && shiftchickenright){
-          state.d = state.START;
-          }
-        
-        if (genSky){
-          if (generateSky < 16){
-            current_sky_column.d = generateSky;
-            state.d = state.GENERATETOPBEGIN;
-          }
-          else if (15 < generateSky < 32){
-            current_sky_column.d = generateSky - 16;
-            state.d = state.GENERATEBOTTOMBEGIN;
-          }
-        } 
+        if (clearReg.q < RAMSIZE-1){
+          background_ram.address = clearReg.q;
+          background_ram.write_en = 1;
+          background_ram.write_data = b000;
           
-         else if(shiftSky){
+
+          chicken_ram.address = clearReg.q;
+          chicken_ram.write_en = 1;
+          chicken_ram.write_data = b000;
           
-          state.d = state.SHIFTDOWNADDRESS;
-        }
-        
-        else if(shiftchickenleft){
-          state.d = state.SHIFTLEFTCHICKENBEGIN;
-        }
-        
-        else if(shiftchickenright){
-          state.d = state.SHIFTRIGHTCHICKENBEGIN;
-        }
+          chicken_ram.address = clearReg.q;
+          chicken_ram.write_en = 1;
+          chicken_ram.write_data = b000;
+          
+          clearReg.d = clearReg.q + 1;
         }
         else{
+          clearReg.d = 0;
+          state.d = state.START;
+          
+        }
         
-         if (startbutton){
-           gameover_Stats.d = 0;
-           state.d = state.GENGRASSFIRSTROW; 
+        
+      state.SKYWIN:
+        background_ram.address = 0;
+        background_ram.write_en = b1;
+        background_ram.write_data = b001;
+        restart.d = 1;
+        state.d = state.LOOP;  
+        
+      state.LOOP:
+  
+
+        if(start_fromfsm && restart.q == 1){
+          state.d = state.CLEARRAM;
+         }
+        
+        else if (restart.q == 0){
+          if (genSky){
+
+              current_sky_column.d = generateSky;
+              state.d = state.GENERATESKYBEGIN;
+
           } 
           
-        }
-  
-          /*
-        else if(chickenwin){
-          state.d = state.CHICKENWIN;
-        }else if(skywin){
-          state.d = state.SKYWIN;
-          }*/
+          else if(shiftSky){
+            shift_address.d = 0;
+            state.d = state.SHIFTDOWNADDRESS;
+          }
+        
+          else if(shiftchickenleft){
+            shiftChickenWhich.d = 0;
+            state.d = state.SHIFTLEFTCHICKENBEGIN;
+          }
           
-    
-        
-        
-        
-        
-        
-        
-        background_ram_bottom.address = (row_address * MATRIX_WIDTH) + column_address;
-        background_ram_top.address = (row_address * MATRIX_WIDTH) + column_address;
-        
-        chicken_ram_top.address = (row_address * MATRIX_WIDTH) + column_address;
-        chicken_ram_bottom.address = (row_address * MATRIX_WIDTH) + column_address;
-        
-        bottom_half_proc = background_ram_bottom.read_data;
-        top_half_proc = background_ram_top.read_data;
-        
-        if ( chicken_ram_top.read_data){
-          top_half_proc = chicken_ram_top.read_data;
+          else if(shiftchickenright){
+            shiftChickenWhich.d = 0;
+            state.d = state.SHIFTRIGHTCHICKENBEGIN;
+          }
         }
         
-        if(chicken_ram_bottom.read_data){
-          bottom_half_proc = chicken_ram_bottom.read_data;
+        
+
+        background_ram.address = (row_address * MATRIX_WIDTH) + column_address;
+        chicken_ram.address = (row_address * MATRIX_WIDTH) + column_address;
+        
+       // out = c{3b111, 3b011};
+       if (chicken_ram.read_data){
+          out = c{3b110, chicken_ram.read_data};
         }
         
-        out = c{bottom_half_proc,top_half_proc};
-      
-      
+        else{
+          out = c{3b011, background_ram.read_data};
+         }
+
       
       
     }
-    
-    
-    
-    // out = c{row_address[2:0], column_address[2:0]};
+
     
   }
 }

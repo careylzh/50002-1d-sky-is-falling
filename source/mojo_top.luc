@@ -55,7 +55,6 @@ module mojo_top (
       matrix_ram matrix_data;
       matrix_writer matrix_writer;   
       gamefsm game_fsm;
-      ram_writer ram_writer;
       genSky genSky;
       
     }
@@ -126,22 +125,13 @@ module mojo_top (
     startbutton_cond.in = startbutton;
     startbutton_edge.in = startbutton_cond.out;
     
-    
-    matrix_data.top_row_data_in = ram_writer.write_data_top;
-    matrix_data.top_row_en = ram_writer.write_en_top;
-    matrix_data.top_row_address = ram_writer.write_address_top;
-    
-    matrix_data.bottom_row_data_in = ram_writer.write_data_bottom;
-    matrix_data.bottom_row_en = ram_writer.write_en_bottom;
-    matrix_data.bottom_row_address = ram_writer.write_address_bottom;
-    matrix_data.startbutton = startbutton_edge.out;
-    ram_writer.data_read_top = matrix_data.top_row_data;
-    ram_writer.data_read_bottom = matrix_data.bottom_row_data;
+   
     
     
-    game_fsm.right_button = rightbutton_edge.out;
-    game_fsm.left_button = leftbutton_edge.out;
-    game_fsm.start_button = startbutton_edge.out;
+    game_fsm.right_button_raw = rightbutton;
+    game_fsm.left_button_raw = leftbutton;
+    game_fsm.start_button_raw = startbutton;
+    
     game_fsm.gameover = matrix_data.gameover;
     //game_fsm.skyshifted = matrix_data.skyshifted;
     //matrix_data.genSky = bluebutton_cond.out;
@@ -149,14 +139,20 @@ module mojo_top (
     matrix_data.generateSky = genSky.sky;//game_fsm.generate_sky;
    // matrix_data.generateSky = game_fsm.generate_sky;
     
-    matrix_data.shiftSky = startbutton_edge.out;//game_fsm.shift_sky_enable;
+    matrix_data.startbutton = startbutton_edge.out;
+    matrix_data.start_fromfsm =  game_fsm.start_en;
+    matrix_data.shiftSky = game_fsm.shift_sky_enable; //startbutton_edge.out;//
+    
+    
     
     matrix_data.shiftchickenleft = leftbutton_edge.out; //game_fsm.shiftchickenleft_en;
     matrix_data.shiftchickenright = rightbutton_edge.out;// game_fsm.shiftchickenright_en;
     matrix_data.init_chicken_en = game_fsm.init_chicken_en;
-    matrix_data.sky_col_check = 0;//game_fsm.skyCollisionCheck_en;
+    
+    matrix_data.change_chicken = startbutton;
+    
+    game_fsm.restart_req = matrix_data.restart_tofsm;
     game_fsm.chickenbuld = matrix_data.chickenbuild;
-    matrix_data.skywin =  0; //game_fsm.skywin;
     
     matrix_data.chicken_location = 0;  
        
@@ -171,8 +167,8 @@ module mojo_top (
     matrix_data.row_address = matrix_writer.row_index;
     matrix_data.column_address = matrix_writer.col_index;
     matrix_writer.data = matrix_data.out;
-    matrix_data.chickenwin = 0;//game_fsm.chickenWin;
-    matrix_data.start_en =game_fsm.start_en;
+
+
     led_r = c{matrix_writer.red0, matrix_writer.red1};
     led_g = c{ matrix_writer.green0, matrix_writer.green1};
     led_b = c{ matrix_writer.blue0, matrix_writer.blue1};

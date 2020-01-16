@@ -1,32 +1,29 @@
-Warnings in file C:\Users\Carey\Desktop\theSkyIsFalling\source\ram_writer.luc:
-    Line 11, Column 4 : "data_read_bottom" was never used
-    Line 10, Column 4 : "data_read_top" was never used
-Warnings in file C:\Users\Carey\Desktop\theSkyIsFalling\source\matrix.luc:
+Warnings in file C:\Users\Carey\Desktop\repos\theSkyIsFalling\source\gamefsm.luc:
+    Line 10, Column 4 : "chickenbuld" was never used
+    Line 6, Column 4 : "left_button_raw" was never used
+    Line 7, Column 4 : "right_button_raw" was never used
+    Line 9, Column 4 : "gameover" was never used
+Warnings in file C:\Users\Carey\Desktop\repos\theSkyIsFalling\source\matrix.luc:
     Line 3, Column 4 : "rst" was never used
     Line 2, Column 4 : "clk" was never used
-Warnings in file C:\Users\Carey\Desktop\theSkyIsFalling\source\mojo_top.luc:
+Warnings in file C:\Users\Carey\Desktop\repos\theSkyIsFalling\source\mojo_top.luc:
     Line 13, Column 4 : "avr_rx_busy" was never used
     Line 5, Column 4 : "cclk" was never used
     Line 7, Column 4 : "spi_ss" was never used
     Line 8, Column 4 : "spi_mosi" was never used
     Line 9, Column 4 : "spi_sck" was never used
     Line 11, Column 4 : "avr_tx" was never used
-Warnings in file C:\Users\Carey\Desktop\theSkyIsFalling\source\compare.luc:
+Warnings in file C:\Users\Carey\Desktop\repos\theSkyIsFalling\source\compare.luc:
     Line 5, Column 4 : "n" was never used
     Line 3, Column 4 : "z" was never used
     Line 4, Column 4 : "v" was never used
-Warnings in file C:\Users\Carey\Desktop\theSkyIsFalling\source\matrix_ram.luc:
-    Line 103, Column 2 : "currentsky" was never used
-    Line 13, Column 4 : "sky_col_check" was never used
-    Line 15, Column 4 : "chickenwin" was never used
-    Line 16, Column 4 : "skywin" was never used
-    Line 17, Column 4 : "top_row_en" was never used
-    Line 18, Column 4 : "top_row_address" was never used
-    Line 19, Column 4 : "top_row_data_in" was never used
-    Line 22, Column 4 : "bottom_row_en" was never used
-    Line 23, Column 4 : "bottom_row_address" was never used
-    Line 24, Column 4 : "bottom_row_data_in" was never used
-    Line 28, Column 4 : "start_en" was never used
+Warnings in file C:\Users\Carey\Desktop\repos\theSkyIsFalling\source\matrix_ram.luc:
+    Line 118, Column 6 : "shiftChickenWhich" was never used
+    Line 13, Column 4 : "init_chicken_en" was never used
+    Line 16, Column 4 : "change_chicken" was never used
+    Line 18, Column 4 : "chicken_location" was never used
+Warnings in file C:\Users\Carey\Desktop\repos\theSkyIsFalling\source\matrix_writer.luc:
+    Line 90, Column 10 : "loading" was never used
 
 ****** PlanAhead v14.7 (64-bit)
   **** Build 321239 by xbuild on Fri Sep 27 19:29:51 MDT 2013
@@ -34,21 +31,21 @@ Warnings in file C:\Users\Carey\Desktop\theSkyIsFalling\source\matrix_ram.luc:
 
 INFO: [Common 17-78] Attempting to get a license: PlanAhead
 INFO: [Common 17-290] Got license for PlanAhead
-INFO: [Common 17-86] Your PlanAhead license expires in -1073 day(s)
+INFO: [Common 17-86] Your PlanAhead license expires in -1111 day(s)
 INFO: [Device 21-36] Loading parts and site information from C:/Xilinx/14.7/ISE_DS/PlanAhead/data/parts/arch.xml
 Parsing RTL primitives file [C:/Xilinx/14.7/ISE_DS/PlanAhead/data/parts/xilinx/rtl/prims/rtl_prims.xml]
 Finished parsing RTL primitives file [C:/Xilinx/14.7/ISE_DS/PlanAhead/data/parts/xilinx/rtl/prims/rtl_prims.xml]
-source {C:\Users\Carey\Desktop\theSkyIsFalling\work\project.tcl}
-# set projDir "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead"
+source {C:\Users\Carey\Desktop\repos\theSkyIsFalling\work\project.tcl}
+# set projDir "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead"
 # set projName "matrix_project"
 # set topName top
 # set device xc6slx9-2tqg144
 # if {[file exists "$projDir/$projName"]} { file delete -force "$projDir/$projName" }
 # create_project $projName "$projDir/$projName" -part $device
 # set_property design_mode RTL [get_filesets sources_1]
-# set verilogSources [list "C:/Users/Carey/Desktop/theSkyIsFalling/work/verilog/mojo_top_0.v" "C:/Users/Carey/Desktop/theSkyIsFalling/work/verilog/reset_conditioner_1.v" "C:/Users/Carey/Desktop/theSkyIsFalling/work/verilog/button_conditioner_2.v" "C:/Users/Carey/Desktop/theSkyIsFalling/work/verilog/edge_detector_3.v" "C:/Users/Carey/Desktop/theSkyIsFalling/work/verilog/matrix_ram_4.v" "C:/Users/Carey/Desktop/theSkyIsFalling/work/verilog/matrix_writer_5.v" "C:/Users/Carey/Desktop/theSkyIsFalling/work/verilog/gamefsm_6.v" "C:/Users/Carey/Desktop/theSkyIsFalling/work/verilog/ram_writer_7.v" "C:/Users/Carey/Desktop/theSkyIsFalling/work/verilog/genSky_8.v" "C:/Users/Carey/Desktop/theSkyIsFalling/work/verilog/pipeline_9.v" "C:/Users/Carey/Desktop/theSkyIsFalling/work/verilog/simple_ram_10.v" "C:/Users/Carey/Desktop/theSkyIsFalling/work/verilog/edge_detector_11.v" "C:/Users/Carey/Desktop/theSkyIsFalling/work/verilog/counter_12.v" "C:/Users/Carey/Desktop/theSkyIsFalling/work/verilog/pn_gen_13.v" ]
+# set verilogSources [list "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/verilog/mojo_top_0.v" "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/verilog/reset_conditioner_1.v" "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/verilog/button_conditioner_2.v" "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/verilog/edge_detector_3.v" "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/verilog/matrix_ram_4.v" "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/verilog/matrix_writer_5.v" "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/verilog/gamefsm_6.v" "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/verilog/genSky_7.v" "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/verilog/pipeline_8.v" "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/verilog/simple_ram_9.v" "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/verilog/edge_detector_10.v" "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/verilog/counter_11.v" "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/verilog/pn_gen_12.v" ]
 # import_files -fileset [get_filesets sources_1] -force -norecurse $verilogSources
-# set ucfSources [list "C:/Users/Carey/Desktop/theSkyIsFalling/constraint/matrix_constraint.ucf" "C:/Program\ Files/Alchitry/Alchitry\ Labs/library/components/mojo.ucf" ]
+# set ucfSources [list "C:/Users/Carey/Desktop/repos/theSkyIsFalling/constraint/matrix_constraint.ucf" "C:/Program\ Files/Alchitry/Alchitry\ Labs/library/components/mojo.ucf" ]
 # import_files -fileset [get_filesets constrs_1] -force -norecurse $ucfSources
 # set_property -name {steps.bitgen.args.More Options} -value {-g Binary:Yes -g Compress} -objects [get_runs impl_1]
 # set_property steps.map.args.mt on [get_runs impl_1]
@@ -56,10 +53,10 @@ source {C:\Users\Carey\Desktop\theSkyIsFalling\work\project.tcl}
 # set_property steps.par.args.mt on [get_runs impl_1]
 # update_compile_order -fileset sources_1
 # launch_runs -runs synth_1
-[Mon Dec 09 18:03:04 2019] Launched synth_1...
-Run output will be captured here: C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.runs/synth_1/runme.log
+[Thu Jan 16 15:23:54 2020] Launched synth_1...
+Run output will be captured here: C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.runs/synth_1/runme.log
 # wait_on_run synth_1
-[Mon Dec 09 18:03:04 2019] Waiting for synth_1 to finish...
+[Thu Jan 16 15:23:54 2020] Waiting for synth_1 to finish...
 
 *** Running xst
     with args -ifn "mojo_top_0.xst" -ofn "mojo_top_0.srp" -intstyle ise
@@ -69,33 +66,31 @@ Reading design: mojo_top_0.prj
 =========================================================================
 *                          HDL Parsing                                  *
 =========================================================================
-Analyzing Verilog file "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/simple_ram_10.v" into library work
-Parsing module <simple_ram_10>.
-Analyzing Verilog file "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/pn_gen_13.v" into library work
-Parsing module <pn_gen_13>.
-Analyzing Verilog file "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/pipeline_9.v" into library work
-Parsing module <pipeline_9>.
-Analyzing Verilog file "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/edge_detector_11.v" into library work
-Parsing module <edge_detector_11>.
-Analyzing Verilog file "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/counter_12.v" into library work
-Parsing module <counter_12>.
-Analyzing Verilog file "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/reset_conditioner_1.v" into library work
+Analyzing Verilog file "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/simple_ram_9.v" into library work
+Parsing module <simple_ram_9>.
+Analyzing Verilog file "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/pn_gen_12.v" into library work
+Parsing module <pn_gen_12>.
+Analyzing Verilog file "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/pipeline_8.v" into library work
+Parsing module <pipeline_8>.
+Analyzing Verilog file "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/edge_detector_10.v" into library work
+Parsing module <edge_detector_10>.
+Analyzing Verilog file "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/counter_11.v" into library work
+Parsing module <counter_11>.
+Analyzing Verilog file "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/reset_conditioner_1.v" into library work
 Parsing module <reset_conditioner_1>.
-Analyzing Verilog file "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/ram_writer_7.v" into library work
-Parsing module <ram_writer_7>.
-Analyzing Verilog file "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/matrix_writer_5.v" into library work
+Analyzing Verilog file "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/matrix_writer_5.v" into library work
 Parsing module <matrix_writer_5>.
-Analyzing Verilog file "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/matrix_ram_4.v" into library work
+Analyzing Verilog file "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/matrix_ram_4.v" into library work
 Parsing module <matrix_ram_4>.
-Analyzing Verilog file "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/genSky_8.v" into library work
-Parsing module <genSky_8>.
-Analyzing Verilog file "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/gamefsm_6.v" into library work
+Analyzing Verilog file "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/genSky_7.v" into library work
+Parsing module <genSky_7>.
+Analyzing Verilog file "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/gamefsm_6.v" into library work
 Parsing module <gamefsm_6>.
-Analyzing Verilog file "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/edge_detector_3.v" into library work
+Analyzing Verilog file "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/edge_detector_3.v" into library work
 Parsing module <edge_detector_3>.
-Analyzing Verilog file "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/button_conditioner_2.v" into library work
+Analyzing Verilog file "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/button_conditioner_2.v" into library work
 Parsing module <button_conditioner_2>.
-Analyzing Verilog file "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" into library work
+Analyzing Verilog file "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" into library work
 Parsing module <mojo_top_0>.
 
 =========================================================================
@@ -108,86 +103,79 @@ Elaborating module <reset_conditioner_1>.
 
 Elaborating module <button_conditioner_2>.
 
-Elaborating module <pipeline_9>.
+Elaborating module <pipeline_8>.
 
 Elaborating module <edge_detector_3>.
 
 Elaborating module <matrix_ram_4>.
 
-Elaborating module <simple_ram_10(SIZE=2'b11,DEPTH=12'b010000000000)>.
-WARNING:HDLCompiler:1127 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/matrix_ram_4.v" Line 171: Assignment to write_address_top ignored, since the identifier is never used
-WARNING:HDLCompiler:634 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/matrix_ram_4.v" Line 130: Net <M_debug_reg_d[1]> does not have a driver.
-WARNING:HDLCompiler:1127 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 135: Assignment to M_matrix_data_debug ignored, since the identifier is never used
+Elaborating module <simple_ram_9(SIZE=2'b11,DEPTH=13'b0100000000000)>.
+WARNING:HDLCompiler:634 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/matrix_ram_4.v" Line 107: Net <M_debug_reg_d[1]> does not have a driver.
+WARNING:HDLCompiler:1127 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 117: Assignment to M_matrix_data_debug ignored, since the identifier is never used
 
 Elaborating module <matrix_writer_5>.
-WARNING:HDLCompiler:1127 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 166: Assignment to M_matrix_writer_debug ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/matrix_writer_5.v" Line 127: Assignment to M_loading_q ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 148: Assignment to M_matrix_writer_debug ignored, since the identifier is never used
 
 Elaborating module <gamefsm_6>.
 
-Elaborating module <edge_detector_11>.
+Elaborating module <edge_detector_10>.
 
-Elaborating module <counter_12>.
+Elaborating module <counter_11>.
 
-Elaborating module <pn_gen_13>.
-WARNING:HDLCompiler:634 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/gamefsm_6.v" Line 50: Net <M_debug_reg_d[7]> does not have a driver.
-WARNING:HDLCompiler:634 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/gamefsm_6.v" Line 51: Net <M_debug_reg1_d[7]> does not have a driver.
-WARNING:HDLCompiler:634 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/gamefsm_6.v" Line 52: Net <M_debug_reg2_d[7]> does not have a driver.
-WARNING:HDLCompiler:634 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/gamefsm_6.v" Line 70: Net <M_current_sky_d[4]> does not have a driver.
-WARNING:HDLCompiler:1127 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 195: Assignment to M_game_fsm_led_matrix ignored, since the identifier is never used
-WARNING:HDLCompiler:1127 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 196: Assignment to M_game_fsm_debug ignored, since the identifier is never used
-WARNING:HDLCompiler:1127 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 197: Assignment to M_game_fsm_debug1 ignored, since the identifier is never used
-WARNING:HDLCompiler:1127 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 198: Assignment to M_game_fsm_debug2 ignored, since the identifier is never used
-WARNING:HDLCompiler:1127 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 199: Assignment to M_game_fsm_chickenWin ignored, since the identifier is never used
-WARNING:HDLCompiler:1127 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 201: Assignment to M_game_fsm_shift_sky_enable ignored, since the identifier is never used
-WARNING:HDLCompiler:1127 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 202: Assignment to M_game_fsm_generate_sky ignored, since the identifier is never used
-WARNING:HDLCompiler:1127 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 203: Assignment to M_game_fsm_shiftchickenright_en ignored, since the identifier is never used
-WARNING:HDLCompiler:1127 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 204: Assignment to M_game_fsm_shiftchickenleft_en ignored, since the identifier is never used
-WARNING:HDLCompiler:1127 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 207: Assignment to M_game_fsm_skywin ignored, since the identifier is never used
+Elaborating module <pn_gen_12>.
+WARNING:HDLCompiler:634 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/gamefsm_6.v" Line 51: Net <M_debug_reg_d[7]> does not have a driver.
+WARNING:HDLCompiler:634 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/gamefsm_6.v" Line 52: Net <M_debug_reg1_d[7]> does not have a driver.
+WARNING:HDLCompiler:634 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/gamefsm_6.v" Line 53: Net <M_debug_reg2_d[7]> does not have a driver.
+WARNING:HDLCompiler:634 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/gamefsm_6.v" Line 72: Net <M_current_sky_d[4]> does not have a driver.
+WARNING:HDLCompiler:1127 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 179: Assignment to M_game_fsm_led_matrix ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 180: Assignment to M_game_fsm_debug ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 181: Assignment to M_game_fsm_debug1 ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 182: Assignment to M_game_fsm_debug2 ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 183: Assignment to M_game_fsm_chickenWin ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 186: Assignment to M_game_fsm_generate_sky ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 187: Assignment to M_game_fsm_shiftchickenright_en ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 188: Assignment to M_game_fsm_shiftchickenleft_en ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 191: Assignment to M_game_fsm_skywin ignored, since the identifier is never used
 
-Elaborating module <ram_writer_7>.
-WARNING:HDLCompiler:413 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/ram_writer_7.v" Line 40: Result of 2-bit expression is truncated to fit in 1-bit target.
-WARNING:HDLCompiler:413 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/ram_writer_7.v" Line 49: Result of 3-bit expression is truncated to fit in 1-bit target.
-WARNING:HDLCompiler:413 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/ram_writer_7.v" Line 52: Result of 3-bit expression is truncated to fit in 1-bit target.
-
-Elaborating module <genSky_8>.
+Elaborating module <genSky_7>.
 
 =========================================================================
 *                           HDL Synthesis                               *
 =========================================================================
 
 Synthesizing Unit <mojo_top_0>.
-    Related source file is "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v".
+    Related source file is "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v".
 WARNING:Xst:647 - Input <cclk> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:647 - Input <spi_ss> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:647 - Input <spi_mosi> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:647 - Input <spi_sck> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:647 - Input <avr_tx> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:647 - Input <avr_rx_busy> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-INFO:Xst:3210 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" line 107: Output port <debug> of the instance <matrix_data> is unconnected or connected to loadless signal.
-INFO:Xst:3210 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" line 151: Output port <debug> of the instance <matrix_writer> is unconnected or connected to loadless signal.
-INFO:Xst:3210 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" line 187: Output port <led_matrix> of the instance <game_fsm> is unconnected or connected to loadless signal.
-INFO:Xst:3210 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" line 187: Output port <debug> of the instance <game_fsm> is unconnected or connected to loadless signal.
-INFO:Xst:3210 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" line 187: Output port <debug1> of the instance <game_fsm> is unconnected or connected to loadless signal.
-INFO:Xst:3210 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" line 187: Output port <debug2> of the instance <game_fsm> is unconnected or connected to loadless signal.
-INFO:Xst:3210 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" line 187: Output port <generate_sky> of the instance <game_fsm> is unconnected or connected to loadless signal.
-INFO:Xst:3210 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" line 187: Output port <chickenWin> of the instance <game_fsm> is unconnected or connected to loadless signal.
-INFO:Xst:3210 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" line 187: Output port <shift_sky_enable> of the instance <game_fsm> is unconnected or connected to loadless signal.
-INFO:Xst:3210 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" line 187: Output port <shiftchickenright_en> of the instance <game_fsm> is unconnected or connected to loadless signal.
-INFO:Xst:3210 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" line 187: Output port <shiftchickenleft_en> of the instance <game_fsm> is unconnected or connected to loadless signal.
-INFO:Xst:3210 - "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" line 187: Output port <skywin> of the instance <game_fsm> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" line 98: Output port <debug> of the instance <matrix_data> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" line 133: Output port <debug> of the instance <matrix_writer> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" line 170: Output port <led_matrix> of the instance <game_fsm> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" line 170: Output port <debug> of the instance <game_fsm> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" line 170: Output port <debug1> of the instance <game_fsm> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" line 170: Output port <debug2> of the instance <game_fsm> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" line 170: Output port <generate_sky> of the instance <game_fsm> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" line 170: Output port <chickenWin> of the instance <game_fsm> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" line 170: Output port <shiftchickenright_en> of the instance <game_fsm> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" line 170: Output port <shiftchickenleft_en> of the instance <game_fsm> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/mojo_top_0.v" line 170: Output port <skywin> of the instance <game_fsm> is unconnected or connected to loadless signal.
     Summary:
 	no macro.
 Unit <mojo_top_0> synthesized.
 
 Synthesizing Unit <reset_conditioner_1>.
-    Related source file is "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/reset_conditioner_1.v".
+    Related source file is "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/reset_conditioner_1.v".
     Found 4-bit register for signal <M_stage_q>.
     Summary:
 	inferred   4 D-type flip-flop(s).
 Unit <reset_conditioner_1> synthesized.
 
 Synthesizing Unit <button_conditioner_2>.
-    Related source file is "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/button_conditioner_2.v".
+    Related source file is "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/button_conditioner_2.v".
     Found 20-bit register for signal <M_ctr_q>.
     Found 20-bit adder for signal <M_ctr_q[19]_GND_3_o_add_2_OUT> created at line 39.
     Summary:
@@ -195,58 +183,48 @@ Synthesizing Unit <button_conditioner_2>.
 	inferred  20 D-type flip-flop(s).
 Unit <button_conditioner_2> synthesized.
 
-Synthesizing Unit <pipeline_9>.
-    Related source file is "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/pipeline_9.v".
+Synthesizing Unit <pipeline_8>.
+    Related source file is "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/pipeline_8.v".
     Found 2-bit register for signal <M_pipe_q>.
     Summary:
 	inferred   2 D-type flip-flop(s).
-Unit <pipeline_9> synthesized.
+Unit <pipeline_8> synthesized.
 
 Synthesizing Unit <edge_detector_3>.
-    Related source file is "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/edge_detector_3.v".
+    Related source file is "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/edge_detector_3.v".
     Found 1-bit register for signal <M_last_q>.
     Summary:
 	inferred   1 D-type flip-flop(s).
 Unit <edge_detector_3> synthesized.
 
 Synthesizing Unit <matrix_ram_4>.
-    Related source file is "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/matrix_ram_4.v".
-WARNING:Xst:647 - Input <top_row_address> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-WARNING:Xst:647 - Input <top_row_data_in> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-WARNING:Xst:647 - Input <bottom_row_address> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-WARNING:Xst:647 - Input <bottom_row_data_in> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-WARNING:Xst:647 - Input <sky_col_check> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-WARNING:Xst:647 - Input <chickenwin> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-WARNING:Xst:647 - Input <skywin> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-WARNING:Xst:647 - Input <top_row_en> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-WARNING:Xst:647 - Input <bottom_row_en> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-WARNING:Xst:647 - Input <start_en> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+    Related source file is "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/matrix_ram_4.v".
+WARNING:Xst:647 - Input <chicken_location> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <init_chicken_en> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <change_chicken> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:653 - Signal <M_debug_reg_d> is used but never assigned. This sourceless signal will be automatically connected to value GND.
-    Found 10-bit register for signal <M_check_column_address_q>.
-    Found 4-bit register for signal <M_column_counter_q>.
-    Found 10-bit register for signal <M_grass_address_q>.
-    Found 4-bit register for signal <M_grass_counter_q>.
-    Found 4-bit register for signal <M_sky_counter_q>.
-    Found 10-bit register for signal <M_sky_address_q>.
+    Found 11-bit register for signal <M_check_column_address_q>.
+    Found 5-bit register for signal <M_column_counter_q>.
+    Found 11-bit register for signal <M_grass_address_q>.
+    Found 5-bit register for signal <M_grass_counter_q>.
+    Found 5-bit register for signal <M_sky_counter_q>.
+    Found 11-bit register for signal <M_sky_address_q>.
     Found 5-bit register for signal <M_current_sky_column_q>.
-    Found 10-bit register for signal <M_chicken_address_q>.
-    Found 6-bit register for signal <M_current_chicken_column_q>.
-    Found 4-bit register for signal <M_chicken_counter_q>.
-    Found 10-bit register for signal <M_shift_address_q>.
+    Found 11-bit register for signal <M_chicken_address_q>.
+    Found 5-bit register for signal <M_current_chicken_column_q>.
+    Found 5-bit register for signal <M_chicken_counter_q>.
+    Found 11-bit register for signal <M_shift_address_q>.
     Found 7-bit register for signal <M_row_counter_q>.
-    Found 1-bit register for signal <M_gameover_Stats_q>.
+    Found 11-bit register for signal <M_clearReg_q>.
+    Found 1-bit register for signal <M_restart_q>.
+    Found 4-bit register for signal <M_fromstart_q>.
     Found 6-bit register for signal <M_state_q>.
-INFO:Xst:1799 - State 000011 is never reached in FSM <M_state_q>.
-INFO:Xst:1799 - State 011011 is never reached in FSM <M_state_q>.
-INFO:Xst:1799 - State 011100 is never reached in FSM <M_state_q>.
-INFO:Xst:1799 - State 011101 is never reached in FSM <M_state_q>.
-INFO:Xst:1799 - State 100001 is never reached in FSM <M_state_q>.
     Found finite state machine <FSM_0> for signal <M_state_q>.
     -----------------------------------------------------------------------
-    | States             | 31                                             |
-    | Transitions        | 51                                             |
+    | States             | 34                                             |
+    | Transitions        | 70                                             |
     | Inputs             | 17                                             |
-    | Outputs            | 33                                             |
+    | Outputs            | 7                                              |
     | Clock              | clk (rising_edge)                              |
     | Reset              | rst (positive)                                 |
     | Reset type         | synchronous                                    |
@@ -255,59 +233,76 @@ INFO:Xst:1799 - State 100001 is never reached in FSM <M_state_q>.
     | Encoding           | auto                                           |
     | Implementation     | LUT                                            |
     -----------------------------------------------------------------------
-    Found 6-bit subtractor for signal <M_current_chicken_column_q[5]_GND_6_o_sub_63_OUT> created at line 370.
-    Found 10-bit subtractor for signal <M_current_sky_column_q[3]_GND_6_o_sub_99_OUT> created at line 444.
-    Found 10-bit subtractor for signal <M_current_sky_column_q[3]_GND_6_o_sub_106_OUT> created at line 459.
-    Found 10-bit subtractor for signal <M_current_sky_column_q[3]_GND_6_o_sub_114_OUT> created at line 471.
-    Found 5-bit subtractor for signal <generateSky[4]_PWR_6_o_sub_149_OUT> created at line 553.
-    Found 10-bit adder for signal <M_grass_address_q[9]_GND_6_o_add_1_OUT> created at line 229.
-    Found 4-bit adder for signal <M_grass_counter_q[3]_GND_6_o_add_2_OUT> created at line 230.
-    Found 10-bit adder for signal <M_grass_address_q[9]_GND_6_o_add_6_OUT> created at line 237.
-    Found 10-bit adder for signal <M_current_chicken_column_q[3]_GND_6_o_add_11_OUT> created at line 249.
-    Found 10-bit adder for signal <M_shift_address_q[9]_GND_6_o_add_18_OUT> created at line 258.
-    Found 7-bit adder for signal <M_row_counter_q[6]_GND_6_o_add_20_OUT> created at line 260.
-    Found 4-bit adder for signal <M_chicken_counter_q[3]_GND_6_o_add_32_OUT> created at line 307.
-    Found 10-bit adder for signal <M_chicken_address_q[9]_GND_6_o_add_33_OUT> created at line 308.
-    Found 10-bit adder for signal <M_current_chicken_column_q[3]_GND_6_o_add_35_OUT> created at line 311.
-    Found 10-bit adder for signal <GND_6_o_GND_6_o_add_64_OUT> created at line 371.
-    Found 6-bit adder for signal <n0277[5:0]> created at line 410.
-    Found 10-bit adder for signal <M_current_chicken_column_q[5]_GND_6_o_add_82_OUT> created at line 410.
-    Found 10-bit adder for signal <M_current_chicken_column_q[3]_GND_6_o_add_93_OUT> created at line 439.
-    Found 10-bit adder for signal <M_current_sky_column_q[3]_GND_6_o_add_97_OUT> created at line 444.
-    Found 4-bit adder for signal <M_sky_counter_q[3]_GND_6_o_add_101_OUT> created at line 455.
-    Found 10-bit adder for signal <M_sky_address_q[9]_GND_6_o_add_102_OUT> created at line 456.
-    Found 4-bit adder for signal <M_column_counter_q[3]_GND_6_o_add_133_OUT> created at line 509.
-    Found 10-bit adder for signal <M_check_column_address_q[9]_GND_6_o_add_141_OUT> created at line 526.
-    Found 10-bit adder for signal <row_address[3]_GND_6_o_add_160_OUT> created at line 577.
-    Found 4-bit subtractor for signal <GND_6_o_GND_6_o_sub_64_OUT<3:0>> created at line 371.
-    Found 4-bit comparator greater for signal <PWR_6_o_M_grass_counter_q[3]_LessThan_11_o> created at line 245
-    Found 7-bit comparator greater for signal <M_row_counter_q[6]_GND_6_o_LessThan_18_o> created at line 257
-    Found 10-bit comparator greater for signal <M_shift_address_q[9]_PWR_6_o_LessThan_22_o> created at line 263
-    Found 4-bit comparator greater for signal <GND_6_o_M_chicken_counter_q[3]_LessThan_35_o> created at line 309
-    Found 4-bit comparator greater for signal <PWR_6_o_M_column_counter_q[3]_LessThan_135_o> created at line 510
-    Found 5-bit comparator greater for signal <generateSky[4]_PWR_6_o_LessThan_147_o> created at line 548
+    Found 5-bit subtractor for signal <M_current_chicken_column_q[4]_GND_6_o_sub_77_OUT> created at line 313.
+    Found 11-bit subtractor for signal <M_current_sky_column_q[4]_GND_6_o_sub_175_OUT> created at line 452.
+    Found 11-bit subtractor for signal <M_current_sky_column_q[4]_GND_6_o_sub_180_OUT> created at line 463.
+    Found 11-bit subtractor for signal <M_current_sky_column_q[4]_GND_6_o_sub_188_OUT> created at line 475.
+    Found 4-bit adder for signal <M_fromstart_q[3]_GND_6_o_add_0_OUT> created at line 162.
+    Found 11-bit adder for signal <M_grass_address_q[10]_GND_6_o_add_13_OUT> created at line 190.
+    Found 11-bit adder for signal <M_grass_address_q[10]_GND_6_o_add_14_OUT> created at line 193.
+    Found 5-bit adder for signal <M_grass_counter_q[4]_GND_6_o_add_15_OUT> created at line 194.
+    Found 11-bit adder for signal <M_shift_address_q[10]_GND_6_o_add_30_OUT> created at line 214.
+    Found 7-bit adder for signal <M_row_counter_q[6]_GND_6_o_add_31_OUT> created at line 215.
+    Found 11-bit adder for signal <M_current_chicken_column_q[4]_GND_6_o_add_41_OUT> created at line 246.
+    Found 11-bit adder for signal <M_current_chicken_column_q[4]_GND_6_o_add_45_OUT> created at line 257.
+    Found 11-bit adder for signal <M_current_chicken_column_q[4]_GND_6_o_add_52_OUT> created at line 269.
+    Found 11-bit adder for signal <M_current_chicken_column_q[4]_GND_6_o_add_59_OUT> created at line 281.
+    Found 11-bit adder for signal <M_current_chicken_column_q[4]_GND_6_o_add_66_OUT> created at line 293.
+    Found 11-bit adder for signal <M_chicken_address_q[10]_GND_6_o_add_70_OUT> created at line 301.
+    Found 5-bit adder for signal <M_chicken_counter_q[4]_GND_6_o_add_71_OUT> created at line 302.
+    Found 11-bit adder for signal <GND_6_o_GND_6_o_add_78_OUT> created at line 314.
+    Found 5-bit adder for signal <M_current_chicken_column_q[4]_GND_6_o_add_117_OUT> created at line 387.
+    Found 11-bit adder for signal <M_current_chicken_column_q[4]_GND_6_o_add_118_OUT> created at line 387.
+    Found 7-bit adder for signal <M_chicken_counter_q[4]_GND_6_o_add_122_OUT> created at line 394.
+    Found 5-bit adder for signal <M_sky_counter_q[4]_GND_6_o_add_183_OUT> created at line 471.
+    Found 11-bit adder for signal <M_sky_address_q[10]_GND_6_o_add_184_OUT> created at line 472.
+    Found 11-bit adder for signal <M_current_sky_column_q[4]_GND_6_o_add_186_OUT> created at line 475.
+    Found 5-bit adder for signal <M_column_counter_q[4]_GND_6_o_add_191_OUT> created at line 489.
+    Found 11-bit adder for signal <M_check_column_address_q[10]_GND_6_o_add_197_OUT> created at line 503.
+    Found 11-bit adder for signal <M_clearReg_q[10]_GND_6_o_add_201_OUT> created at line 518.
+    Found 11-bit adder for signal <row_address[4]_GND_6_o_add_221_OUT> created at line 557.
+    Found 8-bit adder for signal <n0302> created at line 406.
+    Found 8-bit adder for signal <n0310> created at line 430.
+    Found 8-bit adder for signal <n0306> created at line 418.
+    Found 8-bit adder for signal <n0315> created at line 442.
+    Found 149-bit shifter logical right for signal <n0299> created at line 394
+    Found 149-bit shifter logical right for signal <n0303> created at line 406
+    Found 149-bit shifter logical right for signal <n0307> created at line 418
+    Found 149-bit shifter logical right for signal <n0311> created at line 430
+    Found 5x2-bit multiplier for signal <n0419> created at line 442.
+    Found 149-bit shifter logical right for signal <n0316> created at line 442
+    Found 5-bit comparator greater for signal <PWR_6_o_M_grass_counter_q[4]_LessThan_17_o> created at line 195
+    Found 7-bit comparator greater for signal <M_row_counter_q[6]_GND_6_o_LessThan_30_o> created at line 213
+    Found 11-bit comparator greater for signal <M_shift_address_q[10]_PWR_6_o_LessThan_33_o> created at line 218
+    Found 5-bit comparator greater for signal <GND_6_o_M_chicken_counter_q[4]_LessThan_66_o> created at line 291
+    Found 5-bit comparator greater for signal <PWR_6_o_M_column_counter_q[4]_LessThan_193_o> created at line 490
+    Found 11-bit comparator greater for signal <M_clearReg_q[10]_PWR_6_o_LessThan_201_o> created at line 508
     WARNING:Xst:2404 -  FFs/Latches <M_debug_reg_q<1:0>> (without init value) have a constant value of 0 in block <matrix_ram_4>.
     Summary:
-	inferred  25 Adder/Subtractor(s).
-	inferred  85 D-type flip-flop(s).
+	inferred   1 Multiplier(s).
+	inferred  32 Adder/Subtractor(s).
+	inferred 108 D-type flip-flop(s).
 	inferred   6 Comparator(s).
-	inferred  23 Multiplexer(s).
+	inferred  81 Multiplexer(s).
+	inferred   5 Combinational logic shifter(s).
 	inferred   1 Finite State Machine(s).
 Unit <matrix_ram_4> synthesized.
 
-Synthesizing Unit <simple_ram_10>.
-    Related source file is "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/simple_ram_10.v".
+Synthesizing Unit <simple_ram_9>.
+    Related source file is "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/simple_ram_9.v".
         SIZE = 2'b11
-        DEPTH = 12'b010000000000
-    Found 1024x3-bit single-port RAM <Mram_ram> for signal <ram>.
+        DEPTH = 13'b0100000000000
+    Found 2048x3-bit single-port RAM <Mram_ram> for signal <ram>.
     Found 3-bit register for signal <read_data>.
     Summary:
 	inferred   1 RAM(s).
 	inferred   3 D-type flip-flop(s).
-Unit <simple_ram_10> synthesized.
+Unit <simple_ram_9> synthesized.
 
 Synthesizing Unit <matrix_writer_5>.
-    Related source file is "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/matrix_writer_5.v".
+    Related source file is "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/matrix_writer_5.v".
+WARNING:Xst:647 - Input <data<5:3>> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+    Found 2-bit register for signal <M_state_q>.
     Found 5-bit register for signal <M_sclk_counter_q>.
     Found 7-bit register for signal <M_led_bit_counter_q>.
     Found 4-bit register for signal <M_current_address_q>.
@@ -315,13 +310,27 @@ Synthesizing Unit <matrix_writer_5>.
     Found 6-bit register for signal <M_rgb_data_q>.
     Found 1-bit register for signal <M_sclk_q>.
     Found 2-bit register for signal <M_latch_blank_q>.
-    Found 2-bit register for signal <M_state_q>.
+    Found finite state machine <FSM_2> for signal <fsmfake1>.
+    -----------------------------------------------------------------------
+    | States             | 3                                              |
+    | Transitions        | 6                                              |
+    | Inputs             | 3                                              |
+    | Outputs            | 1                                              |
+    | Clock              | clk (rising_edge)                              |
+    | Clock enable       | _n0263 (negative)                              |
+    | Reset              | rst (positive)                                 |
+    | Reset type         | synchronous                                    |
+    | Reset State        | 00                                             |
+    | Power Up State     | 00                                             |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
     Found finite state machine <FSM_1> for signal <M_state_q>.
     -----------------------------------------------------------------------
     | States             | 3                                              |
-    | Transitions        | 10                                             |
-    | Inputs             | 6                                              |
-    | Outputs            | 2                                              |
+    | Transitions        | 12                                             |
+    | Inputs             | 8                                              |
+    | Outputs            | 3                                              |
     | Clock              | clk (rising_edge)                              |
     | Reset              | rst (positive)                                 |
     | Reset type         | synchronous                                    |
@@ -330,33 +339,39 @@ Synthesizing Unit <matrix_writer_5>.
     | Encoding           | auto                                           |
     | Implementation     | LUT                                            |
     -----------------------------------------------------------------------
-    Found 5-bit adder for signal <M_sclk_counter_d> created at line 70.
-    Found 7-bit adder for signal <M_led_bit_counter_q[6]_GND_8_o_add_10_OUT> created at line 82.
-    Found 4-bit adder for signal <M_current_address_q[3]_GND_8_o_add_22_OUT> created at line 100.
-    Found 7-bit comparator greater for signal <n0012> created at line 84
+    Found 6-bit subtractor for signal <M_led_bit_counter_q[5]_GND_9_o_sub_17_OUT> created at line 92.
+    Found 5-bit adder for signal <M_sclk_counter_d> created at line 71.
+    Found 7-bit adder for signal <M_led_bit_counter_q[6]_GND_9_o_add_6_OUT> created at line 82.
+    Found 5-bit adder for signal <BUS_0005_PWR_11_o_add_18_OUT> created at line 93.
+    Found 5-bit adder for signal <n0207> created at line 115.
+    Found 7-bit comparator greater for signal <n0017> created at line 95
     Summary:
-	inferred   3 Adder/Subtractor(s).
-	inferred  43 D-type flip-flop(s).
+	inferred   5 Adder/Subtractor(s).
+	inferred  41 D-type flip-flop(s).
 	inferred   1 Comparator(s).
-	inferred  22 Multiplexer(s).
-	inferred   1 Finite State Machine(s).
+	inferred  21 Multiplexer(s).
+	inferred   2 Finite State Machine(s).
 Unit <matrix_writer_5> synthesized.
 
 Synthesizing Unit <gamefsm_6>.
-    Related source file is "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/gamefsm_6.v".
+    Related source file is "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/gamefsm_6.v".
+WARNING:Xst:647 - Input <left_button_raw> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <right_button_raw> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <gameover> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <chickenbuld> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:653 - Signal <M_debug_reg_d> is used but never assigned. This sourceless signal will be automatically connected to value GND.
 WARNING:Xst:653 - Signal <M_debug_reg1_d> is used but never assigned. This sourceless signal will be automatically connected to value GND.
 WARNING:Xst:653 - Signal <M_debug_reg2_d> is used but never assigned. This sourceless signal will be automatically connected to value GND.
 WARNING:Xst:653 - Signal <M_current_sky_d> is used but never assigned. This sourceless signal will be automatically connected to value GND.
-    Found 33-bit register for signal <M_timeCount_q>.
+    Found 25-bit register for signal <M_skyshifter_q>.
     Found 32-bit register for signal <M_seed_q>.
     Found 4-bit register for signal <M_state_q>.
     Found finite state machine <FSM_3> for signal <M_state_q>.
     -----------------------------------------------------------------------
-    | States             | 9                                              |
-    | Transitions        | 18                                             |
-    | Inputs             | 7                                              |
-    | Outputs            | 8                                              |
+    | States             | 3                                              |
+    | Transitions        | 5                                              |
+    | Inputs             | 3                                              |
+    | Outputs            | 3                                              |
     | Clock              | clk (rising_edge)                              |
     | Reset              | rst (positive)                                 |
     | Reset type         | synchronous                                    |
@@ -365,38 +380,38 @@ WARNING:Xst:653 - Signal <M_current_sky_d> is used but never assigned. This sour
     | Encoding           | auto                                           |
     | Implementation     | LUT                                            |
     -----------------------------------------------------------------------
-    Found 32-bit adder for signal <M_seed_d> created at line 81.
-    Found 33-bit adder for signal <M_timeCount_q[32]_GND_9_o_add_3_OUT> created at line 118.
+    Found 32-bit adder for signal <M_seed_d> created at line 84.
+    Found 25-bit adder for signal <M_skyshifter_q[24]_GND_10_o_add_1_OUT> created at line 85.
     WARNING:Xst:2404 -  FFs/Latches <M_debug_reg_q<7:0>> (without init value) have a constant value of 0 in block <gamefsm_6>.
     WARNING:Xst:2404 -  FFs/Latches <M_debug_reg1_q<7:0>> (without init value) have a constant value of 0 in block <gamefsm_6>.
     WARNING:Xst:2404 -  FFs/Latches <M_debug_reg2_q<7:0>> (without init value) have a constant value of 0 in block <gamefsm_6>.
     WARNING:Xst:2404 -  FFs/Latches <M_current_sky_q<4:0>> (without init value) have a constant value of 0 in block <gamefsm_6>.
     Summary:
 	inferred   2 Adder/Subtractor(s).
-	inferred  65 D-type flip-flop(s).
-	inferred   4 Multiplexer(s).
+	inferred  57 D-type flip-flop(s).
+	inferred   6 Multiplexer(s).
 	inferred   1 Finite State Machine(s).
 Unit <gamefsm_6> synthesized.
 
-Synthesizing Unit <edge_detector_11>.
-    Related source file is "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/edge_detector_11.v".
+Synthesizing Unit <edge_detector_10>.
+    Related source file is "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/edge_detector_10.v".
     Found 1-bit register for signal <M_last_q>.
     Summary:
 	inferred   1 D-type flip-flop(s).
 	inferred   1 Multiplexer(s).
-Unit <edge_detector_11> synthesized.
+Unit <edge_detector_10> synthesized.
 
-Synthesizing Unit <counter_12>.
-    Related source file is "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/counter_12.v".
+Synthesizing Unit <counter_11>.
+    Related source file is "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/counter_11.v".
     Found 26-bit register for signal <M_ctr_q>.
     Found 26-bit adder for signal <M_ctr_d> created at line 35.
     Summary:
 	inferred   1 Adder/Subtractor(s).
 	inferred  26 D-type flip-flop(s).
-Unit <counter_12> synthesized.
+Unit <counter_11> synthesized.
 
-Synthesizing Unit <pn_gen_13>.
-    Related source file is "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/pn_gen_13.v".
+Synthesizing Unit <pn_gen_12>.
+    Related source file is "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/pn_gen_12.v".
     Found 32-bit register for signal <M_y_q>.
     Found 32-bit register for signal <M_z_q>.
     Found 32-bit register for signal <M_w_q>.
@@ -404,89 +419,68 @@ Synthesizing Unit <pn_gen_13>.
     Summary:
 	inferred 128 D-type flip-flop(s).
 	inferred   4 Multiplexer(s).
-Unit <pn_gen_13> synthesized.
+Unit <pn_gen_12> synthesized.
 
-Synthesizing Unit <ram_writer_7>.
-    Related source file is "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/ram_writer_7.v".
-WARNING:Xst:647 - Input <data_read_top> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-WARNING:Xst:647 - Input <data_read_bottom> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-    Found 2-bit register for signal <M_state_q>.
-    Found finite state machine <FSM_4> for signal <M_state_q>.
-    -----------------------------------------------------------------------
-    | States             | 3                                              |
-    | Transitions        | 3                                              |
-    | Inputs             | 0                                              |
-    | Outputs            | 7                                              |
-    | Clock              | clk (rising_edge)                              |
-    | Reset              | rst (positive)                                 |
-    | Reset type         | synchronous                                    |
-    | Reset State        | 00                                             |
-    | Power Up State     | 00                                             |
-    | Encoding           | auto                                           |
-    | Implementation     | LUT                                            |
-    -----------------------------------------------------------------------
-    Summary:
-	inferred   1 Finite State Machine(s).
-Unit <ram_writer_7> synthesized.
-
-Synthesizing Unit <genSky_8>.
-    Related source file is "C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/genSky_8.v".
+Synthesizing Unit <genSky_7>.
+    Related source file is "C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/sources_1/imports/verilog/genSky_7.v".
     Found 32-bit register for signal <M_seed_q>.
     Found 32-bit adder for signal <M_seed_d> created at line 35.
     Summary:
 	inferred   1 Adder/Subtractor(s).
 	inferred  32 D-type flip-flop(s).
-Unit <genSky_8> synthesized.
+Unit <genSky_7> synthesized.
 
 =========================================================================
 HDL Synthesis Report
 
 Macro Statistics
-# RAMs                                                 : 4
- 1024x3-bit single-port RAM                            : 4
-# Adders/Subtractors                                   : 35
- 10-bit adder                                          : 13
- 10-bit subtractor                                     : 3
+# RAMs                                                 : 2
+ 2048x3-bit single-port RAM                            : 2
+# Multipliers                                          : 1
+ 5x2-bit multiplier                                    : 1
+# Adders/Subtractors                                   : 44
+ 11-bit adder                                          : 16
+ 11-bit subtractor                                     : 3
  20-bit adder                                          : 3
+ 25-bit adder                                          : 1
  26-bit adder                                          : 1
  32-bit adder                                          : 2
- 33-bit adder                                          : 1
- 4-bit adder                                           : 5
- 4-bit subtractor                                      : 1
- 5-bit adder                                           : 1
+ 4-bit adder                                           : 1
+ 5-bit adder                                           : 8
  5-bit subtractor                                      : 1
- 6-bit adder                                           : 1
  6-bit subtractor                                      : 1
- 7-bit adder                                           : 2
-# Registers                                            : 48
+ 7-bit adder                                           : 3
+ 8-bit adder                                           : 4
+# Registers                                            : 47
  1-bit register                                        : 6
- 10-bit register                                       : 5
+ 11-bit register                                       : 6
  16-bit register                                       : 1
- 2-bit register                                        : 5
+ 2-bit register                                        : 4
  20-bit register                                       : 3
+ 25-bit register                                       : 1
  26-bit register                                       : 1
- 3-bit register                                        : 4
+ 3-bit register                                        : 2
  32-bit register                                       : 10
- 33-bit register                                       : 1
- 4-bit register                                        : 6
- 5-bit register                                        : 2
- 6-bit register                                        : 2
+ 4-bit register                                        : 3
+ 5-bit register                                        : 7
+ 6-bit register                                        : 1
  7-bit register                                        : 2
 # Comparators                                          : 7
- 10-bit comparator greater                             : 1
- 4-bit comparator greater                              : 3
- 5-bit comparator greater                              : 1
+ 11-bit comparator greater                             : 2
+ 5-bit comparator greater                              : 3
  7-bit comparator greater                              : 2
-# Multiplexers                                         : 58
- 1-bit 2-to-1 multiplexer                              : 6
- 10-bit 2-to-1 multiplexer                             : 14
- 2-bit 2-to-1 multiplexer                              : 6
- 3-bit 2-to-1 multiplexer                              : 2
+# Multiplexers                                         : 117
+ 1-bit 2-to-1 multiplexer                              : 9
+ 11-bit 2-to-1 multiplexer                             : 52
+ 25-bit 2-to-1 multiplexer                             : 2
+ 3-bit 2-to-1 multiplexer                              : 9
  32-bit 2-to-1 multiplexer                             : 8
- 4-bit 2-to-1 multiplexer                              : 12
- 5-bit 2-to-1 multiplexer                              : 2
- 6-bit 2-to-1 multiplexer                              : 7
- 7-bit 2-to-1 multiplexer                              : 1
+ 4-bit 2-to-1 multiplexer                              : 2
+ 5-bit 2-to-1 multiplexer                              : 19
+ 6-bit 2-to-1 multiplexer                              : 13
+ 7-bit 2-to-1 multiplexer                              : 3
+# Logic shifters                                       : 5
+ 149-bit shifter logical right                         : 5
 # FSMs                                                 : 4
 # Xors                                                 : 6
  32-bit xor2                                           : 4
@@ -504,38 +498,37 @@ Synthesizing (advanced) Unit <button_conditioner_2>.
 The following registers are absorbed into counter <M_ctr_q>: 1 register on signal <M_ctr_q>.
 Unit <button_conditioner_2> synthesized (advanced).
 
-Synthesizing (advanced) Unit <counter_12>.
+Synthesizing (advanced) Unit <counter_11>.
 The following registers are absorbed into counter <M_ctr_q>: 1 register on signal <M_ctr_q>.
-Unit <counter_12> synthesized (advanced).
+Unit <counter_11> synthesized (advanced).
 
 Synthesizing (advanced) Unit <gamefsm_6>.
-The following registers are absorbed into counter <M_timeCount_q>: 1 register on signal <M_timeCount_q>.
 The following registers are absorbed into counter <M_seed_q>: 1 register on signal <M_seed_q>.
 Unit <gamefsm_6> synthesized (advanced).
 
-Synthesizing (advanced) Unit <genSky_8>.
+Synthesizing (advanced) Unit <genSky_7>.
 The following registers are absorbed into counter <M_seed_q>: 1 register on signal <M_seed_q>.
-Unit <genSky_8> synthesized (advanced).
+Unit <genSky_7> synthesized (advanced).
 
 Synthesizing (advanced) Unit <matrix_ram_4>.
 The following registers are absorbed into accumulator <M_grass_address_q>: 1 register on signal <M_grass_address_q>.
 The following registers are absorbed into counter <M_grass_counter_q>: 1 register on signal <M_grass_counter_q>.
+The following registers are absorbed into counter <M_chicken_counter_q>: 1 register on signal <M_chicken_counter_q>.
 The following registers are absorbed into counter <M_row_counter_q>: 1 register on signal <M_row_counter_q>.
-The following registers are absorbed into counter <M_sky_counter_q>: 1 register on signal <M_sky_counter_q>.
+The following registers are absorbed into counter <M_clearReg_q>: 1 register on signal <M_clearReg_q>.
 Unit <matrix_ram_4> synthesized (advanced).
 
 Synthesizing (advanced) Unit <matrix_writer_5>.
 The following registers are absorbed into counter <M_sclk_counter_q>: 1 register on signal <M_sclk_counter_q>.
-The following registers are absorbed into counter <M_led_bit_counter_q>: 1 register on signal <M_led_bit_counter_q>.
 Unit <matrix_writer_5> synthesized (advanced).
 
-Synthesizing (advanced) Unit <simple_ram_10>.
+Synthesizing (advanced) Unit <simple_ram_9>.
 INFO:Xst:3226 - The RAM <Mram_ram> will be implemented as a BLOCK RAM, absorbing the following register(s): <read_data>
     -----------------------------------------------------------------------
     | ram_type           | Block                               |          |
     -----------------------------------------------------------------------
     | Port A                                                              |
-    |     aspect ratio   | 1024-word x 3-bit                   |          |
+    |     aspect ratio   | 2048-word x 3-bit                   |          |
     |     mode           | read-first                          |          |
     |     clkA           | connected to signal <clk>           | rise     |
     |     weA            | connected to signal <write_en>      | high     |
@@ -545,49 +538,52 @@ INFO:Xst:3226 - The RAM <Mram_ram> will be implemented as a BLOCK RAM, absorbing
     -----------------------------------------------------------------------
     | optimization       | speed                               |          |
     -----------------------------------------------------------------------
-Unit <simple_ram_10> synthesized (advanced).
-WARNING:Xst:2677 - Node <M_current_sky_column_q_4> of sequential type is unconnected in block <matrix_ram_4>.
+Unit <simple_ram_9> synthesized (advanced).
 
 =========================================================================
 Advanced HDL Synthesis Report
 
 Macro Statistics
-# RAMs                                                 : 4
- 1024x3-bit single-port block RAM                      : 4
-# Adders/Subtractors                                   : 22
- 10-bit adder                                          : 12
- 10-bit subtractor                                     : 3
- 4-bit adder                                           : 3
- 4-bit subtractor                                      : 1
+# RAMs                                                 : 2
+ 2048x3-bit single-port block RAM                      : 2
+# Multipliers                                          : 1
+ 5x2-bit multiplier                                    : 1
+# Adders/Subtractors                                   : 32
+ 11-bit adder                                          : 14
+ 11-bit subtractor                                     : 3
+ 25-bit adder                                          : 1
+ 4-bit adder                                           : 1
+ 5-bit adder                                           : 5
  5-bit subtractor                                      : 1
- 6-bit adder                                           : 1
  6-bit subtractor                                      : 1
-# Counters                                             : 12
+ 7-bit adder                                           : 6
+# Counters                                             : 11
+ 11-bit up counter                                     : 1
  20-bit up counter                                     : 3
  26-bit up counter                                     : 1
  32-bit up counter                                     : 2
- 33-bit up counter                                     : 1
- 4-bit up counter                                      : 2
- 5-bit up counter                                      : 1
- 7-bit up counter                                      : 2
+ 5-bit up counter                                      : 3
+ 7-bit up counter                                      : 1
 # Accumulators                                         : 1
- 10-bit up accumulator                                 : 1
-# Registers                                            : 360
- Flip-Flops                                            : 360
+ 11-bit up accumulator                                 : 1
+# Registers                                            : 400
+ Flip-Flops                                            : 400
 # Comparators                                          : 7
- 10-bit comparator greater                             : 1
- 4-bit comparator greater                              : 3
- 5-bit comparator greater                              : 1
+ 11-bit comparator greater                             : 2
+ 5-bit comparator greater                              : 3
  7-bit comparator greater                              : 2
-# Multiplexers                                         : 56
- 1-bit 2-to-1 multiplexer                              : 5
- 10-bit 2-to-1 multiplexer                             : 14
- 2-bit 2-to-1 multiplexer                              : 6
- 3-bit 2-to-1 multiplexer                              : 2
+# Multiplexers                                         : 132
+ 1-bit 2-to-1 multiplexer                              : 30
+ 11-bit 2-to-1 multiplexer                             : 49
+ 25-bit 2-to-1 multiplexer                             : 2
+ 3-bit 2-to-1 multiplexer                              : 9
  32-bit 2-to-1 multiplexer                             : 8
- 4-bit 2-to-1 multiplexer                              : 12
- 5-bit 2-to-1 multiplexer                              : 2
- 6-bit 2-to-1 multiplexer                              : 7
+ 4-bit 2-to-1 multiplexer                              : 2
+ 5-bit 2-to-1 multiplexer                              : 17
+ 6-bit 2-to-1 multiplexer                              : 13
+ 7-bit 2-to-1 multiplexer                              : 2
+# Logic shifters                                       : 5
+ 149-bit shifter logical right                         : 5
 # FSMs                                                 : 4
 # Xors                                                 : 6
  32-bit xor2                                           : 4
@@ -608,51 +604,45 @@ WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <M_debug_dff_q_13> h
 WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <M_debug_dff_q_14> has a constant value of 0 in block <matrix_writer_5>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <M_debug_dff_q_15> has a constant value of 0 in block <matrix_writer_5>. This FF/Latch will be trimmed during the optimization process.
 Analyzing FSM <MFsm> for best encoding.
-Optimizing FSM <FSM_4> on signal <M_state_q[1:3]> with one-hot encoding.
--------------------
- State | Encoding
--------------------
- 00    | 001
- 01    | 010
- 10    | 100
--------------------
-Analyzing FSM <MFsm> for best encoding.
-Optimizing FSM <matrix_data/FSM_0> on signal <M_state_q[1:26]> with one-hot encoding.
---------------------------------------
+Optimizing FSM <matrix_data/FSM_0> on signal <M_state_q[1:34]> with one-hot encoding.
+----------------------------------------------
  State  | Encoding
---------------------------------------
- 000000 | 00000000000000000000000001
- 000001 | 00000000000000000000000010
- 000010 | 00000000000000000000000100
- 010000 | 00000000000000000000001000
- 010001 | 00000000000000000000010000
- 000011 | unreached
- 011011 | unreached
- 011100 | unreached
- 011101 | unreached
- 010100 | 00000000000000000000100000
- 011000 | 00000000000000000001000000
- 011001 | 00000000000000000010000000
- 011010 | 00000000000000000100000000
- 010011 | 00000000000000001000000000
- 010101 | 00000000000000010000000000
- 010110 | 00000000000000100000000000
- 010111 | 00000000000001000000000000
- 000100 | 00000000000010000000000000
- 000101 | 00000000000100000000000000
- 001001 | 00000000001000000000000000
- 001100 | 00000000010000000000000000
- 001101 | 00000000100000000000000000
- 001110 | 00000001000000000000000000
- 001010 | 00000010000000000000000000
- 001011 | 00000100000000000000000000
- 011110 | 00001000000000000000000000
- 011111 | 00010000000000000000000000
- 100000 | 00100000000000000000000000
- 100001 | unreached
- 100010 | 01000000000000000000000000
- 001000 | 10000000000000000000000000
---------------------------------------
+----------------------------------------------
+ 000000 | 0000000000000000000000000000000001
+ 000001 | 0000000000000000000000000000000010
+ 000010 | 0000000000000000000000000000000100
+ 000011 | 0000000000000000000000000000001000
+ 100001 | 0000000000000000000000000000010000
+ 000101 | 0000000000000000000000000000100000
+ 000110 | 0000000000000000000000000001000000
+ 000111 | 0000000000000000000000000010000000
+ 001000 | 0000000000000000000000000100000000
+ 001001 | 0000000000000000000000001000000000
+ 010010 | 0000000000000000000000010000000000
+ 010011 | 0000000000000000000000100000000000
+ 001111 | 0000000000000000000001000000000000
+ 001011 | 0000000000000000000010000000000000
+ 100110 | 0000000000000000000100000000000000
+ 001100 | 0000000000000000001000000000000000
+ 001101 | 0000000000000000010000000000000000
+ 001010 | 0000000000000000100000000000000000
+ 010000 | 0000000000000001000000000000000000
+ 010100 | 0000000000000010000000000000000000
+ 011010 | 0000000000000100000000000000000000
+ 010101 | 0000000000001000000000000000000000
+ 010110 | 0000000000010000000000000000000000
+ 010111 | 0000000000100000000000000000000000
+ 011000 | 0000000001000000000000000000000000
+ 011001 | 0000000010000000000000000000000000
+ 011011 | 0000000100000000000000000000000000
+ 011100 | 0000001000000000000000000000000000
+ 011101 | 0000010000000000000000000000000000
+ 011110 | 0000100000000000000000000000000000
+ 011111 | 0001000000000000000000000000000000
+ 100010 | 0010000000000000000000000000000000
+ 100011 | 0100000000000000000000000000000000
+ 100101 | 1000000000000000000000000000000000
+----------------------------------------------
 Analyzing FSM <MFsm> for best encoding.
 Optimizing FSM <matrix_writer/FSM_1> on signal <M_state_q[1:2]> with gray encoding.
 -------------------
@@ -663,21 +653,24 @@ Optimizing FSM <matrix_writer/FSM_1> on signal <M_state_q[1:2]> with gray encodi
  10    | 11
 -------------------
 Analyzing FSM <MFsm> for best encoding.
-Optimizing FSM <game_fsm/FSM_3> on signal <M_state_q[1:4]> with user encoding.
+Optimizing FSM <matrix_writer/FSM_2> on signal <fsmfake1[1:2]> with user encoding.
 -------------------
  State | Encoding
 -------------------
- 0000  | 0000
- 0001  | 0001
- 0010  | 0010
- 0011  | 0011
- 0111  | 0111
- 0101  | 0101
- 0110  | 0110
- 0100  | 0100
- 1000  | 1000
+ 00    | 00
+ 01    | 01
+ 10    | 10
 -------------------
-WARNING:Xst:1293 - FF/Latch <M_check_column_address_q_2> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <game_fsm/FSM_3> on signal <M_state_q[1:2]> with gray encoding.
+-------------------
+ State | Encoding
+-------------------
+ 0000  | 00
+ 0011  | 01
+ 0100  | 11
+-------------------
+WARNING:Xst:1293 - FF/Latch <M_check_column_address_q_1> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <M_check_column_address_q_3> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <M_check_column_address_q_4> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <M_check_column_address_q_5> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
@@ -687,22 +680,33 @@ WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <M_grass_address_q_2
 WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <M_grass_address_q_3> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <M_grass_address_q_4> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <M_grass_address_q_5> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:2677 - Node <M_current_chicken_column_q_4> of sequential type is unconnected in block <matrix_ram_4>.
-WARNING:Xst:2677 - Node <M_current_chicken_column_q_5> of sequential type is unconnected in block <matrix_ram_4>.
-WARNING:Xst:2677 - Node <M_timeCount_q_32> of sequential type is unconnected in block <gamefsm_6>.
 
 Optimizing unit <mojo_top_0> ...
 
 Optimizing unit <matrix_ram_4> ...
-WARNING:Xst:1293 - FF/Latch <M_chicken_counter_q_3> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1293 - FF/Latch <M_chicken_counter_q_3> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <M_sky_counter_q_1> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <M_chicken_counter_q_3> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <M_chicken_counter_q_4> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <M_sky_counter_q_2> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <M_sky_counter_q_3> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <M_sky_counter_q_4> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <M_chicken_address_q_3> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <M_chicken_address_q_4> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <M_chicken_address_q_5> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <M_sky_counter_q_1> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <M_sky_counter_q_2> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <M_sky_counter_q_3> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <M_sky_counter_q_4> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <M_chicken_address_q_3> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <M_chicken_address_q_4> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <M_chicken_address_q_5> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <M_chicken_counter_q_3> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <M_chicken_counter_q_4> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <M_row_counter_q_6> has a constant value of 0 in block <matrix_ram_4>. This FF/Latch will be trimmed during the optimization process.
 
 Optimizing unit <matrix_writer_5> ...
 
 Optimizing unit <gamefsm_6> ...
-WARNING:Xst:2677 - Node <ram_writer/M_state_q_FSM_FFd1> of sequential type is unconnected in block <mojo_top_0>.
-WARNING:Xst:2677 - Node <ram_writer/M_state_q_FSM_FFd3> of sequential type is unconnected in block <mojo_top_0>.
-WARNING:Xst:2677 - Node <ram_writer/M_state_q_FSM_FFd2> of sequential type is unconnected in block <mojo_top_0>.
 WARNING:Xst:2677 - Node <matrix_writer/M_debug_dff_q_6> of sequential type is unconnected in block <mojo_top_0>.
 WARNING:Xst:2677 - Node <matrix_writer/M_debug_dff_q_5> of sequential type is unconnected in block <mojo_top_0>.
 WARNING:Xst:2677 - Node <matrix_writer/M_debug_dff_q_4> of sequential type is unconnected in block <mojo_top_0>.
@@ -870,14 +874,6 @@ WARNING:Xst:2677 - Node <game_fsm/skygenerator/M_y_q_28> of sequential type is u
 WARNING:Xst:2677 - Node <game_fsm/skygenerator/M_y_q_29> of sequential type is unconnected in block <mojo_top_0>.
 WARNING:Xst:2677 - Node <game_fsm/skygenerator/M_y_q_30> of sequential type is unconnected in block <mojo_top_0>.
 WARNING:Xst:2677 - Node <game_fsm/skygenerator/M_y_q_31> of sequential type is unconnected in block <mojo_top_0>.
-WARNING:Xst:1293 - FF/Latch <matrix_data/M_row_counter_q_6> has a constant value of 0 in block <mojo_top_0>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <matrix_data/M_sky_counter_q_2> has a constant value of 0 in block <mojo_top_0>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <matrix_data/M_sky_counter_q_1> has a constant value of 0 in block <mojo_top_0>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <matrix_data/M_sky_counter_q_3> has a constant value of 0 in block <mojo_top_0>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <matrix_data/M_chicken_address_q_5> has a constant value of 0 in block <mojo_top_0>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <matrix_data/M_chicken_address_q_4> has a constant value of 0 in block <mojo_top_0>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <matrix_data/M_chicken_address_q_3> has a constant value of 0 in block <mojo_top_0>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <game_fsm/M_state_q_FSM_FFd1> has a constant value of 0 in block <mojo_top_0>. This FF/Latch will be trimmed during the optimization process.
 INFO:Xst:2261 - The FF/Latch <genSky/M_seed_q_0> in Unit <mojo_top_0> is equivalent to the following 2 FFs/Latches, which will be removed : <matrix_writer/M_sclk_counter_q_0> <game_fsm/skyFalling/M_ctr_q_0> 
 INFO:Xst:2261 - The FF/Latch <genSky/M_seed_q_1> in Unit <mojo_top_0> is equivalent to the following 2 FFs/Latches, which will be removed : <matrix_writer/M_sclk_counter_q_1> <game_fsm/skyFalling/M_ctr_q_1> 
 INFO:Xst:2261 - The FF/Latch <genSky/M_seed_q_2> in Unit <mojo_top_0> is equivalent to the following 2 FFs/Latches, which will be removed : <matrix_writer/M_sclk_counter_q_2> <game_fsm/skyFalling/M_ctr_q_2> 
@@ -906,22 +902,17 @@ INFO:Xst:2261 - The FF/Latch <genSky/M_seed_q_24> in Unit <mojo_top_0> is equiva
 INFO:Xst:2261 - The FF/Latch <genSky/M_seed_q_19> in Unit <mojo_top_0> is equivalent to the following FF/Latch, which will be removed : <game_fsm/skyFalling/M_ctr_q_19> 
 INFO:Xst:2261 - The FF/Latch <genSky/M_seed_q_25> in Unit <mojo_top_0> is equivalent to the following FF/Latch, which will be removed : <game_fsm/skyFalling/M_ctr_q_25> 
 INFO:Xst:2261 - The FF/Latch <matrix_data/M_grass_counter_q_0> in Unit <mojo_top_0> is equivalent to the following FF/Latch, which will be removed : <matrix_data/M_grass_address_q_6> 
-INFO:Xst:2261 - The FF/Latch <matrix_writer/M_state_q_FSM_FFd1> in Unit <mojo_top_0> is equivalent to the following 2 FFs/Latches, which will be removed : <matrix_writer/M_latch_blank_q_1> <matrix_writer/fsmfake2_1> 
-INFO:Xst:2261 - The FF/Latch <matrix_data/M_grass_address_q_7> in Unit <mojo_top_0> is equivalent to the following FF/Latch, which will be removed : <matrix_data/M_grass_counter_q_1> 
-INFO:Xst:2261 - The FF/Latch <matrix_data/M_grass_address_q_8> in Unit <mojo_top_0> is equivalent to the following FF/Latch, which will be removed : <matrix_data/M_grass_counter_q_2> 
-INFO:Xst:2261 - The FF/Latch <matrix_data/M_grass_address_q_9> in Unit <mojo_top_0> is equivalent to the following FF/Latch, which will be removed : <matrix_data/M_grass_counter_q_3> 
-INFO:Xst:2261 - The FF/Latch <matrix_data/M_check_column_address_q_1> in Unit <mojo_top_0> is equivalent to the following FF/Latch, which will be removed : <matrix_data/M_check_column_address_q_0> 
+INFO:Xst:2261 - The FF/Latch <matrix_data/M_grass_counter_q_1> in Unit <mojo_top_0> is equivalent to the following FF/Latch, which will be removed : <matrix_data/M_grass_address_q_7> 
+INFO:Xst:2261 - The FF/Latch <matrix_data/M_grass_counter_q_2> in Unit <mojo_top_0> is equivalent to the following FF/Latch, which will be removed : <matrix_data/M_grass_address_q_8> 
+INFO:Xst:2261 - The FF/Latch <matrix_data/M_grass_counter_q_3> in Unit <mojo_top_0> is equivalent to the following FF/Latch, which will be removed : <matrix_data/M_grass_address_q_9> 
+INFO:Xst:2261 - The FF/Latch <matrix_data/M_grass_counter_q_4> in Unit <mojo_top_0> is equivalent to the following FF/Latch, which will be removed : <matrix_data/M_grass_address_q_10> 
+INFO:Xst:2261 - The FF/Latch <matrix_writer/M_state_q_FSM_FFd1> in Unit <mojo_top_0> is equivalent to the following FF/Latch, which will be removed : <matrix_writer/M_latch_blank_q_1> 
+INFO:Xst:2261 - The FF/Latch <matrix_data/M_check_column_address_q_2> in Unit <mojo_top_0> is equivalent to the following FF/Latch, which will be removed : <matrix_data/M_check_column_address_q_0> 
 
 Mapping all equations...
 Building and optimizing final netlist ...
-Found area constraint ratio of 100 (+ 0) on block mojo_top_0, actual ratio is 12.
-FlipFlop genSky/M_seed_q_0 has been replicated 1 time(s)
-FlipFlop matrix_data/M_state_q_FSM_FFd22 has been replicated 1 time(s)
-FlipFlop matrix_data/M_state_q_FSM_FFd23 has been replicated 1 time(s)
-FlipFlop matrix_data/M_state_q_FSM_FFd6 has been replicated 1 time(s)
-FlipFlop matrix_data/M_state_q_FSM_FFd7 has been replicated 1 time(s)
-FlipFlop matrix_data/M_state_q_FSM_FFd8 has been replicated 1 time(s)
-FlipFlop matrix_data/M_state_q_FSM_FFd9 has been replicated 1 time(s)
+Found area constraint ratio of 100 (+ 0) on block mojo_top_0, actual ratio is 13.
+FlipFlop matrix_writer/M_state_q_FSM_FFd2 has been replicated 1 time(s)
 
 Final Macro Processing ...
 
@@ -936,8 +927,8 @@ Unit <mojo_top_0> processed.
 Final Register Report
 
 Macro Statistics
-# Registers                                            : 374
- Flip-Flops                                            : 374
+# Registers                                            : 391
+ Flip-Flops                                            : 391
 # Shift Registers                                      : 3
  2-bit shift register                                  : 3
 
@@ -963,7 +954,7 @@ Clock Information:
 -----------------------------------+------------------------+-------+
 Clock Signal                       | Clock buffer(FF name)  | Load  |
 -----------------------------------+------------------------+-------+
-clk                                | BUFGP                  | 384   |
+clk                                | BUFGP                  | 399   |
 -----------------------------------+------------------------+-------+
 
 Asynchronous Control Signals Information:
@@ -974,14 +965,14 @@ Timing Summary:
 ---------------
 Speed Grade: -2
 
-   Minimum period: 5.938ns (Maximum Frequency: 168.407MHz)
-   Minimum input arrival time before clock: 3.526ns
-   Maximum output required time after clock: 4.591ns
+   Minimum period: 7.764ns (Maximum Frequency: 128.795MHz)
+   Minimum input arrival time before clock: 4.651ns
+   Maximum output required time after clock: 4.563ns
    Maximum combinational path delay: No path found
 
 =========================================================================
-[Mon Dec 09 18:03:19 2019] synth_1 finished
-wait_on_run: Time (s): elapsed = 00:00:15 . Memory (MB): peak = 145.449 ; gain = 0.000
+[Thu Jan 16 15:24:25 2020] synth_1 finished
+wait_on_run: Time (s): elapsed = 00:00:30 . Memory (MB): peak = 145.355 ; gain = 0.000
 # launch_runs -runs impl_1
 Release 14.7 - ngc2edif P.20131013 (nt64)
 Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
@@ -990,34 +981,37 @@ WARNING:NetListWriters:298 - No output is written to mojo_top_0.xncf, ignored.
 Processing design ...
    Preping design's networks ...
    Preping design's macros ...
+WARNING:NetListWriters:304 - Port bus out[4 : 0] on block matrix_ram_4 is not
+   reconstructed, because there are some missing bus pins.
+WARNING:NetListWriters:306 - Signal bus _n0724<10 : 0> on block matrix_ram_4 is
+   not reconstructed, because there are some missing bus signals.
+WARNING:NetListWriters:306 - Signal bus M_chicken_address_q<10 : 0> on block
+   matrix_ram_4 is not reconstructed, because there are some missing bus
+   signals.
+WARNING:NetListWriters:306 - Signal bus _n0667<10 : 0> on block matrix_ram_4 is
+   not reconstructed, because there are some missing bus signals.
+WARNING:NetListWriters:306 - Signal bus M_sky_address_q<10 : 0> on block
+   matrix_ram_4 is not reconstructed, because there are some missing bus
+   signals.
+WARNING:NetListWriters:306 - Signal bus _n0582<10 : 2> on block matrix_ram_4 is
+   not reconstructed, because there are some missing bus signals.
+WARNING:NetListWriters:306 - Signal bus M_check_column_address_q<10 : 2> on
+   block matrix_ram_4 is not reconstructed, because there are some missing bus
+   signals.
 WARNING:NetListWriters:306 - Signal bus
-   M_sky_address_q[9]_M_current_sky_column_q[3]_mux_115_OUT<9 : 0> on block
+   M_state_q_Mmux_M_background_ram_address_rs_A<8 : 5> on block matrix_ram_4 is
+   not reconstructed, because there are some missing bus signals.
+WARNING:NetListWriters:306 - Signal bus M_state_q__n0724<10 : 0> on block
    matrix_ram_4 is not reconstructed, because there are some missing bus
    signals.
-WARNING:NetListWriters:306 - Signal bus M_chicken_address_d<9 : 0> on block
-   matrix_ram_4 is not reconstructed, because there are some missing bus
-   signals.
-WARNING:NetListWriters:306 - Signal bus M_chicken_address_q<9 : 0> on block
-   matrix_ram_4 is not reconstructed, because there are some missing bus
-   signals.
-WARNING:NetListWriters:306 - Signal bus M_sky_address_d<9 : 0> on block
-   matrix_ram_4 is not reconstructed, because there are some missing bus
-   signals.
-WARNING:NetListWriters:306 - Signal bus M_sky_address_q<9 : 0> on block
-   matrix_ram_4 is not reconstructed, because there are some missing bus
-   signals.
-WARNING:NetListWriters:306 - Signal bus M_check_column_address_d<9 : 1> on block
-   matrix_ram_4 is not reconstructed, because there are some missing bus
-   signals.
-WARNING:NetListWriters:306 - Signal bus M_check_column_address_q<9 : 1> on block
-   matrix_ram_4 is not reconstructed, because there are some missing bus
-   signals.
+WARNING:NetListWriters:306 - Signal bus M_matrix_data_out[4 : 0] on block
+   mojo_top_0 is not reconstructed, because there are some missing bus signals.
   finished :Prep
 Writing EDIF netlist file mojo_top_0.edif ...
 ngc2edif: Total memory usage is 4317680 kilobytes
 
-Parsing EDIF File [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.data/cache/mojo_top_0_ngc_zx.edif]
-Finished Parsing EDIF File [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.data/cache/mojo_top_0_ngc_zx.edif]
+Parsing EDIF File [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.data/cache/mojo_top_0_ngc_zx.edif]
+Finished Parsing EDIF File [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.data/cache/mojo_top_0_ngc_zx.edif]
 INFO: [Netlist 29-17] Analyzing 1 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 Loading clock regions from C:/Xilinx/14.7/ISE_DS/PlanAhead/data\parts/xilinx/spartan6/spartan6lx/xc6slx9/ClockRegion.xml
@@ -1027,44 +1021,44 @@ Loading package from C:/Xilinx/14.7/ISE_DS/PlanAhead/data\parts/xilinx/spartan6/
 Loading io standards from C:/Xilinx/14.7/ISE_DS/PlanAhead/data\./parts/xilinx/spartan6/IOStandards.xml
 Loading device configuration modes from C:/Xilinx/14.7/ISE_DS/PlanAhead/data\parts/xilinx/spartan6/ConfigModes.xml
 Loading list of drcs for the architecture : C:/Xilinx/14.7/ISE_DS/PlanAhead/data\./parts/xilinx/spartan6/drc.xml
-Parsing UCF File [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/matrix_constraint.ucf]
-Finished Parsing UCF File [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/matrix_constraint.ucf]
-Parsing UCF File [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<0>' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:11]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<0>' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:11]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<1>' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:12]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<1>' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:12]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<2>' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:13]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<2>' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:13]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<3>' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:14]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<3>' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:14]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<4>' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:15]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<4>' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:15]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<5>' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:16]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<5>' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:16]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<6>' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:17]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<6>' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:17]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<7>' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:18]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<7>' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:18]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'spi_miso' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:21]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'spi_miso' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:21]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'spi_channel<0>' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:24]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'spi_channel<0>' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:24]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'spi_channel<1>' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:25]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'spi_channel<1>' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:25]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'spi_channel<2>' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:26]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'spi_channel<2>' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:26]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'spi_channel<3>' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:27]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'spi_channel<3>' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:27]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'avr_rx' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:30]
-CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'avr_rx' [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:30]
-Finished Parsing UCF File [C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf]
+Parsing UCF File [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/matrix_constraint.ucf]
+Finished Parsing UCF File [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/matrix_constraint.ucf]
+Parsing UCF File [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<0>' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:11]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<0>' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:11]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<1>' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:12]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<1>' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:12]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<2>' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:13]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<2>' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:13]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<3>' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:14]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<3>' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:14]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<4>' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:15]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<4>' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:15]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<5>' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:16]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<5>' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:16]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<6>' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:17]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<6>' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:17]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<7>' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:18]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'led<7>' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:18]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'spi_miso' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:21]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'spi_miso' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:21]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'spi_channel<0>' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:24]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'spi_channel<0>' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:24]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'spi_channel<1>' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:25]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'spi_channel<1>' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:25]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'spi_channel<2>' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:26]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'spi_channel<2>' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:26]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'spi_channel<3>' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:27]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'spi_channel<3>' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:27]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'avr_rx' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:30]
+CRITICAL WARNING: [Constraints 18-11] Could not find net or pin 'avr_rx' [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf:30]
+Finished Parsing UCF File [C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.srcs/constrs_1/imports/Alchitry Labs/library/components/mojo.ucf]
 INFO: [Designutils 20-20] Invalid constraints found, use command 'write_ucf -constraints invalid <file>' to save all the invalid constraints to a file
-[Mon Dec 09 18:03:26 2019] Launched impl_1...
-Run output will be captured here: C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.runs/impl_1/runme.log
-launch_runs: Time (s): elapsed = 00:00:07 . Memory (MB): peak = 299.230 ; gain = 153.781
+[Thu Jan 16 15:24:37 2020] Launched impl_1...
+Run output will be captured here: C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.runs/impl_1/runme.log
+launch_runs: Time (s): elapsed = 00:00:12 . Memory (MB): peak = 299.090 ; gain = 153.734
 # wait_on_run impl_1
-[Mon Dec 09 18:03:26 2019] Waiting for impl_1 to finish...
+[Thu Jan 16 15:24:37 2020] Waiting for impl_1 to finish...
 
 *** Running ngdbuild
     with args -intstyle ise -p xc6slx9tqg144-2 -dd _ngo -uc "mojo_top_0.ucf" "mojo_top_0.edf"
@@ -1077,8 +1071,8 @@ Executing edif2ngd -quiet "mojo_top_0.edf" "_ngo\mojo_top_0.ngo"
 Release 14.7 - edif2ngd P.20131013 (nt64)
 Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 Reading NGO file
-"C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_pro
-ject.runs/impl_1/_ngo/mojo_top_0.ngo" ...
+"C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matr
+ix_project.runs/impl_1/_ngo/mojo_top_0.ngo" ...
 Gathering constraint information from source properties...
 Done.
 
@@ -1101,8 +1095,8 @@ NGDBUILD Design Results Summary:
   Number of warnings:   0
 
 Writing NGD file "mojo_top_0.ngd" ...
-Total REAL time to NGDBUILD completion:  10 sec
-Total CPU time to NGDBUILD completion:   4 sec
+Total REAL time to NGDBUILD completion:  11 sec
+Total CPU time to NGDBUILD completion:   5 sec
 
 Writing NGDBUILD log file "mojo_top_0.bld"...
 
@@ -1128,54 +1122,54 @@ Updating timing models...
 INFO:Map:215 - The Interim Design Summary has been generated in the MAP Report
    (.mrp).
 Running timing-driven placement...
-Total REAL time at the beginning of Placer: 6 secs 
+Total REAL time at the beginning of Placer: 5 secs 
 Total CPU  time at the beginning of Placer: 5 secs 
 
 Phase 1.1  Initial Placement Analysis
-Phase 1.1  Initial Placement Analysis (Checksum:d88269e3) REAL time: 6 secs 
+Phase 1.1  Initial Placement Analysis (Checksum:9399e46c) REAL time: 6 secs 
 
 Phase 2.7  Design Feasibility Check
-Phase 2.7  Design Feasibility Check (Checksum:d88269e3) REAL time: 6 secs 
+Phase 2.7  Design Feasibility Check (Checksum:9399e46c) REAL time: 6 secs 
 
 Phase 3.31  Local Placement Optimization
-Phase 3.31  Local Placement Optimization (Checksum:d88269e3) REAL time: 6 secs 
+Phase 3.31  Local Placement Optimization (Checksum:9399e46c) REAL time: 6 secs 
 
 Phase 4.2  Initial Placement for Architecture Specific Features
 
 Phase 4.2  Initial Placement for Architecture Specific Features
-(Checksum:aee01953) REAL time: 8 secs 
+(Checksum:3526731c) REAL time: 8 secs 
 
 Phase 5.36  Local Placement Optimization
-Phase 5.36  Local Placement Optimization (Checksum:aee01953) REAL time: 8 secs 
+Phase 5.36  Local Placement Optimization (Checksum:3526731c) REAL time: 8 secs 
 
 Phase 6.30  Global Clock Region Assignment
-Phase 6.30  Global Clock Region Assignment (Checksum:aee01953) REAL time: 8 secs 
+Phase 6.30  Global Clock Region Assignment (Checksum:3526731c) REAL time: 8 secs 
 
 Phase 7.3  Local Placement Optimization
-Phase 7.3  Local Placement Optimization (Checksum:aee01953) REAL time: 8 secs 
+Phase 7.3  Local Placement Optimization (Checksum:3526731c) REAL time: 8 secs 
 
 Phase 8.5  Local Placement Optimization
-Phase 8.5  Local Placement Optimization (Checksum:aee01953) REAL time: 9 secs 
+Phase 8.5  Local Placement Optimization (Checksum:3526731c) REAL time: 8 secs 
 
 Phase 9.8  Global Placement
-...................................................
-.......................
-Phase 9.8  Global Placement (Checksum:306e1bd2) REAL time: 10 secs 
+....................................
+...................................
+Phase 9.8  Global Placement (Checksum:9b6c91b4) REAL time: 9 secs 
 
 Phase 10.5  Local Placement Optimization
-Phase 10.5  Local Placement Optimization (Checksum:306e1bd2) REAL time: 10 secs 
+Phase 10.5  Local Placement Optimization (Checksum:9b6c91b4) REAL time: 9 secs 
 
 Phase 11.18  Placement Optimization
-Phase 11.18  Placement Optimization (Checksum:2ad2e6d0) REAL time: 11 secs 
+Phase 11.18  Placement Optimization (Checksum:a1b8dfa4) REAL time: 9 secs 
 
 Phase 12.5  Local Placement Optimization
-Phase 12.5  Local Placement Optimization (Checksum:2ad2e6d0) REAL time: 11 secs 
+Phase 12.5  Local Placement Optimization (Checksum:a1b8dfa4) REAL time: 9 secs 
 
 Phase 13.34  Placement Validation
-Phase 13.34  Placement Validation (Checksum:29732085) REAL time: 11 secs 
+Phase 13.34  Placement Validation (Checksum:a07e9e8a) REAL time: 9 secs 
 
-Total REAL time to Placer completion: 11 secs 
-Total CPU  time to Placer completion: 11 secs 
+Total REAL time to Placer completion: 10 secs 
+Total CPU  time to Placer completion: 9 secs 
 Running post-placement packing...
 Writing output files...
 
@@ -1183,16 +1177,16 @@ Design Summary:
 Number of errors:      0
 Number of warnings:    1
 Slice Logic Utilization:
-  Number of Slice Registers:                   377 out of  11,440    3%
-    Number used as Flip Flops:                 377
+  Number of Slice Registers:                   394 out of  11,440    3%
+    Number used as Flip Flops:                 394
     Number used as Latches:                      0
     Number used as Latch-thrus:                  0
     Number used as AND/OR logics:                0
-  Number of Slice LUTs:                        562 out of   5,720    9%
-    Number used as logic:                      554 out of   5,720    9%
-      Number using O6 output only:             330
-      Number using O5 output only:             114
-      Number using O5 and O6:                  110
+  Number of Slice LUTs:                        537 out of   5,720    9%
+    Number used as logic:                      528 out of   5,720    9%
+      Number using O6 output only:             277
+      Number using O5 output only:             107
+      Number using O5 and O6:                  144
       Number used as ROM:                        0
     Number used as Memory:                       3 out of   1,440    1%
       Number used as Dual Port RAM:              0
@@ -1201,21 +1195,21 @@ Slice Logic Utilization:
         Number using O6 output only:             3
         Number using O5 output only:             0
         Number using O5 and O6:                  0
-    Number used exclusively as route-thrus:      5
-      Number with same-slice register load:      0
+    Number used exclusively as route-thrus:      6
+      Number with same-slice register load:      1
       Number with same-slice carry load:         5
       Number with other load:                    0
 
 Slice Logic Distribution:
-  Number of occupied Slices:                   172 out of   1,430   12%
-  Number of MUXCYs used:                       136 out of   2,860    4%
-  Number of LUT Flip Flop pairs used:          567
-    Number with an unused Flip Flop:           252 out of     567   44%
-    Number with an unused LUT:                   5 out of     567    1%
-    Number of fully used LUT-FF pairs:         310 out of     567   54%
-    Number of unique control sets:              15
+  Number of occupied Slices:                   168 out of   1,430   11%
+  Number of MUXCYs used:                       144 out of   2,860    5%
+  Number of LUT Flip Flop pairs used:          546
+    Number with an unused Flip Flop:           241 out of     546   44%
+    Number with an unused LUT:                   9 out of     546    1%
+    Number of fully used LUT-FF pairs:         296 out of     546   54%
+    Number of unique control sets:              22
     Number of slice register sites lost
-      to control set restrictions:              52 out of  11,440    1%
+      to control set restrictions:              83 out of  11,440    1%
 
   A LUT Flip Flop pair for this architecture represents one LUT paired with
   one Flip Flop within a slice.  A control set is a unique combination of
@@ -1229,7 +1223,7 @@ IO Utilization:
 
 Specific Feature Utilization:
   Number of RAMB16BWERs:                         0 out of      32    0%
-  Number of RAMB8BWERs:                          4 out of      64    6%
+  Number of RAMB8BWERs:                          2 out of      64    3%
   Number of BUFIO2/BUFIO2_2CLKs:                 0 out of      32    0%
   Number of BUFIO2FB/BUFIO2FB_2CLKs:             0 out of      32    0%
   Number of BUFG/BUFGMUXs:                       1 out of      16    6%
@@ -1252,11 +1246,11 @@ Specific Feature Utilization:
   Number of STARTUPs:                            0 out of       1    0%
   Number of SUSPEND_SYNCs:                       0 out of       1    0%
 
-Average Fanout of Non-Clock Nets:                3.75
+Average Fanout of Non-Clock Nets:                3.63
 
-Peak Memory Usage:  4544 MB
-Total REAL time to MAP completion:  12 secs 
-Total CPU time to MAP completion (all processors):   12 secs 
+Peak Memory Usage:  4543 MB
+Total REAL time to MAP completion:  10 secs 
+Total CPU time to MAP completion (all processors):   10 secs 
 
 Mapping completed.
 See MAP report file "mojo_top_0.mrp" for details.
@@ -1288,16 +1282,16 @@ Device speed data version:  "PRODUCTION 1.23 2013-10-13".
 Device Utilization Summary:
 
 Slice Logic Utilization:
-  Number of Slice Registers:                   377 out of  11,440    3%
-    Number used as Flip Flops:                 377
+  Number of Slice Registers:                   394 out of  11,440    3%
+    Number used as Flip Flops:                 394
     Number used as Latches:                      0
     Number used as Latch-thrus:                  0
     Number used as AND/OR logics:                0
-  Number of Slice LUTs:                        562 out of   5,720    9%
-    Number used as logic:                      554 out of   5,720    9%
-      Number using O6 output only:             330
-      Number using O5 output only:             114
-      Number using O5 and O6:                  110
+  Number of Slice LUTs:                        537 out of   5,720    9%
+    Number used as logic:                      528 out of   5,720    9%
+      Number using O6 output only:             277
+      Number using O5 output only:             107
+      Number using O5 and O6:                  144
       Number used as ROM:                        0
     Number used as Memory:                       3 out of   1,440    1%
       Number used as Dual Port RAM:              0
@@ -1306,18 +1300,18 @@ Slice Logic Utilization:
         Number using O6 output only:             3
         Number using O5 output only:             0
         Number using O5 and O6:                  0
-    Number used exclusively as route-thrus:      5
-      Number with same-slice register load:      0
+    Number used exclusively as route-thrus:      6
+      Number with same-slice register load:      1
       Number with same-slice carry load:         5
       Number with other load:                    0
 
 Slice Logic Distribution:
-  Number of occupied Slices:                   172 out of   1,430   12%
-  Number of MUXCYs used:                       136 out of   2,860    4%
-  Number of LUT Flip Flop pairs used:          567
-    Number with an unused Flip Flop:           252 out of     567   44%
-    Number with an unused LUT:                   5 out of     567    1%
-    Number of fully used LUT-FF pairs:         310 out of     567   54%
+  Number of occupied Slices:                   168 out of   1,430   11%
+  Number of MUXCYs used:                       144 out of   2,860    5%
+  Number of LUT Flip Flop pairs used:          546
+    Number with an unused Flip Flop:           241 out of     546   44%
+    Number with an unused LUT:                   9 out of     546    1%
+    Number of fully used LUT-FF pairs:         296 out of     546   54%
     Number of slice register sites lost
       to control set restrictions:               0 out of  11,440    0%
 
@@ -1333,7 +1327,7 @@ IO Utilization:
 
 Specific Feature Utilization:
   Number of RAMB16BWERs:                         0 out of      32    0%
-  Number of RAMB8BWERs:                          4 out of      64    6%
+  Number of RAMB8BWERs:                          2 out of      64    3%
   Number of BUFIO2/BUFIO2_2CLKs:                 0 out of      32    0%
   Number of BUFIO2FB/BUFIO2FB_2CLKs:             0 out of      32    0%
   Number of BUFG/BUFGMUXs:                       1 out of      16    6%
@@ -1370,29 +1364,29 @@ WARNING:Par:288 - The signal spi_mosi_IBUF has no load.  PAR will not attempt to
 Starting Multi-threaded Router
 
 
-Phase  1  : 2860 unrouted;      REAL time: 4 secs 
+Phase  1  : 2738 unrouted;      REAL time: 4 secs 
 
-Phase  2  : 2473 unrouted;      REAL time: 5 secs 
+Phase  2  : 2337 unrouted;      REAL time: 4 secs 
 
-Phase  3  : 1282 unrouted;      REAL time: 5 secs 
+Phase  3  : 1096 unrouted;      REAL time: 5 secs 
 
-Phase  4  : 1282 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 6 secs 
+Phase  4  : 1096 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 5 secs 
 
 Updating file: mojo_top_0_routed.ncd with current fully routed design.
 
-Phase  5  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 7 secs 
+Phase  5  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 6 secs 
 
-Phase  6  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 7 secs 
+Phase  6  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 6 secs 
 
-Phase  7  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 7 secs 
+Phase  7  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 6 secs 
 
-Phase  8  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 7 secs 
+Phase  8  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 6 secs 
 
-Phase  9  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 7 secs 
+Phase  9  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 6 secs 
 
-Phase 10  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 7 secs 
-Total REAL time to Router completion: 7 secs 
-Total CPU time to Router completion (all processors): 7 secs 
+Phase 10  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 6 secs 
+Total REAL time to Router completion: 6 secs 
+Total CPU time to Router completion (all processors): 6 secs 
 
 Generating "PAR" statistics.
 
@@ -1403,7 +1397,7 @@ Generating Clock Report
 +---------------------+--------------+------+------+------------+-------------+
 |        Clock Net    |   Resource   |Locked|Fanout|Net Skew(ns)|Max Delay(ns)|
 +---------------------+--------------+------+------+------------+-------------+
-|           clk_BUFGP | BUFGMUX_X2Y11| No   |  122 |  0.116     |  1.509      |
+|           clk_BUFGP | BUFGMUX_X2Y11| No   |  114 |  0.116     |  1.509      |
 +---------------------+--------------+------+------+------------+-------------+
 
 * Net Skew is the difference between the minimum and maximum routing
@@ -1423,8 +1417,8 @@ Asterisk (*) preceding a constraint indicates it was not met.
   Constraint                                |    Check    | Worst Case |  Best Case | Timing |   Timing   
                                             |             |    Slack   | Achievable | Errors |    Score   
 ----------------------------------------------------------------------------------------------------------
-  TS_clk = PERIOD TIMEGRP "clk" 50 MHz HIGH | SETUP       |    13.472ns|     6.528ns|       0|           0
-   50%                                      | HOLD        |     0.389ns|            |       0|           0
+  TS_clk = PERIOD TIMEGRP "clk" 50 MHz HIGH | SETUP       |    12.008ns|     7.992ns|       0|           0
+   50%                                      | HOLD        |     0.391ns|            |       0|           0
 ----------------------------------------------------------------------------------------------------------
 
 
@@ -1440,7 +1434,7 @@ WARNING:Par:283 - There are 6 loadless signals in this design. This design will 
 Total REAL time to PAR completion: 7 secs 
 Total CPU time to PAR completion (all processors): 7 secs 
 
-Peak Memory Usage:  4506 MB
+Peak Memory Usage:  4495 MB
 
 Placer: Placement generated during map.
 Routing: Completed - No errors found.
@@ -1463,7 +1457,7 @@ Loading device for application Rf_Device from file '6slx9.nph' in environment
 C:\Xilinx\14.7\ISE_DS\ISE\.
    "mojo_top_0" is an NCD, version 3.2, device xc6slx9, package tqg144, speed -2
 
-Analysis completed Mon Dec 09 18:04:07 2019
+Analysis completed Thu Jan 16 15:25:17 2020
 --------------------------------------------------------------------------------
 
 Generating Report ...
@@ -1481,13 +1475,13 @@ WARNING:XDL:213 - The resulting xdl output will not have LUT equation strings or
 Loading device for application Rf_Device from file '6slx9.nph' in environment C:\Xilinx\14.7\ISE_DS\ISE\.
    "mojo_top_0" is an NCD, version 3.2, device xc6slx9, package tqg144, speed -2
 Successfully converted design 'mojo_top_0_routed.ncd' to 'mojo_top_0_routed.xdl'.
-[Mon Dec 09 18:04:11 2019] impl_1 finished
-wait_on_run: Time (s): elapsed = 00:00:45 . Memory (MB): peak = 299.230 ; gain = 0.000
+[Thu Jan 16 15:25:22 2020] impl_1 finished
+wait_on_run: Time (s): elapsed = 00:00:45 . Memory (MB): peak = 299.090 ; gain = 0.000
 # launch_runs impl_1 -to_step Bitgen
-[Mon Dec 09 18:04:11 2019] Launched impl_1...
-Run output will be captured here: C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.runs/impl_1/runme.log
+[Thu Jan 16 15:25:22 2020] Launched impl_1...
+Run output will be captured here: C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matrix_project.runs/impl_1/runme.log
 # wait_on_run impl_1
-[Mon Dec 09 18:04:11 2019] Waiting for impl_1 to finish...
+[Thu Jan 16 15:25:22 2020] Waiting for impl_1 to finish...
 
 *** Running ngdbuild
     with args -intstyle ise -p xc6slx9tqg144-2 -dd _ngo -uc "mojo_top_0.ucf" "mojo_top_0.edf"
@@ -1500,8 +1494,8 @@ Executing edif2ngd -quiet "mojo_top_0.edf" "_ngo\mojo_top_0.ngo"
 Release 14.7 - edif2ngd P.20131013 (nt64)
 Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 Reading NGO file
-"C:/Users/Carey/Desktop/theSkyIsFalling/work/planAhead/matrix_project/matrix_pro
-ject.runs/impl_1/_ngo/mojo_top_0.ngo" ...
+"C:/Users/Carey/Desktop/repos/theSkyIsFalling/work/planAhead/matrix_project/matr
+ix_project.runs/impl_1/_ngo/mojo_top_0.ngo" ...
 Gathering constraint information from source properties...
 Done.
 
@@ -1524,8 +1518,8 @@ NGDBUILD Design Results Summary:
   Number of warnings:   0
 
 Writing NGD file "mojo_top_0.ngd" ...
-Total REAL time to NGDBUILD completion:  10 sec
-Total CPU time to NGDBUILD completion:   4 sec
+Total REAL time to NGDBUILD completion:  11 sec
+Total CPU time to NGDBUILD completion:   5 sec
 
 Writing NGDBUILD log file "mojo_top_0.bld"...
 
@@ -1551,54 +1545,54 @@ Updating timing models...
 INFO:Map:215 - The Interim Design Summary has been generated in the MAP Report
    (.mrp).
 Running timing-driven placement...
-Total REAL time at the beginning of Placer: 6 secs 
+Total REAL time at the beginning of Placer: 5 secs 
 Total CPU  time at the beginning of Placer: 5 secs 
 
 Phase 1.1  Initial Placement Analysis
-Phase 1.1  Initial Placement Analysis (Checksum:d88269e3) REAL time: 6 secs 
+Phase 1.1  Initial Placement Analysis (Checksum:9399e46c) REAL time: 6 secs 
 
 Phase 2.7  Design Feasibility Check
-Phase 2.7  Design Feasibility Check (Checksum:d88269e3) REAL time: 6 secs 
+Phase 2.7  Design Feasibility Check (Checksum:9399e46c) REAL time: 6 secs 
 
 Phase 3.31  Local Placement Optimization
-Phase 3.31  Local Placement Optimization (Checksum:d88269e3) REAL time: 6 secs 
+Phase 3.31  Local Placement Optimization (Checksum:9399e46c) REAL time: 6 secs 
 
 Phase 4.2  Initial Placement for Architecture Specific Features
 
 Phase 4.2  Initial Placement for Architecture Specific Features
-(Checksum:aee01953) REAL time: 8 secs 
+(Checksum:3526731c) REAL time: 8 secs 
 
 Phase 5.36  Local Placement Optimization
-Phase 5.36  Local Placement Optimization (Checksum:aee01953) REAL time: 8 secs 
+Phase 5.36  Local Placement Optimization (Checksum:3526731c) REAL time: 8 secs 
 
 Phase 6.30  Global Clock Region Assignment
-Phase 6.30  Global Clock Region Assignment (Checksum:aee01953) REAL time: 8 secs 
+Phase 6.30  Global Clock Region Assignment (Checksum:3526731c) REAL time: 8 secs 
 
 Phase 7.3  Local Placement Optimization
-Phase 7.3  Local Placement Optimization (Checksum:aee01953) REAL time: 8 secs 
+Phase 7.3  Local Placement Optimization (Checksum:3526731c) REAL time: 8 secs 
 
 Phase 8.5  Local Placement Optimization
-Phase 8.5  Local Placement Optimization (Checksum:aee01953) REAL time: 9 secs 
+Phase 8.5  Local Placement Optimization (Checksum:3526731c) REAL time: 8 secs 
 
 Phase 9.8  Global Placement
-...................................................
-.......................
-Phase 9.8  Global Placement (Checksum:306e1bd2) REAL time: 10 secs 
+....................................
+...................................
+Phase 9.8  Global Placement (Checksum:9b6c91b4) REAL time: 9 secs 
 
 Phase 10.5  Local Placement Optimization
-Phase 10.5  Local Placement Optimization (Checksum:306e1bd2) REAL time: 10 secs 
+Phase 10.5  Local Placement Optimization (Checksum:9b6c91b4) REAL time: 9 secs 
 
 Phase 11.18  Placement Optimization
-Phase 11.18  Placement Optimization (Checksum:2ad2e6d0) REAL time: 11 secs 
+Phase 11.18  Placement Optimization (Checksum:a1b8dfa4) REAL time: 9 secs 
 
 Phase 12.5  Local Placement Optimization
-Phase 12.5  Local Placement Optimization (Checksum:2ad2e6d0) REAL time: 11 secs 
+Phase 12.5  Local Placement Optimization (Checksum:a1b8dfa4) REAL time: 9 secs 
 
 Phase 13.34  Placement Validation
-Phase 13.34  Placement Validation (Checksum:29732085) REAL time: 11 secs 
+Phase 13.34  Placement Validation (Checksum:a07e9e8a) REAL time: 9 secs 
 
-Total REAL time to Placer completion: 11 secs 
-Total CPU  time to Placer completion: 11 secs 
+Total REAL time to Placer completion: 10 secs 
+Total CPU  time to Placer completion: 9 secs 
 Running post-placement packing...
 Writing output files...
 
@@ -1606,16 +1600,16 @@ Design Summary:
 Number of errors:      0
 Number of warnings:    1
 Slice Logic Utilization:
-  Number of Slice Registers:                   377 out of  11,440    3%
-    Number used as Flip Flops:                 377
+  Number of Slice Registers:                   394 out of  11,440    3%
+    Number used as Flip Flops:                 394
     Number used as Latches:                      0
     Number used as Latch-thrus:                  0
     Number used as AND/OR logics:                0
-  Number of Slice LUTs:                        562 out of   5,720    9%
-    Number used as logic:                      554 out of   5,720    9%
-      Number using O6 output only:             330
-      Number using O5 output only:             114
-      Number using O5 and O6:                  110
+  Number of Slice LUTs:                        537 out of   5,720    9%
+    Number used as logic:                      528 out of   5,720    9%
+      Number using O6 output only:             277
+      Number using O5 output only:             107
+      Number using O5 and O6:                  144
       Number used as ROM:                        0
     Number used as Memory:                       3 out of   1,440    1%
       Number used as Dual Port RAM:              0
@@ -1624,21 +1618,21 @@ Slice Logic Utilization:
         Number using O6 output only:             3
         Number using O5 output only:             0
         Number using O5 and O6:                  0
-    Number used exclusively as route-thrus:      5
-      Number with same-slice register load:      0
+    Number used exclusively as route-thrus:      6
+      Number with same-slice register load:      1
       Number with same-slice carry load:         5
       Number with other load:                    0
 
 Slice Logic Distribution:
-  Number of occupied Slices:                   172 out of   1,430   12%
-  Number of MUXCYs used:                       136 out of   2,860    4%
-  Number of LUT Flip Flop pairs used:          567
-    Number with an unused Flip Flop:           252 out of     567   44%
-    Number with an unused LUT:                   5 out of     567    1%
-    Number of fully used LUT-FF pairs:         310 out of     567   54%
-    Number of unique control sets:              15
+  Number of occupied Slices:                   168 out of   1,430   11%
+  Number of MUXCYs used:                       144 out of   2,860    5%
+  Number of LUT Flip Flop pairs used:          546
+    Number with an unused Flip Flop:           241 out of     546   44%
+    Number with an unused LUT:                   9 out of     546    1%
+    Number of fully used LUT-FF pairs:         296 out of     546   54%
+    Number of unique control sets:              22
     Number of slice register sites lost
-      to control set restrictions:              52 out of  11,440    1%
+      to control set restrictions:              83 out of  11,440    1%
 
   A LUT Flip Flop pair for this architecture represents one LUT paired with
   one Flip Flop within a slice.  A control set is a unique combination of
@@ -1652,7 +1646,7 @@ IO Utilization:
 
 Specific Feature Utilization:
   Number of RAMB16BWERs:                         0 out of      32    0%
-  Number of RAMB8BWERs:                          4 out of      64    6%
+  Number of RAMB8BWERs:                          2 out of      64    3%
   Number of BUFIO2/BUFIO2_2CLKs:                 0 out of      32    0%
   Number of BUFIO2FB/BUFIO2FB_2CLKs:             0 out of      32    0%
   Number of BUFG/BUFGMUXs:                       1 out of      16    6%
@@ -1675,11 +1669,11 @@ Specific Feature Utilization:
   Number of STARTUPs:                            0 out of       1    0%
   Number of SUSPEND_SYNCs:                       0 out of       1    0%
 
-Average Fanout of Non-Clock Nets:                3.75
+Average Fanout of Non-Clock Nets:                3.63
 
-Peak Memory Usage:  4544 MB
-Total REAL time to MAP completion:  12 secs 
-Total CPU time to MAP completion (all processors):   12 secs 
+Peak Memory Usage:  4543 MB
+Total REAL time to MAP completion:  10 secs 
+Total CPU time to MAP completion (all processors):   10 secs 
 
 Mapping completed.
 See MAP report file "mojo_top_0.mrp" for details.
@@ -1711,16 +1705,16 @@ Device speed data version:  "PRODUCTION 1.23 2013-10-13".
 Device Utilization Summary:
 
 Slice Logic Utilization:
-  Number of Slice Registers:                   377 out of  11,440    3%
-    Number used as Flip Flops:                 377
+  Number of Slice Registers:                   394 out of  11,440    3%
+    Number used as Flip Flops:                 394
     Number used as Latches:                      0
     Number used as Latch-thrus:                  0
     Number used as AND/OR logics:                0
-  Number of Slice LUTs:                        562 out of   5,720    9%
-    Number used as logic:                      554 out of   5,720    9%
-      Number using O6 output only:             330
-      Number using O5 output only:             114
-      Number using O5 and O6:                  110
+  Number of Slice LUTs:                        537 out of   5,720    9%
+    Number used as logic:                      528 out of   5,720    9%
+      Number using O6 output only:             277
+      Number using O5 output only:             107
+      Number using O5 and O6:                  144
       Number used as ROM:                        0
     Number used as Memory:                       3 out of   1,440    1%
       Number used as Dual Port RAM:              0
@@ -1729,18 +1723,18 @@ Slice Logic Utilization:
         Number using O6 output only:             3
         Number using O5 output only:             0
         Number using O5 and O6:                  0
-    Number used exclusively as route-thrus:      5
-      Number with same-slice register load:      0
+    Number used exclusively as route-thrus:      6
+      Number with same-slice register load:      1
       Number with same-slice carry load:         5
       Number with other load:                    0
 
 Slice Logic Distribution:
-  Number of occupied Slices:                   172 out of   1,430   12%
-  Number of MUXCYs used:                       136 out of   2,860    4%
-  Number of LUT Flip Flop pairs used:          567
-    Number with an unused Flip Flop:           252 out of     567   44%
-    Number with an unused LUT:                   5 out of     567    1%
-    Number of fully used LUT-FF pairs:         310 out of     567   54%
+  Number of occupied Slices:                   168 out of   1,430   11%
+  Number of MUXCYs used:                       144 out of   2,860    5%
+  Number of LUT Flip Flop pairs used:          546
+    Number with an unused Flip Flop:           241 out of     546   44%
+    Number with an unused LUT:                   9 out of     546    1%
+    Number of fully used LUT-FF pairs:         296 out of     546   54%
     Number of slice register sites lost
       to control set restrictions:               0 out of  11,440    0%
 
@@ -1756,7 +1750,7 @@ IO Utilization:
 
 Specific Feature Utilization:
   Number of RAMB16BWERs:                         0 out of      32    0%
-  Number of RAMB8BWERs:                          4 out of      64    6%
+  Number of RAMB8BWERs:                          2 out of      64    3%
   Number of BUFIO2/BUFIO2_2CLKs:                 0 out of      32    0%
   Number of BUFIO2FB/BUFIO2FB_2CLKs:             0 out of      32    0%
   Number of BUFG/BUFGMUXs:                       1 out of      16    6%
@@ -1793,29 +1787,29 @@ WARNING:Par:288 - The signal spi_mosi_IBUF has no load.  PAR will not attempt to
 Starting Multi-threaded Router
 
 
-Phase  1  : 2860 unrouted;      REAL time: 4 secs 
+Phase  1  : 2738 unrouted;      REAL time: 4 secs 
 
-Phase  2  : 2473 unrouted;      REAL time: 5 secs 
+Phase  2  : 2337 unrouted;      REAL time: 4 secs 
 
-Phase  3  : 1282 unrouted;      REAL time: 5 secs 
+Phase  3  : 1096 unrouted;      REAL time: 5 secs 
 
-Phase  4  : 1282 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 6 secs 
+Phase  4  : 1096 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 5 secs 
 
 Updating file: mojo_top_0_routed.ncd with current fully routed design.
 
-Phase  5  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 7 secs 
+Phase  5  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 6 secs 
 
-Phase  6  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 7 secs 
+Phase  6  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 6 secs 
 
-Phase  7  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 7 secs 
+Phase  7  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 6 secs 
 
-Phase  8  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 7 secs 
+Phase  8  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 6 secs 
 
-Phase  9  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 7 secs 
+Phase  9  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 6 secs 
 
-Phase 10  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 7 secs 
-Total REAL time to Router completion: 7 secs 
-Total CPU time to Router completion (all processors): 7 secs 
+Phase 10  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 6 secs 
+Total REAL time to Router completion: 6 secs 
+Total CPU time to Router completion (all processors): 6 secs 
 
 Generating "PAR" statistics.
 
@@ -1826,7 +1820,7 @@ Generating Clock Report
 +---------------------+--------------+------+------+------------+-------------+
 |        Clock Net    |   Resource   |Locked|Fanout|Net Skew(ns)|Max Delay(ns)|
 +---------------------+--------------+------+------+------------+-------------+
-|           clk_BUFGP | BUFGMUX_X2Y11| No   |  122 |  0.116     |  1.509      |
+|           clk_BUFGP | BUFGMUX_X2Y11| No   |  114 |  0.116     |  1.509      |
 +---------------------+--------------+------+------+------------+-------------+
 
 * Net Skew is the difference between the minimum and maximum routing
@@ -1846,8 +1840,8 @@ Asterisk (*) preceding a constraint indicates it was not met.
   Constraint                                |    Check    | Worst Case |  Best Case | Timing |   Timing   
                                             |             |    Slack   | Achievable | Errors |    Score   
 ----------------------------------------------------------------------------------------------------------
-  TS_clk = PERIOD TIMEGRP "clk" 50 MHz HIGH | SETUP       |    13.472ns|     6.528ns|       0|           0
-   50%                                      | HOLD        |     0.389ns|            |       0|           0
+  TS_clk = PERIOD TIMEGRP "clk" 50 MHz HIGH | SETUP       |    12.008ns|     7.992ns|       0|           0
+   50%                                      | HOLD        |     0.391ns|            |       0|           0
 ----------------------------------------------------------------------------------------------------------
 
 
@@ -1863,7 +1857,7 @@ WARNING:Par:283 - There are 6 loadless signals in this design. This design will 
 Total REAL time to PAR completion: 7 secs 
 Total CPU time to PAR completion (all processors): 7 secs 
 
-Peak Memory Usage:  4506 MB
+Peak Memory Usage:  4495 MB
 
 Placer: Placement generated during map.
 Routing: Completed - No errors found.
@@ -1886,7 +1880,7 @@ Loading device for application Rf_Device from file '6slx9.nph' in environment
 C:\Xilinx\14.7\ISE_DS\ISE\.
    "mojo_top_0" is an NCD, version 3.2, device xc6slx9, package tqg144, speed -2
 
-Analysis completed Mon Dec 09 18:04:07 2019
+Analysis completed Thu Jan 16 15:25:17 2020
 --------------------------------------------------------------------------------
 
 Generating Report ...
@@ -1916,9 +1910,9 @@ WARNING:PhysDesignRules:2410 - This design is using one or more 9K Block RAMs
    (RAMB8BWER).  9K Block RAM initialization data, both user defined and
    default, may be incorrect and should not be used.  For more information,
    please reference Xilinx Answer Record 39999.
-[Mon Dec 09 18:04:27 2019] impl_1 finished
-wait_on_run: Time (s): elapsed = 00:00:15 . Memory (MB): peak = 299.230 ; gain = 0.000
-INFO: [Common 17-206] Exiting PlanAhead at Mon Dec 09 18:04:27 2019...
+[Thu Jan 16 15:25:43 2020] impl_1 finished
+wait_on_run: Time (s): elapsed = 00:00:20 . Memory (MB): peak = 299.090 ; gain = 0.000
+INFO: [Common 17-206] Exiting PlanAhead at Thu Jan 16 15:25:43 2020...
 INFO: [Common 17-83] Releasing license: PlanAhead
 
 Finished building project.

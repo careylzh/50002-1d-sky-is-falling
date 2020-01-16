@@ -14,7 +14,7 @@ module matrix_writer_5 (
     input rst,
     input [5:0] data,
     output reg [5:0] col_index,
-    output reg [3:0] row_index,
+    output reg [4:0] row_index,
     output reg red0,
     output reg green0,
     output reg blue0,
@@ -34,6 +34,7 @@ module matrix_writer_5 (
   
   localparam DIV = 3'h5;
   
+  reg [1:0] M_loading_d, M_loading_q = 1'h0;
   reg [1:0] M_state_d, M_state_q = 1'h0;
   reg [4:0] M_sclk_counter_d, M_sclk_counter_q = 1'h0;
   reg [6:0] M_led_bit_counter_d, M_led_bit_counter_q = 1'h0;
@@ -71,34 +72,51 @@ module matrix_writer_5 (
     if (M_state_q == 2'h0) begin
       M_latch_blank_d = 2'h1;
       M_current_address_d = 4'hf;
-      col_index = M_led_bit_counter_q[0+5-:6];
-      row_index = 1'h0;
+      M_led_bit_counter_d = 1'h0;
       M_state_d = 2'h1;
-    end
-    if (M_sclk_counter_q == 5'h00 && M_state_q == 2'h1 && M_led_bit_counter_q <= 7'h40) begin
-      M_sclk_d = 1'h0;
-      col_index = M_led_bit_counter_q[0+5-:6];
-      row_index = M_current_address_q + 1'h1;
-      M_led_bit_counter_d = M_led_bit_counter_q + 1'h1;
     end else begin
-      if (M_sclk_counter_q == 1'h1 && M_state_q == 2'h1 && M_led_bit_counter_q <= 7'h40) begin
-        M_rgb_data_d = data;
+      if (M_sclk_counter_q == 5'h00 && M_state_q == 2'h1 && M_led_bit_counter_q <= 7'h40) begin
+        M_sclk_d = 1'h0;
+        col_index = M_led_bit_counter_q[0+5-:6];
+        row_index = M_current_address_q + 1'h1;
+        M_led_bit_counter_d = M_led_bit_counter_q + 1'h1;
       end else begin
-        if (M_sclk_counter_q == 4'hf && M_state_q == 2'h1) begin
-          M_sclk_d = 1'h1;
-        end else begin
-          if (M_sclk_counter_q == 5'h1f && M_state_q == 2'h1 && M_led_bit_counter_q == 7'h40) begin
-            M_state_d = 2'h2;
-            M_latch_blank_d = 2'h3;
-            M_current_address_d = M_current_address_q + 1'h1;
-            M_sclk_d = 1'h0;
-            M_led_bit_counter_d = 1'h0;
+        if (M_sclk_counter_q == 1'h1 && M_state_q == 2'h1 && M_led_bit_counter_q <= 7'h40) begin
+          if ((M_current_address_q + 1'h1) == 1'h0) begin
+            M_rgb_data_d[3+2-:3] = data[0+2-:3];
           end else begin
-            if (M_sclk_counter_q == 5'h1f && M_state_q == 2'h2) begin
-              M_latch_blank_d = 2'h0;
-              col_index = M_led_bit_counter_q[0+5-:6];
-              row_index = M_current_address_q + 1'h1;
-              M_state_d = 2'h1;
+            M_rgb_data_d[0+2-:3] = data[0+2-:3];
+          end
+        end else begin
+          if (M_sclk_counter_q == 2'h2 && M_state_q == 2'h1 && M_led_bit_counter_q <= 7'h40) begin
+            col_index = M_led_bit_counter_q[0+5-:6] - 1'h1;
+            row_index = M_current_address_q + 1'h1 + 5'h10;
+          end else begin
+            if (M_sclk_counter_q == 2'h3 && M_state_q == 2'h1 && M_led_bit_counter_q <= 7'h40) begin
+              if ((M_current_address_q + 1'h1) == 1'h0) begin
+                M_rgb_data_d[0+2-:3] = data[0+2-:3];
+              end else begin
+                M_rgb_data_d[3+2-:3] = data[0+2-:3];
+              end
+            end else begin
+              if (M_sclk_counter_q == 4'hf && M_state_q == 2'h1) begin
+                M_sclk_d = 1'h1;
+              end else begin
+                if (M_sclk_counter_q == 5'h1f && M_state_q == 2'h1 && M_led_bit_counter_q == 7'h40) begin
+                  M_state_d = 2'h2;
+                  M_latch_blank_d = 2'h3;
+                  M_current_address_d = M_current_address_q + 1'h1;
+                  M_sclk_d = 1'h0;
+                  M_led_bit_counter_d = 1'h0;
+                end else begin
+                  if (M_sclk_counter_q == 5'h1f && M_state_q == 2'h2) begin
+                    M_latch_blank_d = 2'h0;
+                    col_index = M_led_bit_counter_q[0+5-:6];
+                    row_index = M_current_address_q + 1'h1;
+                    M_state_d = 2'h1;
+                  end
+                end
+              end
             end
           end
         end
@@ -108,6 +126,7 @@ module matrix_writer_5 (
   
   always @(posedge clk) begin
     if (rst == 1'b1) begin
+      M_loading_q <= 1'h0;
       M_state_q <= 1'h0;
       M_sclk_counter_q <= 1'h0;
       M_led_bit_counter_q <= 1'h0;
@@ -117,6 +136,7 @@ module matrix_writer_5 (
       M_sclk_q <= 1'h0;
       M_latch_blank_q <= 1'h0;
     end else begin
+      M_loading_q <= M_loading_d;
       M_state_q <= M_state_d;
       M_sclk_counter_q <= M_sclk_counter_d;
       M_led_bit_counter_q <= M_led_bit_counter_d;

@@ -7,7 +7,7 @@ module matrix_writer #(
     input data[6],
     
     output col_index[$clog2(MATRIX_WIDTH)],
-    output row_index[ADDRESS_SIZE],
+    output row_index[ADDRESS_SIZE+1], // reading from 32 bit ram width 
     
     output red0,
     output green0, 
@@ -87,6 +87,7 @@ module matrix_writer #(
   .clk(clk){
     .rst(rst){
           
+          dff loading[2];
           // b01 && sclk == all0s && shifted_bit_counter < MATRIX_WIDTH: loading data to 64 shift registers, off shifter clock
           // b01 && sclk == half_value: on shifter clock 
           // b01 && sclk == all1s && shifted_bit_counter == c{1,MATRIX_WIDTHx{b0}}: latching, reset shifted_bit_counter, advance address, off shifter clock, go to b10
@@ -151,16 +152,13 @@ module matrix_writer #(
     if (state.q == b00){ //START state
       latch_blank.d = b01; //latch off, blank on, begin 
       current_address.d = ADDRESS_SIZEx{b1}; //start from address 1111 
-      
-      //start giving address to the ram 
-      col_index = led_bit_counter.q[$clog2(MATRIX_WIDTH)-1:0]; //column changes per cycle to load row led (until 64)
-      row_index = 0; //starts at address zero
+      led_bit_counter.d = 0;
       state.d = b01;
     }
     
     
     //loading data when sclk is 0 
-    if (sclk_counter.q == DIVx{b0} && state.q == b01 && led_bit_counter.q <= MATRIX_WIDTH){
+    else if (sclk_counter.q == DIVx{b0} && state.q == b01 && led_bit_counter.q <= MATRIX_WIDTH){
       
       //off clock when changing data 
       sclk.d = 0;
@@ -168,10 +166,6 @@ module matrix_writer #(
       //load data for next column
       col_index = led_bit_counter.q[$clog2(MATRIX_WIDTH)-1:0]; //column changes per cycle to load row led (until 64)
       row_index = current_address.q + 1; //plus one because we are loading next row, while prev row is still being displayed
-      //rgb_data.d = ROW_DATA[row_index[0]][col_index];
-      
-      //data read from the previous cycle's address
-      //rgb_data.d = data;
      
       //shift the index to go to next LED in the row 
       led_bit_counter.d = led_bit_counter.q + 1;
@@ -179,23 +173,29 @@ module matrix_writer #(
     }
     
     else if (sclk_counter.q == 1 && state.q == b01 && led_bit_counter.q <= MATRIX_WIDTH){
-        rgb_data.d = data;
+      if ((current_address.q + 1) == 0){
+        rgb_data.d[5:3] = data[2:0];
+      }
+      else{
+        rgb_data.d[2:0] = data[2:0];
+      }
      }
+    
+    else if (sclk_counter.q == 2 && state.q == b01 && led_bit_counter.q <= MATRIX_WIDTH){
+      //load data for lower half 
+      col_index = led_bit_counter.q[$clog2(MATRIX_WIDTH)-1:0]-1; //column changes per cycle to load row led (until 64)
+      row_index = current_address.q + 1 + 16; //16 offset for the row of the  bottom half
       
-   /*     //loading data when sclk is 0 
-    else if (sclk_counter.q == DIVx{b0} && state.q == b01 && led_bit_counter.q == MATRIX_WIDTH){
-      
-      //off clock when changing data 
-      sclk.d = 0;
-      
-      //just read data
-      rgb_data.d = data;
-     
-      //shift the index to go to next LED in the row 
-      led_bit_counter.d = led_bit_counter.q + 1;
-      
-    }*/
-      
+     }
+    
+     else if (sclk_counter.q == 3 && state.q == b01 && led_bit_counter.q <= MATRIX_WIDTH){
+      if ((current_address.q + 1) == 0){
+        rgb_data.d[2:0] = data[2:0];
+      }
+      else{
+        rgb_data.d[5:3] = data[2:0];
+      }
+     }
     
     //change rising clock for shift registers in matrix to load input data in the second half of sclk_counter cycle
     else if (sclk_counter.q == (DIV-1)x{b1} && state.q == b01){

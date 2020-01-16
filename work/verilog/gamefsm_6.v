@@ -7,11 +7,12 @@
 module gamefsm_6 (
     input clk,
     input rst,
-    input left_button,
-    input right_button,
-    input start_button,
+    input left_button_raw,
+    input right_button_raw,
+    input start_button_raw,
     input gameover,
     input chickenbuld,
+    input restart_req,
     output reg [63:0] led_matrix,
     output reg [7:0] debug,
     output reg [7:0] debug1,
@@ -31,7 +32,7 @@ module gamefsm_6 (
   
   wire [1-1:0] M_skyFalling_edge_out;
   reg [1-1:0] M_skyFalling_edge_in;
-  edge_detector_11 skyFalling_edge (
+  edge_detector_10 skyFalling_edge (
     .clk(clk),
     .in(M_skyFalling_edge_in),
     .out(M_skyFalling_edge_out)
@@ -51,15 +52,16 @@ module gamefsm_6 (
   reg [7:0] M_debug_reg1_d, M_debug_reg1_q = 1'h0;
   reg [7:0] M_debug_reg2_d, M_debug_reg2_q = 1'h0;
   reg [32:0] M_timeCount_d, M_timeCount_q = 1'h0;
+  reg [24:0] M_skyshifter_d, M_skyshifter_q = 1'h0;
   wire [1-1:0] M_skyFalling_value;
-  counter_12 skyFalling (
+  counter_11 skyFalling (
     .clk(clk),
     .rst(rst),
     .value(M_skyFalling_value)
   );
   wire [32-1:0] M_skygenerator_num;
   reg [32-1:0] M_skygenerator_seed;
-  pn_gen_13 skygenerator (
+  pn_gen_12 skygenerator (
     .clk(clk),
     .rst(rst),
     .next(1'h1),
@@ -75,10 +77,12 @@ module gamefsm_6 (
     M_state_d = M_state_q;
     M_timeCount_d = M_timeCount_q;
     M_seed_d = M_seed_q;
+    M_skyshifter_d = M_skyshifter_q;
     
-    start_en = 1'h1;
+    start_en = 1'h0;
     chickenWin = 1'h0;
     M_seed_d = M_seed_q + 1'h1;
+    M_skyshifter_d = M_skyshifter_q + 1'h1;
     M_skygenerator_seed = M_seed_q;
     shift_sky_enable = 1'h0;
     M_skyFalling_edge_in = M_skyFalling_value;
@@ -96,21 +100,7 @@ module gamefsm_6 (
     
     case (M_state_q)
       START_state: begin
-        start_en = 1'h1;
-        gen_sky_enable = 1'h0;
-        if (start_button) begin
-          M_state_d = INITGRASS_state;
-        end
-      end
-      INITGRASS_state: begin
-        start_en = 1'h0;
-        gen_sky_enable = 1'h0;
-        M_state_d = INITCHICKEN_state;
-      end
-      INITCHICKEN_state: begin
-        gen_sky_enable = 1'h0;
-        init_chicken_en = 1'h1;
-        if (chickenbuld) begin
+        if (start_button_raw) begin
           M_state_d = IDLE_state;
         end
       end
@@ -121,58 +111,25 @@ module gamefsm_6 (
         shiftchickenleft_en = 1'h0;
         shiftchickenright_en = 1'h0;
         shift_sky_enable = 1'h0;
-        if (gameover) begin
-          M_state_d = SKYWIN_state;
+        if (skyFall_check) begin
+          M_state_d = GENRAN_state;
         end else begin
-          if (skyFall_check) begin
-            M_state_d = GENRAN_state;
-          end else begin
-            if (left_button) begin
-              M_state_d = MOVELEFT_state;
-            end else begin
-              if (right_button) begin
-                M_state_d = MOVERIGHT_state;
-              end else begin
-                if (M_timeCount_q[31+0-:1]) begin
-                  M_state_d = CHICKENWIN_state;
-                end
-              end
+          if (restart_req) begin
+            if (start_button_raw) begin
+              start_en = 1'h1;
             end
           end
         end
-      end
-      MOVELEFT_state: begin
-        gen_sky_enable = 1'h0;
-        shiftchickenleft_en = 1'h1;
-        M_state_d = IDLE_state;
-      end
-      MOVERIGHT_state: begin
-        gen_sky_enable = 1'h0;
-        shiftchickenright_en = 1'h1;
-        M_state_d = IDLE_state;
+        if (M_skyshifter_q[24+0-:1]) begin
+          M_skyshifter_d = 1'h0;
+          shift_sky_enable = 1'h1;
+        end
       end
       GENRAN_state: begin
         gen_sky_enable = 1'h1;
+        shift_sky_enable = 1'h1;
         generate_sky = M_skygenerator_num[0+4-:5];
         M_state_d = IDLE_state;
-      end
-      CHICKENWIN_state: begin
-        chickenWin = 1'h1;
-        gen_sky_enable = 1'h0;
-        if (start_button) begin
-          chickenWin = 1'h0;
-          start_en = 1'h0;
-          M_state_d = START_state;
-        end
-      end
-      SKYWIN_state: begin
-        skywin = 1'h1;
-        gen_sky_enable = 1'h0;
-        if (start_button) begin
-          skywin = 1'h0;
-          start_en = 1'h0;
-          M_state_d = START_state;
-        end
       end
       default: begin
         gen_sky_enable = 1'h0;
@@ -186,6 +143,7 @@ module gamefsm_6 (
       M_debug_reg1_q <= 1'h0;
       M_debug_reg2_q <= 1'h0;
       M_timeCount_q <= 1'h0;
+      M_skyshifter_q <= 1'h0;
       M_seed_q <= 1'h0;
       M_current_sky_q <= 1'h0;
       M_state_q <= 1'h0;
@@ -194,6 +152,7 @@ module gamefsm_6 (
       M_debug_reg1_q <= M_debug_reg1_d;
       M_debug_reg2_q <= M_debug_reg2_d;
       M_timeCount_q <= M_timeCount_d;
+      M_skyshifter_q <= M_skyshifter_d;
       M_seed_q <= M_seed_d;
       M_current_sky_q <= M_current_sky_d;
       M_state_q <= M_state_d;

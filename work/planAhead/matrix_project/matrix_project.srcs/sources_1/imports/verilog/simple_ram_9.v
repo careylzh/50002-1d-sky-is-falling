@@ -47,7 +47,7 @@
    read_data.
 */
 
-module simple_ram_10 #(
+module simple_ram_9 #(
     parameter SIZE = 1,  // size of each entry
     parameter DEPTH = 1  // number of entries
   )(
