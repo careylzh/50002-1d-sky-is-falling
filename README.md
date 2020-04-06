@@ -5,6 +5,7 @@ Hardware: Mojo v3 by Alchitry Labs (Spartan 6 XC6SLX9 FPGA, super relatively low
 Hardware Description "Programming" Language Used: Lucid (simplified verilog hardware description language)
 
 Virgin attempt at using a simple FPGA + HDL to create an old school arcade game.
+![50.002 Computational Structures 2019 Project Poster](https://github.com/careylzh/theSkyIsFalling/blob/master/50.002%20FPGA%201D%20Poster%20SUTD%202019.png)
 
 this project is deprecated: 
 no comments
