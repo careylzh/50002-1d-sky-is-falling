@@ -1,6 +1,4 @@
 # Elementary FPGA for Arcade Game (School Proj)
-
-Solarized dark             |  Solarized Ocean
 :-------------------------:|:-------------------------:
 ![50.002 Computational Structures 2019 Demo](https://github.com/careylzh/theSkyIsFalling/blob/master/theSkyIsFalling.gif) | __Software__: Alchitry Labs, PlanAhead Synthesizer, no test bench <br/> __Hardware__: Mojo v3 by Alchitry Labs (Spartan 6 XC6SLX9 FPGA, super relatively low-end FPGA) <br/> Hardware Description "Programming" __Language Used__: Lucid (simplified verilog hardware description language) <br/> <br/>
 Virgin attempt at using a simple FPGA + HDL to create an old school arcade game. <br/>
