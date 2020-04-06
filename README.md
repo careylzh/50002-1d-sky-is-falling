@@ -1,6 +1,8 @@
-# matrix_project
- 
-lucid programming (simplified verilog hardware description language)
+# Elementary FPGA for Arcade Game (School Proj)
+
+Software: Alchitry Labs, PlanAhead Synthesizer, no test bench
+Hardware: Mojo v3 by Alchitry Labs (Spartan 6 XC6SLX9 FPGA, super relatively low-end FPGA)
+Hardware Description "Programming" Language Used: Lucid (simplified verilog hardware description language)
 
 Virgin attempt at using a simple FPGA + HDL to create an old school arcade game.
 
