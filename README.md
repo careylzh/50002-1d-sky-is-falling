@@ -1,5 +1,5 @@
 # Elementary FPGA for Arcade Game (School Proj)
-
+Thank you Prof Natalie Agus for your assistance. Assistance is an understatement
 __Software__: Alchitry Labs, PlanAhead Synthesizer, no test bench <br/>
 __Hardware__: Mojo v3 by Alchitry Labs (Spartan 6 XC6SLX9 FPGA, super relatively low-end FPGA) <br/>
 Hardware Description "Programming" __Language Used__: Lucid (simplified verilog hardware description language) <br/>
