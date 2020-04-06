@@ -1,10 +1,10 @@
 # Elementary FPGA for Arcade Game (School Proj)
+Virgin attempt at using a simple FPGA + HDL to create an old school arcade game. <br/>
 
 __Software__: Alchitry Labs, PlanAhead Synthesizer, no test bench <br/>
 __Hardware__: Mojo v3 by Alchitry Labs (Spartan 6 XC6SLX9 FPGA, super relatively low-end FPGA) <br/>
 Hardware Description "Programming" __Language Used__: Lucid (simplified verilog hardware description language) <br/> <br/>
 Thank you Prof Natalie Agus for your assistance. Assistance is an understatement <br/> <br/>
-Virgin attempt at using a simple FPGA + HDL to create an old school arcade game. <br/>
 _this project is deprecated:_ <br/>
 no comments <br/>
 various mem architecture in diff versions, but the TLDR is that we tried block ram 512 DFFs instead of the current design
